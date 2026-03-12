@@ -20,10 +20,18 @@ Install dependencies
 npm install
 ```
 
-Configure environment variables and edit with your configuration
+Configure environment variables and edit with your configuration:
+
+- For local development
 
 ```bash
 cp .env.example .env
+```
+
+- For docker production builds
+
+```bash
+cp .env.example .env.production.local
 ```
 
 Start development server

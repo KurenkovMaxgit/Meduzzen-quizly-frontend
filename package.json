@@ -8,6 +8,7 @@
     "start": "next start",
     "lint": "eslint",
     "format": "prettier --write . --ignore-unknown",
+    "format:diff": "prettier --list-different . --ignore-unknown",
     "prepare": "git config core.hooksPath .githooks"
   },
   "dependencies": {
@@ -29,6 +30,7 @@
     "babel-plugin-react-compiler": "1.0.0",
     "eslint": "^9",
     "eslint-config-next": "16.1.6",
+    "prettier": "^3.8.1",
     "tailwindcss": "^4.2.1",
     "typescript": "^5"
   },

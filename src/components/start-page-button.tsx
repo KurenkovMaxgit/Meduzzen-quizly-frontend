@@ -9,6 +9,7 @@ export default function StarPageButton() {
   function handleClick() {
     setCount((prevCount) => prevCount + 1);
   }
+
   return (
     <>
       <span className="text-4xl text-center col-span-3 mb-4">{'🎉'.repeat(count)}</span>

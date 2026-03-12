@@ -1,4 +1,5 @@
 'use client';
+
 import Pink from '@/themes/pink';
 import { PrimeReactProvider, PrimeReactStyleSheet } from '@primereact/core';
 import { useServerInsertedHTML } from 'next/navigation';
@@ -21,7 +22,7 @@ export default function PrimeProvider({
 }>) {
   useServerInsertedHTML(() => {
     const styleElements = styledStyleSheet.getAllElements();
-    // styledStyleSheet.clear();
+
     return <>{styleElements}</>;
   });
 

@@ -39,3 +39,23 @@ Start development server
 ```bash
 npm run dev
 ```
+
+## Docker container build & run
+
+Build image
+
+```bash
+npm run docker:build
+```
+
+To start container run
+
+```bash
+npm run docker:up
+```
+
+To stop container run
+
+```bash
+npm run docker:down
+```

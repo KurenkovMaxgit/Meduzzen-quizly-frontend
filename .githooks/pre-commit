@@ -1,0 +1,5 @@
+#!/bin/sh
+
+echo "pre-commit: lint, format and testing of staged files..."
+npx lint-staged
+echo "Successfully."

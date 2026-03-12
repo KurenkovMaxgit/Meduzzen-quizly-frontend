@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "eslint",
     "format": "prettier --write . --ignore-unknown",
-    "format:diff": "prettier --list-different . --ignore-unknown"
+    "prepare": "git config core.hooksPath .githooks"
   },
   "dependencies": {
     "@primereact/core": "^11.0.0-alpha.10",

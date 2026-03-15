@@ -59,3 +59,25 @@ To stop container run
 ```bash
 npm run docker:down
 ```
+
+##
+
+_**NOTE:**_ If upcoming scripts don't work on your system (e.g. Docker Compose V2) use these:
+
+Build image
+
+```bash
+docker compose --env-file ./.env.production.local -f docker-compose.yml build
+```
+
+To start container run
+
+```bash
+docker compose --env-file ./.env.production.local -f docker-compose.yml up -d
+```
+
+To stop container run
+
+```bash
+docker-compose -f docker-compose.yml down
+```

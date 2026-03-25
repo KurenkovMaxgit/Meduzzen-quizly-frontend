@@ -17,21 +17,21 @@ export default function EditCompanyDialog({ company }: { company: typeof mockCom
   const [companyStatus, setCompanyStatus] = React.useState<CompanyStatus>(CompanyStatus.VISIBLE);
 
   return (
-    <Dialog.Root modal position="center" draggable={false}>
+    <Dialog.Root modal position='center' draggable={false}>
       <Dialog.Trigger>
-        <i className="pi pi-pencil" />
+        <i className='pi pi-pencil' />
 
-        <h3 className="hidden sm:block">Edit Company</h3>
+        <h3 className='hidden sm:block'>Edit Company</h3>
       </Dialog.Trigger>
 
-      <Dialog.Backdrop className="cursor-pointer" />
+      <Dialog.Backdrop className='cursor-pointer' />
 
-      <Dialog.Portal className="w-[95vw] max-w-full sm:w-md">
+      <Dialog.Portal className='w-[95vw] max-w-full sm:w-md'>
         <Dialog.Header>
           <Dialog.Title>Edit Company</Dialog.Title>
           <Dialog.HeaderActions>
             <Dialog.Close>
-              <i className="pi pi-times" />
+              <i className='pi pi-times' />
             </Dialog.Close>
           </Dialog.HeaderActions>
         </Dialog.Header>
@@ -41,29 +41,29 @@ export default function EditCompanyDialog({ company }: { company: typeof mockCom
             const { dialog } = instance;
 
             return (
-              <div className="flex flex-col gap-6">
-                <div className="flex flex-col gap-1">
-                  <Label htmlFor="name" className="text-sm">
+              <div className='flex flex-col gap-6'>
+                <div className='flex flex-col gap-1'>
+                  <Label htmlFor='name' className='text-sm'>
                     Company Name
                   </Label>
 
-                  <InputText id="name" defaultValue={company.name} className="w-full" />
+                  <InputText id='name' defaultValue={company.name} className='w-full' />
                 </div>
 
-                <div className="flex flex-col gap-1">
-                  <Label htmlFor="description" className="text-sm">
+                <div className='flex flex-col gap-1'>
+                  <Label htmlFor='description' className='text-sm'>
                     Description
                   </Label>
 
                   <Textarea
-                    id="description"
+                    id='description'
                     defaultValue={company.description}
                     rows={4}
-                    className="w-full resize-none"
+                    className='w-full resize-none'
                   />
                 </div>
 
-                <div className="mt-2 flex flex-col gap-1">
+                <div className='mt-2 flex flex-col gap-1'>
                   <FloatLabel>
                     <Select.Root
                       onValueChange={(e: SelectValueChangeEvent) =>
@@ -73,14 +73,14 @@ export default function EditCompanyDialog({ company }: { company: typeof mockCom
                         { label: 'Visible to everyone', value: CompanyStatus.VISIBLE },
                         { label: 'Hidden from public', value: CompanyStatus.HIDDEN },
                       ]}
-                      optionLabel="label"
-                      optionValue="value"
-                      className="w-full"
+                      optionLabel='label'
+                      optionValue='value'
+                      className='w-full'
                     >
-                      <Select.Trigger id="company_status">
+                      <Select.Trigger id='company_status'>
                         <Select.Value />
                         <Select.Icon>
-                          <i className="pi pi-chevron-down text-surface-500" />
+                          <i className='pi pi-chevron-down text-surface-500' />
                         </Select.Icon>
                       </Select.Trigger>
 
@@ -94,12 +94,12 @@ export default function EditCompanyDialog({ company }: { company: typeof mockCom
                         </Select.Positioner>
                       </Select.Portal>
                     </Select.Root>
-                    <Label htmlFor="company_status">Company visibility</Label>
+                    <Label htmlFor='company_status'>Company visibility</Label>
                   </FloatLabel>
                 </div>
 
-                <div className="mt-2 flex shrink-0 justify-end gap-2">
-                  <Button severity="secondary" onClick={dialog?.close}>
+                <div className='mt-2 flex shrink-0 justify-end gap-2'>
+                  <Button severity='secondary' onClick={dialog?.close}>
                     Cancel
                   </Button>
 

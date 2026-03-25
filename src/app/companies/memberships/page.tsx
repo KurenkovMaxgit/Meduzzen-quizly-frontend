@@ -5,17 +5,17 @@ import { CompanyMembershipListItem } from '@/components/companies/company-member
 
 export default function MembershipsPage() {
   return (
-    <div className="mx-auto max-w-5xl">
+    <div className='mx-auto max-w-5xl'>
       <UniversalList
-        className="border-surface-200 dark:border-surface-700 bg-surface-0 dark:bg-surface-900 rounded-2xl border p-8"
+        className='border-surface-200 dark:border-surface-700 bg-surface-0 dark:bg-surface-900 rounded-2xl border p-8'
         items={mockCompanyList}
         itemTemplate={CompanyMembershipListItem}
         isLoading={false}
-        emptyMessage="No companies found."
+        emptyMessage='No companies found.'
         paginator={true}
         rows={2}
       >
-        <ListHeader title="Memberships" searchbar />
+        <ListHeader title='Memberships' searchbar />
       </UniversalList>
     </div>
   );

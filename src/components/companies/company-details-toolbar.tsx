@@ -27,12 +27,12 @@ export default function CompanyDetailsToolbar(params: { company: typeof mockComp
       <UniversalList
         items={mockCompanyMembers}
         itemTemplate={CompanyMemberListItem}
-        dialogTitle="Members"
+        dialogTitle='Members'
         isLoading={false}
-        emptyMessage="No companies found."
+        emptyMessage='No companies found.'
         dialog
-        buttonLabel="Members List"
-        buttonIcon="pi pi-users"
+        buttonLabel='Members List'
+        buttonIcon='pi pi-users'
       >
         {/* TODO: Add ListHeader with members management tools*/}
       </UniversalList>
@@ -51,26 +51,26 @@ export default function CompanyDetailsToolbar(params: { company: typeof mockComp
 
       {/* PLACEHOLDER */}
       <Button>
-        <i className="pi pi-clipboard" />
+        <i className='pi pi-clipboard' />
         Quizzes List
       </Button>
       {/* PLACEHOLDER */}
 
       {params.company.id === currentCompany.id ? (
-        <Button severity="danger" variant="outlined" onClick={() => handleExitCompany()}>
-          <i className="pi pi-sign-out" />
+        <Button severity='danger' variant='outlined' onClick={() => handleExitCompany()}>
+          <i className='pi pi-sign-out' />
           Exit Company
         </Button>
       ) : (
-        <Button severity="success" onClick={() => handleEnterCompany()}>
-          <i className="pi pi-sign-in" />
+        <Button severity='success' onClick={() => handleEnterCompany()}>
+          <i className='pi pi-sign-in' />
           Enter Company
         </Button>
       )}
       {currentCompany.members.find((member) => member.user.id === mockUser.id)?.role ===
       CompanyRole.OWNER ? (
-        <Button severity="danger" variant="outlined" pt-root-onClick={() => handleDeleteCompany()}>
-          <i className="pi pi-trash" />
+        <Button severity='danger' variant='outlined' pt-root-onClick={() => handleDeleteCompany()}>
+          <i className='pi pi-trash' />
           Delete Company
         </Button>
       ) : null}

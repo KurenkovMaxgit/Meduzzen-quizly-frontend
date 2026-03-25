@@ -15,33 +15,33 @@ export default function ListHeader({
   const [searchValue, setSearchValue] = React.useState('');
 
   return (
-    <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
-      <h1 className="text-3xl font-bold">{title}</h1>
+    <div className='mb-6 flex flex-wrap items-center justify-between gap-4'>
+      <h1 className='text-3xl font-bold'>{title}</h1>
       {searchbar ? (
-        <div className="order-last flex w-full justify-center sm:order-0 sm:w-auto sm:flex-1 sm:px-4">
-          <IconField.Root className="w-full max-w-md">
+        <div className='order-last flex w-full justify-center sm:order-0 sm:w-auto sm:flex-1 sm:px-4'>
+          <IconField.Root className='w-full max-w-md'>
             <IconField.Icon>
-              <i className="pi pi-search" />
+              <i className='pi pi-search' />
             </IconField.Icon>
             <InputText
               value={searchValue}
               onInput={(e: React.ChangeEvent<HTMLInputElement>) =>
                 setSearchValue(e.currentTarget.value)
               }
-              placeholder="Search"
-              className="w-full"
+              placeholder='Search'
+              className='w-full'
             />
             <IconField.Icon>
-              <i className="pi pi-times cursor-pointer" onClick={() => setSearchValue('')} />
+              <i className='pi pi-times cursor-pointer' onClick={() => setSearchValue('')} />
             </IconField.Icon>
           </IconField.Root>
         </div>
       ) : null}
 
       {buttonLabel && onButtonClick ? (
-        <Button raised onClick={onButtonClick} className="shrink-0">
-          <i className="pi pi-plus sm:mr-2" />
-          <h3 className="hidden sm:block">{buttonLabel}</h3>
+        <Button raised onClick={onButtonClick} className='shrink-0'>
+          <i className='pi pi-plus sm:mr-2' />
+          <h3 className='hidden sm:block'>{buttonLabel}</h3>
         </Button>
       ) : null}
     </div>

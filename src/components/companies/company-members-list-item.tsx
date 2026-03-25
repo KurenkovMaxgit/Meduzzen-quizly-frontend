@@ -20,41 +20,41 @@ export const CompanyMemberListItem = (companyUser: typeof mockCompanyUser) => {
   };
 
   return (
-    <div className="bg-surface-0 dark:bg-surface-900 border-surface-200 dark:border-surface-700 mb-4 flex flex-col justify-between gap-4 rounded-xl border p-4 shadow-sm sm:flex-row sm:items-center">
-      <div className="flex flex-col gap-1">
-        <div className="flex items-center gap-3">
-          <span className="text-surface-900 dark:text-surface-0 text-xl font-bold">
+    <div className='bg-surface-0 dark:bg-surface-900 border-surface-200 dark:border-surface-700 mb-4 flex flex-col justify-between gap-4 rounded-xl border p-4 shadow-sm sm:flex-row sm:items-center'>
+      <div className='flex flex-col gap-1'>
+        <div className='flex items-center gap-3'>
+          <span className='text-surface-900 dark:text-surface-0 text-xl font-bold'>
             {companyUser.user.firstName + ' ' + companyUser.user.lastName}
           </span>
           <Tag {...tagProps[companyUser.role].props}>{companyUser.role}</Tag>
         </div>
-        <span className="text-surface-600 dark:text-surface-400 text-sm">
+        <span className='text-surface-600 dark:text-surface-400 text-sm'>
           {companyUser.user.email}
         </span>
       </div>
-      <div className="flex items-center gap-4 sm:ml-auto">
+      <div className='flex items-center gap-4 sm:ml-auto'>
         {mockUser.id !== companyUser.user.id &&
         currentCompany.members.find((member) => member.user.id === mockUser.id)?.role ===
           CompanyRole.OWNER ? (
           <Button
             rounded
-            variant="outlined"
-            severity="danger"
+            variant='outlined'
+            severity='danger'
             onClick={() => handleKickUser}
-            title="Kick user"
+            title='Kick user'
           >
-            <i className="pi pi-user-minus" />
+            <i className='pi pi-user-minus' />
           </Button>
         ) : null}
         <Link href={`/profile/${companyUser.user.id}`}>
           <Button
             rounded
-            variant="outlined"
-            severity="contrast"
-            className="shrink-0"
-            title="View user profile"
+            variant='outlined'
+            severity='contrast'
+            className='shrink-0'
+            title='View user profile'
           >
-            <i className="pi pi-eye" />
+            <i className='pi pi-eye' />
           </Button>
         </Link>
       </div>

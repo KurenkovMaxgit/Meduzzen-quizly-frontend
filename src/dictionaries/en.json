@@ -1,0 +1,140 @@
+{
+  "common": {
+    "searchbar": { "placeholder": "Search" },
+    "back": "Back",
+    "edit": "Edit",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "createdAt": "Created",
+    "updatedAt": "Last Updated"
+  },
+  "sidebar": {
+    "companiesDropdown": {
+      "title": "Companies",
+      "allCompanies": "All Companies",
+      "myMemberships": "My Memberships"
+    },
+    "companyActionsDropdown": {
+      "title": "Company Actions",
+      "membersList": "Members List",
+      "quizzesList": "Quizzes List"
+    },
+    "inboxDropdown": {
+      "title": "Inbox",
+      "allNotifications": "All Notifications",
+      "sentNotifications": "Sent",
+      "receivedNotifications": "Received",
+      "archivedNotifications": "Archived"
+    },
+    "profileDropdown": {
+      "changeCompany": "Change Company",
+      "viewProfile": "View Profile",
+      "signOut": "Sign Out"
+    },
+    "changeCompanyDialog": {
+      "title": "Change current company"
+    },
+    "about": "About",
+    "toggleTheme": "Toggle theme"
+  },
+  "companies": {
+    "emptyMessage": "No companies found.",
+    "listHeader": {
+      "title": "Companies",
+      "buttonLabel": "Create New"
+    },
+    "actions": {
+      "viewDetails": "View company details",
+      "enterCompany": "Enter Company",
+      "exitCompany": "Exit Company",
+      "deleteCompany": "Delete Company",
+      "sendRequest": "Send membership request"
+    },
+    "details": {
+      "membersList": {
+        "title": "Members List",
+        "buttonLabel": "Members List"
+      },
+      "quizzesList": {
+        "title": "Quizzes List"
+      },
+      "about": "About the Company",
+      "id": "Company ID"
+    },
+    "editDialog": {
+      "title": "Edit Company",
+      "name": "Company Name",
+      "description": "Description",
+      "visibility": "Company visibility"
+    },
+    "userActions": {
+      "kick": "Kick user",
+      "viewProfile": "View user profile"
+    }
+  },
+  "memberships": {
+    "emptyMessage": "No memberships found.",
+    "listHeader": {
+      "title": "Memberships"
+    }
+  },
+  "profile": {
+    "title": "Profile Details",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "email": "Email Address"
+  },
+  "about": {
+    "title": "About Quizly",
+    "description": " Quizly is a modern, fast, and interactive platform designed to make creating and taking quizzes effortless. Built to solve the frustration of slow, outdated testing apps, it delivers a seamless, real-time experience wrapped in a clean interface.",
+    "features": {
+      "title": "Platform Features",
+      "interactions": {
+        "title": "Real-Time Interaction",
+        "description": "Instant feedback, dynamic scoring, and an interactive quiz-taking environment that doesn`t make you wait for page reloads."
+      },
+      "analytics": {
+        "title": "Comprehensive Dashboard",
+        "description": "A powerful workspace for managing companies, analyzing score data, and organizing your quiz content."
+      },
+      "design": {
+        "title": "Responsive Design",
+        "description": "A fully fluid, mobile-first interface featuring an off-canvas navigation system that looks great on any screen size."
+      }
+    },
+    "techStack": {
+      "title": "Under the Hood",
+      "frontend": {
+        "title": "Frontend Engine",
+        "framework": {
+          "title": "Framework:",
+          "description": "Next.js (App Router) for hybrid static/server rendering."
+        },
+        "styling": {
+          "title": "Styling:",
+          "description": "Tailwind CSS combined with PrimeReact headless components."
+        },
+        "layout": {
+          "title": "State & Layout:",
+          "description": "Advanced Next.js Route Groups."
+        }
+      },
+      "backend": {
+        "title": "Backend & Infrastructure",
+        "architecture": {
+          "title": "Architecture:",
+          "description": "Nest.js running a robust API layer."
+        },
+        "database": {
+          "title": "Database:",
+          "description": "PostgreSQL handling relational data storage securely."
+        },
+        "deployment": {
+          "title": "Deployment:",
+          "description": "Fully containerized standalone builds via Docker, provisioned on AWS infrastructure."
+        }
+      }
+    }
+  }
+}

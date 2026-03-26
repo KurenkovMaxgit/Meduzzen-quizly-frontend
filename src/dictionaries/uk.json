@@ -1,0 +1,140 @@
+{
+  "common": {
+    "searchbar": { "placeholder": "Пошук" },
+    "back": "Назад",
+    "edit": "Редагувати",
+    "save": "Зберегти",
+    "cancel": "Скасувати",
+    "delete": "Видалити",
+    "createdAt": "Створено",
+    "updatedAt": "Останнє оновлення"
+  },
+  "sidebar": {
+    "companiesDropdown": {
+      "title": "Компанії",
+      "allCompanies": "Всі компанії",
+      "myMemberships": "Мої членства"
+    },
+    "companyActionsDropdown": {
+      "title": "Дії компанії",
+      "membersList": "Список учасників",
+      "quizzesList": "Список квізів"
+    },
+    "inboxDropdown": {
+      "title": "Вхідні",
+      "allNotifications": "Всі сповіщення",
+      "sentNotifications": "Надіслані",
+      "receivedNotifications": "Отримані",
+      "archivedNotifications": "Архівовані"
+    },
+    "profileDropdown": {
+      "changeCompany": "Змінити компанію",
+      "viewProfile": "Профіль",
+      "signOut": "Вийти"
+    },
+    "changeCompanyDialog": {
+      "title": "Змінити поточну компанію"
+    },
+    "about": "Про нас",
+    "toggleTheme": "Змінити тему"
+  },
+  "companies": {
+    "emptyMessage": "Компаній не знайдено.",
+    "listHeader": {
+      "title": "Компанії",
+      "buttonLabel": "Створити"
+    },
+    "actions": {
+      "viewDetails": "Переглянути деталі компанії",
+      "enterCompany": "Увійти в компанію",
+      "exitCompany": "Вийти з компанії",
+      "deleteCompany": "Видалити компанію",
+      "sendRequest": "Надіслати запит на участь"
+    },
+    "details": {
+      "membersList": {
+        "title": "Список учасників",
+        "buttonLabel": "Список учасників"
+      },
+      "quizzesList": {
+        "title": "Список квізів"
+      },
+      "about": "Про компанію",
+      "id": "ID компанії"
+    },
+    "editDialog": {
+      "title": "Редагувати",
+      "name": "Назва компанії",
+      "description": "Опис",
+      "visibility": "Видимість компанії"
+    },
+    "userActions": {
+      "kick": "Виключити користувача",
+      "viewProfile": "Переглянути профіль користувача"
+    }
+  },
+  "memberships": {
+    "emptyMessage": "Членств не знайдено.",
+    "listHeader": {
+      "title": "Членства"
+    }
+  },
+  "profile": {
+    "title": "Деталі профілю",
+    "firstName": "Ім'я",
+    "lastName": "Прізвище",
+    "email": "Електронна адреса"
+  },
+  "about": {
+    "title": "Про Quizly",
+    "description": "Quizly — це сучасна, швидка та інтерактивна платформа, створена для легкого створення та проходження квізів. Створена, щоб вирішити проблему повільних, застарілих додатків для тестування, вона забезпечує безперебійний досвід у реальному часі, загорнутий у чистий інтерфейс.",
+    "features": {
+      "title": "Особливості платформи",
+      "interactions": {
+        "title": "Взаємодія в реальному часі",
+        "description": "Миттєвий зворотний зв'язок, динамічне оцінювання та інтерактивне середовище для проходження тестів, яке не змушує вас чекати."
+      },
+      "analytics": {
+        "title": "Комплексна панель управління",
+        "description": "Потужний робочий простір для управління компаніями, аналізу даних про оцінки та організації вашого тестового контенту."
+      },
+      "design": {
+        "title": "Адаптивний дизайн",
+        "description": "Повністю гнучкий інтерфейс, орієнтований на мобільні пристрої, що має систему позаекранної навігації та чудово виглядає на будь-якому розмірі екрана."
+      }
+    },
+    "techStack": {
+      "title": "Під капотом",
+      "frontend": {
+        "title": "Фронтенд",
+        "framework": {
+          "title": "Фреймворк:",
+          "description": "Next.js (App Router) для гібридного статичного/серверного рендерингу."
+        },
+        "styling": {
+          "title": "Стилізація:",
+          "description": "Tailwind CSS у поєднанні з headless-компонентами PrimeReact."
+        },
+        "layout": {
+          "title": "Стан та макет:",
+          "description": "Просунуті групи маршрутів Next.js (Route Groups)."
+        }
+      },
+      "backend": {
+        "title": "Бекенд та інфраструктура",
+        "architecture": {
+          "title": "Архітектура:",
+          "description": "Nest.js, що забезпечує надійний шар API."
+        },
+        "database": {
+          "title": "База даних:",
+          "description": "PostgreSQL для безпечного зберігання реляційних даних."
+        },
+        "deployment": {
+          "title": "Розгортання:",
+          "description": "Повністю контейнеризовані автономні збірки через Docker, розгорнуті на інфраструктурі AWS."
+        }
+      }
+    }
+  }
+}

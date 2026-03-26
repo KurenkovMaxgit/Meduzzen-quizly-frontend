@@ -4,8 +4,15 @@ import { CompanyRole, CompanyStatus } from '@/utils/enums';
 import EditCompanyDialog from '@/components/companies/company-edit-dialog';
 import { mockUser } from '@/mock/user-mock';
 import CompanyDetailsToolbar from '@/components/companies/company-details-toolbar';
+import { getDictionary } from '@/utils/get-dictionary';
 
-export default async function CompanyDetailsPage(params: Promise<{ companyId: string }>) {
+export default async function CompanyDetailsPage({
+  params,
+}: {
+  params: Promise<{ companyId: string; lang: string }>;
+}) {
+  const dictionary = await getDictionary((await params).lang);
+
   async function getCompany(companyId: string) {
     //TODO: Add fetching
     return mockCompanyWithMembers;
@@ -20,7 +27,7 @@ export default async function CompanyDetailsPage(params: Promise<{ companyId: st
           className='text-surface-500 hover:text-surface-900 dark:hover:text-surface-0 flex items-center gap-2 transition-colors'
         >
           <i className='pi pi-arrow-left' />
-          <span className='font-medium'>Back to Companies</span>
+          <span className='font-medium'>{dictionary.common.back}</span>
         </Link>
         {company.members.find(
           (user) =>
@@ -35,11 +42,11 @@ export default async function CompanyDetailsPage(params: Promise<{ companyId: st
         <div className='flex flex-col gap-8 md:flex-row md:items-start'>
           <div className='flex w-full flex-col gap-6'>
             <div className='flex flex-col justify-between gap-4 sm:flex-row sm:items-center'>
-              <h1 className='text-surface-900 dark:text-surface-0 m-0 text-2xl font-bold sm:text-3xl'>
+              <h1 className='text-surface-900 dark:text-surface-0 m-0 w-full text-2xl font-bold wrap-break-word break-all sm:text-3xl'>
                 {company.name}
               </h1>
               <div
-                className={`flex items-center gap-2 self-start rounded-full px-3 py-1 text-xs font-bold tracking-wide uppercase ${
+                className={`flex shrink-0 items-center gap-2 self-start rounded-full px-3 py-1 text-xs font-bold tracking-wide uppercase ${
                   company.status === CompanyStatus.VISIBLE
                     ? 'bg-green-100 text-green-700 dark:bg-green-500/20 dark:text-green-400'
                     : 'bg-surface-100 text-surface-700 dark:bg-surface-500/20 dark:text-surface-400'
@@ -54,7 +61,7 @@ export default async function CompanyDetailsPage(params: Promise<{ companyId: st
 
             <div className='bg-surface-50 dark:bg-surface-800/50 rounded-xl p-5'>
               <h3 className='text-surface-500 m-0 mb-2 text-xs font-bold tracking-wider uppercase'>
-                About the Company
+                {dictionary.companies.details.about}
               </h3>
               <p className='text-surface-700 dark:text-surface-300 m-0 leading-relaxed'>
                 {company.description}
@@ -65,13 +72,17 @@ export default async function CompanyDetailsPage(params: Promise<{ companyId: st
 
             <div className='border-surface-200 dark:border-surface-700 mt-2 flex flex-wrap gap-x-12 gap-y-6 border-t pt-6'>
               <div className='flex flex-col gap-1'>
-                <span className='text-surface-500 text-sm font-semibold'>Company ID</span>
+                <span className='text-surface-500 text-sm font-semibold'>
+                  {dictionary.companies.details.id}
+                </span>
                 <span className='text-surface-900 dark:text-surface-0 font-mono text-xs'>
                   {company.id}
                 </span>
               </div>
               <div className='flex flex-col gap-1'>
-                <span className='text-surface-500 text-sm font-semibold'>Created</span>
+                <span className='text-surface-500 text-sm font-semibold'>
+                  {dictionary.common.createdAt}
+                </span>
                 <span className='text-surface-900 dark:text-surface-0 text-sm'>
                   {new Date(company.createdAt).toLocaleDateString('en-US', {
                     year: 'numeric',
@@ -81,7 +92,9 @@ export default async function CompanyDetailsPage(params: Promise<{ companyId: st
                 </span>
               </div>
               <div className='flex flex-col gap-1'>
-                <span className='text-surface-500 text-sm font-semibold'>Last Updated</span>
+                <span className='text-surface-500 text-sm font-semibold'>
+                  {dictionary.common.updatedAt}
+                </span>
                 <span className='text-surface-900 dark:text-surface-0 text-sm'>
                   {new Date(company.updatedAt).toLocaleDateString('en-US', {
                     year: 'numeric',

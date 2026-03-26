@@ -1,10 +1,13 @@
 'use client';
 
 import { mockCompany } from '@/mock/company-mock';
+import { useDictionary } from '@/providers/dictionary-provider';
 import { Button } from '@primereact/ui/button';
 import Link from 'next/link';
 
 export const CompanyListItem = (company: typeof mockCompany) => {
+  const dictionary = useDictionary();
+
   const handleSendRequest = async () => {
     //TODO: Add handling
   };
@@ -28,7 +31,7 @@ export const CompanyListItem = (company: typeof mockCompany) => {
             variant='outlined'
             severity='contrast'
             className='shrink-0'
-            title='View company details'
+            title={dictionary.companies.actions.viewDetails}
           >
             <i className='pi pi-eye' />
           </Button>
@@ -38,7 +41,7 @@ export const CompanyListItem = (company: typeof mockCompany) => {
           variant='outlined'
           severity='success'
           onClick={() => handleSendRequest()}
-          title='Send membership request'
+          title={dictionary.companies.actions.sendRequest}
         >
           <i className='pi pi-envelope' />
         </Button>

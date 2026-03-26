@@ -14,13 +14,15 @@ import { DialogRootChangeEvent } from '@primereact/types/shared/dialog';
 import UniversalList from '../common/list';
 import { ChangeCompanyListItem } from '../companies/company-change-list-item';
 import { usePathname } from 'next/navigation';
-import { Button } from '@primereact/ui/button';
+import { useDictionary } from '@/providers/dictionary-provider';
 
 export default function Sidebar({
   children,
 }: Readonly<{
   children?: React.ReactNode;
 }>) {
+  const dictionary = useDictionary();
+
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
@@ -64,7 +66,7 @@ export default function Sidebar({
             <Menu.List className='p-0!'>
               <Menu.Sub defaultOpen={false}>
                 <Menu.Trigger>
-                  <i className='pi pi-building' /> Companies
+                  <i className='pi pi-building' /> {dictionary.sidebar.companiesDropdown.title}
                   <Menu.Icon />
                 </Menu.Trigger>
 
@@ -72,14 +74,14 @@ export default function Sidebar({
                   <Menu.Item>
                     <Link href='/companies' className='flex w-full items-center gap-2'>
                       <i className='pi pi-list' />
-                      All Companies
+                      {dictionary.sidebar.companiesDropdown.allCompanies}
                     </Link>
                   </Menu.Item>
 
                   <Menu.Item>
                     <Link href='/companies/memberships' className='flex w-full items-center gap-2'>
                       <i className='pi pi-users' />
-                      My Memberships
+                      {dictionary.sidebar.companiesDropdown.myMemberships}
                     </Link>
                   </Menu.Item>
                 </Menu.List>
@@ -88,7 +90,8 @@ export default function Sidebar({
               {currentCompany ? (
                 <Menu.Sub defaultOpen={true}>
                   <Menu.Trigger>
-                    <i className='pi pi-th-large' /> Company Actions
+                    <i className='pi pi-th-large' />
+                    {dictionary.sidebar.companyActionsDropdown.title}
                     <Menu.Icon />
                   </Menu.Trigger>
 
@@ -99,7 +102,7 @@ export default function Sidebar({
                         className='flex w-full items-center gap-2'
                       >
                         <i className='pi pi-users' />
-                        Members List
+                        {dictionary.sidebar.companyActionsDropdown.membersList}
                       </Link>
                     </Menu.Item>
 
@@ -109,7 +112,7 @@ export default function Sidebar({
                         className='flex w-full items-center gap-2'
                       >
                         <i className='pi pi-clipboard' />
-                        Quizzes List
+                        {dictionary.sidebar.companyActionsDropdown.quizzesList}
                       </Link>
                     </Menu.Item>
                   </Menu.List>
@@ -119,7 +122,7 @@ export default function Sidebar({
               <Menu.Sub defaultOpen={true}>
                 <Menu.Trigger>
                   <i className='pi pi-inbox' />
-                  Inbox
+                  {dictionary.sidebar.inboxDropdown.title}
                   <Menu.Icon />
                 </Menu.Trigger>
 
@@ -127,28 +130,28 @@ export default function Sidebar({
                   <Menu.Item>
                     <Link href='/messages' className='flex w-full items-center gap-2'>
                       <i className='pi pi-envelope' />
-                      All Notifications
+                      {dictionary.sidebar.inboxDropdown.allNotifications}
                     </Link>
                   </Menu.Item>
 
                   <Menu.Item>
                     <Link href='/messages/sent' className='flex w-full items-center gap-2'>
                       <i className='pi pi-send' />
-                      Sent
+                      {dictionary.sidebar.inboxDropdown.sentNotifications}
                     </Link>
                   </Menu.Item>
 
                   <Menu.Item>
                     <Link href='/messages/received' className='flex w-full items-center gap-2'>
                       <i className='pi pi-download' />
-                      Received
+                      {dictionary.sidebar.inboxDropdown.receivedNotifications}
                     </Link>
                   </Menu.Item>
 
                   <Menu.Item>
                     <Link href='/messages/archived' className='flex w-full items-center gap-2'>
                       <i className='pi pi-folder' />
-                      Archived
+                      {dictionary.sidebar.inboxDropdown.archivedNotifications}
                     </Link>
                   </Menu.Item>
                 </Menu.List>
@@ -156,7 +159,7 @@ export default function Sidebar({
 
               <Menu.Item>
                 <Link href='/about' className='flex w-full items-center gap-2'>
-                  <i className='pi pi-info-circle' /> About
+                  <i className='pi pi-info-circle' /> {dictionary.sidebar.about}
                 </Link>
               </Menu.Item>
             </Menu.List>
@@ -247,7 +250,9 @@ export default function Sidebar({
                                 className='text-surface-900 dark:text-surface-0 hover:bg-surface-100 dark:hover:bg-surface-800 flex w-full cursor-pointer items-center gap-3 rounded-md border-none bg-transparent px-3 py-2 text-left font-normal transition-colors outline-none'
                               >
                                 <i className='pi pi-building text-surface-500 dark:text-surface-400' />
-                                {currentCompany ? 'Change Company' : 'Enter Company'}
+                                {currentCompany
+                                  ? `${dictionary.sidebar.profileDropdown.changeCompany}`
+                                  : `${dictionary.companies.actions.enterCompany}`}
                               </button>
                             </Menu.Item>
 
@@ -258,7 +263,7 @@ export default function Sidebar({
                                 className='text-surface-900 dark:text-surface-0 hover:bg-surface-100 dark:hover:bg-surface-800 flex w-full items-center gap-3 rounded-md px-3 py-2 transition-colors'
                               >
                                 <i className='pi pi-user text-surface-500 dark:text-surface-400' />
-                                View Profile
+                                {dictionary.sidebar.profileDropdown.viewProfile}
                               </Link>
                             </Menu.Item>
 
@@ -270,7 +275,8 @@ export default function Sidebar({
                                 className='hover:bg-surface-100 dark:hover:bg-surface-800 flex w-full items-center gap-3 rounded-md border-none bg-transparent px-3 py-2 text-left text-red-600 transition-colors outline-none dark:text-red-400'
                                 onClick={() => exitCompany()}
                               >
-                                <i className='pi pi-sign-out opacity-80' /> Exit Company
+                                <i className='pi pi-sign-out opacity-80' />
+                                {dictionary.companies.actions.exitCompany}
                               </button>
                             </Menu.Item>
 
@@ -280,7 +286,8 @@ export default function Sidebar({
                                 className='hover:bg-surface-100 dark:hover:bg-surface-800 flex w-full items-center gap-3 rounded-md border-none bg-transparent px-3 py-2 text-left text-red-600 transition-colors outline-none dark:text-red-400'
                                 onClick={() => signOut()}
                               >
-                                <i className='pi pi-power-off opacity-80' /> Sign Out
+                                <i className='pi pi-power-off opacity-80' />
+                                {dictionary.sidebar.profileDropdown.signOut}
                               </button>
                             </Menu.Item>
                           </Menu.List>
@@ -307,7 +314,7 @@ export default function Sidebar({
                   <Dialog.Header className='border-surface-200 dark:border-surface-700 bg-surface-0 dark:bg-surface-900 mb-1 rounded-t-xl border-b p-4'>
                     <Dialog.Title className='flex w-full items-center gap-2'>
                       <i className='pi pi-building text-surface-500 dark:text-surface-400' />
-                      Change current company
+                      {dictionary.sidebar.changeCompanyDialog.title}
                     </Dialog.Title>
                     <Dialog.HeaderActions>
                       <Dialog.Close onClick={() => setIsDialogOpen(false)}>

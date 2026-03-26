@@ -1,6 +1,7 @@
 'use client';
 
 import { mockCompany } from '@/mock/company-mock';
+import { useDictionary } from '@/providers/dictionary-provider';
 import { CompanyStatus } from '@/utils/enums';
 import { DialogContentInstance } from '@primereact/types/shared/dialog';
 import { SelectValueChangeEvent } from '@primereact/types/shared/select';
@@ -14,6 +15,8 @@ import { Textarea } from '@primereact/ui/textarea';
 import * as React from 'react';
 
 export default function EditCompanyDialog({ company }: { company: typeof mockCompany }) {
+  const dictionary = useDictionary();
+
   const [companyStatus, setCompanyStatus] = React.useState<CompanyStatus>(CompanyStatus.VISIBLE);
 
   return (
@@ -21,14 +24,14 @@ export default function EditCompanyDialog({ company }: { company: typeof mockCom
       <Dialog.Trigger>
         <i className='pi pi-pencil' />
 
-        <h3 className='hidden sm:block'>Edit Company</h3>
+        <h3 className='hidden sm:block'>{dictionary.companies.editDialog.title}</h3>
       </Dialog.Trigger>
 
       <Dialog.Backdrop className='cursor-pointer' />
 
       <Dialog.Portal className='w-[95vw] max-w-full sm:w-md'>
         <Dialog.Header>
-          <Dialog.Title>Edit Company</Dialog.Title>
+          <Dialog.Title>{dictionary.companies.editDialog.title}</Dialog.Title>
           <Dialog.HeaderActions>
             <Dialog.Close>
               <i className='pi pi-times' />
@@ -44,7 +47,7 @@ export default function EditCompanyDialog({ company }: { company: typeof mockCom
               <div className='flex flex-col gap-6'>
                 <div className='flex flex-col gap-1'>
                   <Label htmlFor='name' className='text-sm'>
-                    Company Name
+                    {dictionary.companies.editDialog.name}
                   </Label>
 
                   <InputText id='name' defaultValue={company.name} className='w-full' />
@@ -52,7 +55,7 @@ export default function EditCompanyDialog({ company }: { company: typeof mockCom
 
                 <div className='flex flex-col gap-1'>
                   <Label htmlFor='description' className='text-sm'>
-                    Description
+                    {dictionary.companies.editDialog.description}
                   </Label>
 
                   <Textarea
@@ -94,16 +97,18 @@ export default function EditCompanyDialog({ company }: { company: typeof mockCom
                         </Select.Positioner>
                       </Select.Portal>
                     </Select.Root>
-                    <Label htmlFor='company_status'>Company visibility</Label>
+                    <Label htmlFor='company_status'>
+                      {dictionary.companies.editDialog.visibility}
+                    </Label>
                   </FloatLabel>
                 </div>
 
                 <div className='mt-2 flex shrink-0 justify-end gap-2'>
                   <Button severity='secondary' onClick={dialog?.close}>
-                    Cancel
+                    {dictionary.common.cancel}
                   </Button>
 
-                  <Button onClick={dialog?.close}>Save Changes</Button>
+                  <Button onClick={dialog?.close}>{dictionary.common.save}</Button>
                 </div>
               </div>
             );

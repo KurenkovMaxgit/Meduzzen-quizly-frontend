@@ -4,6 +4,7 @@ import { InputText } from '@primereact/ui/inputtext';
 import { Button } from '@primereact/ui/button';
 import { useState } from 'react';
 import { mockUser } from '@/mock/user-mock';
+import { useDictionary } from '@/providers/dictionary-provider';
 
 export default function ProfileForm({
   user,
@@ -12,6 +13,8 @@ export default function ProfileForm({
   user: typeof mockUser;
   isOwner: boolean;
 }) {
+  const dictionary = useDictionary();
+
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState(user);
 
@@ -22,10 +25,12 @@ export default function ProfileForm({
   return (
     <div className='bg-surface-0 dark:bg-surface-900 border-surface-200 dark:border-surface-700 rounded-xl border p-6 shadow-sm'>
       <div className='mb-6 flex items-center justify-between'>
-        <h2 className='text-2xl font-bold'>Profile Details</h2>
+        <h2 className='text-2xl font-bold'>{dictionary.profile.title}</h2>
         {isOwner && !isEditing && (
           <Button label='Edit Profile' rounded onClick={() => setIsEditing(true)}>
             <i className='pi pi-pencil' />
+
+            <h3 className='hidden sm:block'>{dictionary.common.edit}</h3>
           </Button>
         )}
       </div>
@@ -36,7 +41,7 @@ export default function ProfileForm({
             htmlFor='firstName'
             className='text-surface-700 dark:text-surface-300 font-semibold'
           >
-            First Name
+            {dictionary.profile.firstName}
           </label>
           <InputText
             id='firstName'
@@ -54,7 +59,7 @@ export default function ProfileForm({
             htmlFor='lastName'
             className='text-surface-700 dark:text-surface-300 font-semibold'
           >
-            Last Name
+            {dictionary.profile.lastName}
           </label>
           <InputText
             id='lastName'
@@ -69,7 +74,7 @@ export default function ProfileForm({
 
         <div className='flex flex-col gap-2 md:col-span-2'>
           <label htmlFor='email' className='text-surface-700 dark:text-surface-300 font-semibold'>
-            Email Address
+            {dictionary.profile.email}
           </label>
           <InputText
             id='email'
@@ -90,11 +95,11 @@ export default function ProfileForm({
               setIsEditing(false);
             }}
           >
-            Cancel
+            {dictionary.common.cancel}
             <i className='pi pi-times' />
           </Button>
           <Button label='Save Changes' severity='success' raised onClick={handleSave}>
-            Save
+            {dictionary.common.save}
             <i className='pi pi-check' />
           </Button>
         </div>

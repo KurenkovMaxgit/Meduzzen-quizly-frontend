@@ -12,8 +12,8 @@ export default function StarPageButton() {
 
   return (
     <>
-      <span className="text-4xl text-center col-span-3 mb-4">{'🎉'.repeat(count)}</span>
-      <Button className="col-start-2 col-span-1" onClick={handleClick}>
+      <span className='col-span-3 mb-4 text-center text-4xl'>{'🎉'.repeat(count)}</span>
+      <Button className='col-span-1 col-start-2' onClick={handleClick}>
         🎉
       </Button>
     </>

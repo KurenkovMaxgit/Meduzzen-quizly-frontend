@@ -14,6 +14,7 @@ const eslintConfig = defineConfig([
         { blankLine: 'always', prev: 'import', next: '*' },
         { blankLine: 'any', prev: 'import', next: 'import' },
       ],
+      'no-warning-comments': ['warn', { terms: ['todo', 'fixme'], location: 'anywhere' }],
     },
   },
 

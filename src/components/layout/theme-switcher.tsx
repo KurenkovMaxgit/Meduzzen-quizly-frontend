@@ -16,8 +16,8 @@ export default function ThemeSwitcher() {
 
   if (!mounted) {
     return (
-      <Button disabled variant="outlined" className="w-10 h-10">
-        <i className="pi pi-spinner pi-spin" />
+      <Button disabled rounded variant='outlined' className='h-10 w-10'>
+        <i className='pi pi-spinner pi-spin' />
       </Button>
     );
   }
@@ -26,12 +26,13 @@ export default function ThemeSwitcher() {
 
   return (
     <Button
-      type="button"
-      variant="outlined"
+      type='button'
+      variant='outlined'
+      severity='contrast'
       rounded
       onClick={() => setTheme(isDark ? 'light' : 'dark')}
-      className="p-0 w-10 h-10"
-      aria-label="Toggle Theme"
+      className='h-10 w-10 p-0'
+      aria-label='Toggle Theme'
     >
       <i className={isDark ? 'pi pi-sun' : 'pi pi-moon'} />
     </Button>

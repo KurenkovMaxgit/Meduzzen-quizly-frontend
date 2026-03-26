@@ -1,12 +1,11 @@
 import StarPageButton from '@/components/start-page-button';
 
-export default function Home() {
+export default function HomePage() {
+  //TODO: Add Welcome text with crucial pages routing
   return (
-    <>
-      <div className="grid grid-cols-3 gap-4 justify-center my-auto">
-        <h1 className="text-6xl text-center font-mono col-span-3">Welcome to Quizly!</h1>
-        <StarPageButton />
-      </div>
-    </>
+    <div className='my-auto grid grid-cols-3 justify-center gap-4'>
+      <h1 className='col-span-3 text-center font-mono text-6xl'>Welcome to Quizly!</h1>
+      <StarPageButton />
+    </div>
   );
 }

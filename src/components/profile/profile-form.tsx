@@ -2,7 +2,7 @@
 
 import { InputText } from '@primereact/ui/inputtext';
 import { Button } from '@primereact/ui/button';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { useDictionary } from '@/providers/dictionary-provider';
 import {
@@ -50,7 +50,7 @@ export default function ProfileForm({ userId }: { userId: string }) {
     }
   }
 
-  if (isFetching) return <div className='p-4 text-center'>Loading profile details...</div>;
+  if (isFetching) return <div className='p-4 text-center'>{dictionary.profile.loadingMessage}</div>;
   if (isError || !user)
     return (
       <div className='border-surface-200 bg-surface-50/50 dark:border-surface-700 dark:bg-surface-900/50 flex min-h-100 flex-col items-center justify-center rounded-xl border border-dashed p-12 text-center'>
@@ -59,12 +59,11 @@ export default function ProfileForm({ userId }: { userId: string }) {
         </div>
 
         <h2 className='text-surface-900 dark:text-surface-0 mb-2 text-2xl font-bold'>
-          {dictionary.profile.userNotFound}
+          {dictionary.profile.userNotFound.title}
         </h2>
 
         <p className='text-surface-500 dark:text-surface-400 mb-8 max-w-sm'>
-          The user profile you are looking for doesn&apos;t exist or might have been moved to a
-          different workspace.
+          {dictionary.profile.userNotFound.description}
         </p>
 
         <Button

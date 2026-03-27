@@ -13,6 +13,7 @@
     "docker:build": "docker-compose --env-file ./.env.production.local -f docker-compose.yml build",
     "docker:up": "docker-compose --env-file ./.env.production.local -f docker-compose.yml up -d",
     "docker:down": "docker-compose -f docker-compose.yml down",
+    "generate-api": "rtk-query-codegen-openapi openapi-config.ts",
     "prepare": "git config core.hooksPath .githooks"
   },
   "dependencies": {
@@ -20,14 +21,17 @@
     "@primereact/types": "^11.0.0-alpha.10",
     "@primereact/ui": "^11.0.0-alpha.10",
     "@primeuix/themes": "^2.0.3",
+    "@reduxjs/toolkit": "^2.11.2",
     "next": "^16.2.0",
     "next-themes": "^0.4.6",
     "primeicons": "^7.0.0",
     "react": "19.2.3",
     "react-dom": "19.2.3",
+    "react-redux": "^9.2.0",
     "tailwindcss-primeui": "^0.6.1"
   },
   "devDependencies": {
+    "@rtk-query/codegen-openapi": "^2.2.0",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
@@ -39,6 +43,7 @@
     "prettier": "^3.8.1",
     "prettier-plugin-tailwindcss": "^0.7.2",
     "tailwindcss": "^4.2.1",
+    "ts-node": "^10.9.2",
     "typescript": "^5"
   },
   "lint-staged": {

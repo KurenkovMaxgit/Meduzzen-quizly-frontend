@@ -83,7 +83,8 @@
     "title": "Profile Details",
     "firstName": "First Name",
     "lastName": "Last Name",
-    "email": "Email Address"
+    "email": "Email Address",
+    "userNotFound": "User not found."
   },
   "about": {
     "title": "About Quizly",

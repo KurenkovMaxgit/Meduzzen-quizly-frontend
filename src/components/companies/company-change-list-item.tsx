@@ -1,11 +1,12 @@
 'use client';
 
+import { Company } from '@/lib/generatedApi';
 import { currentCompany, mockCompany } from '@/mock/company-mock';
 import { useDictionary } from '@/providers/dictionary-provider';
 import { Button } from '@primereact/ui/button';
 import Link from 'next/link';
 
-export const ChangeCompanyListItem = (company: typeof mockCompany) => {
+export const ChangeCompanyListItem = (company: Company) => {
   const dictionary = useDictionary();
 
   const logInCompany = async () => {

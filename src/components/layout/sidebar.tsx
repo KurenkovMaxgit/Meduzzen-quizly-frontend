@@ -7,14 +7,15 @@ import * as React from 'react';
 import { useState } from 'react';
 import Link from 'next/link';
 import ThemeSwitcher from './theme-switcher';
-import { mockUser } from '@/mock/user-mock';
-import { currentCompany, mockCompanyList } from '@/mock/company-mock';
 import { Dialog } from '@primereact/ui/dialog';
 import { DialogRootChangeEvent } from '@primereact/types/shared/dialog';
 import UniversalList from '../common/list';
 import { ChangeCompanyListItem } from '../companies/company-change-list-item';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { useDictionary } from '@/providers/dictionary-provider';
+import { useAppSelector, useAppDispatch } from '@/lib/hooks';
+import { logout } from '@/lib/slices/auth-slice';
+import { clearActiveCompany } from '@/lib/slices/company-slice';
 
 export default function Sidebar({
   children,
@@ -22,8 +23,16 @@ export default function Sidebar({
   children?: React.ReactNode;
 }>) {
   const dictionary = useDictionary();
-
   const pathname = usePathname();
+  const router = useRouter();
+  const dispatch = useAppDispatch();
+
+  const { user } = useAppSelector((state) => state.auth);
+  const { activeCompanyId } = useAppSelector((state) => state.company);
+
+  const currentCompany = user?.memberships?.find((m) => m.company.id === activeCompanyId)?.company;
+  const userCompanies = user?.memberships?.map((m) => m.company) || [];
+
   const [isOpen, setIsOpen] = useState(false);
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -36,12 +45,17 @@ export default function Sidebar({
   }
 
   const signOut = () => {
-    //TODO: Add handling
+    dispatch(clearActiveCompany());
+    dispatch(logout());
+    router.push('/login');
   };
 
   const exitCompany = () => {
-    //TODO: Add handling
+    dispatch(clearActiveCompany());
   };
+
+  const userInitials = user ? (user.firstName[0] + user.lastName[0]).toUpperCase() : 'U';
+  const userFullName = user ? `${user.firstName} ${user.lastName}` : 'Loading...';
 
   return (
     <div className='bg-surface-50 dark:bg-surface-950 flex h-screen overflow-hidden'>
@@ -197,14 +211,12 @@ export default function Sidebar({
               >
                 <Popover.Trigger className='hover:bg-surface-100 dark:hover:bg-surface-800 flex w-auto cursor-pointer items-center gap-2 rounded-lg border-none bg-transparent p-2 transition-colors outline-none sm:w-56 sm:gap-3'>
                   <Avatar.Root shape='circle' size='normal' className='shrink-0'>
-                    <Avatar.Fallback>
-                      {mockUser.firstName[0] + mockUser.lastName[0]}
-                    </Avatar.Fallback>
+                    <Avatar.Fallback>{userInitials}</Avatar.Fallback>
                   </Avatar.Root>
 
                   <div className='hidden min-w-0 flex-1 flex-col items-start text-left sm:flex'>
                     <span className='text-surface-900 dark:text-surface-0 w-full truncate text-sm font-semibold'>
-                      {mockUser.firstName + ' ' + mockUser.lastName}
+                      {userFullName}
                     </span>
 
                     <p className='text-surface-300 w-full truncate text-sm'>
@@ -221,7 +233,7 @@ export default function Sidebar({
                       <Popover.Content className='p-0!'>
                         <div className='border-surface-200 dark:border-surface-700 mx-1 mt-3 mb-2 flex flex-col gap-1 border-b pb-2'>
                           <span className='text-surface-900 dark:text-surface-0 text-md w-full truncate px-2 font-semibold'>
-                            {`${mockUser.firstName} ${mockUser.lastName}`}
+                            {userFullName}
                           </span>
 
                           <Link
@@ -258,7 +270,7 @@ export default function Sidebar({
 
                             <Menu.Item className='m-0! p-0!'>
                               <Link
-                                href={`/profile/${mockUser.id}`}
+                                href={`/profile/${user?.id || ''}`}
                                 onClick={() => setIsPopoverOpen(false)}
                                 className='text-surface-900 dark:text-surface-0 hover:bg-surface-100 dark:hover:bg-surface-800 flex w-full items-center gap-3 rounded-md px-3 py-2 transition-colors'
                               >
@@ -330,7 +342,7 @@ export default function Sidebar({
                           <div className='mx-auto w-full max-w-5xl'>
                             <UniversalList
                               className='bg-surface-0 dark:bg-surface-900 w-full rounded-2xl'
-                              items={mockCompanyList}
+                              items={userCompanies}
                               itemTemplate={ChangeCompanyListItem}
                               isLoading={false}
                               emptyMessage='No companies found.'

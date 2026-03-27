@@ -3,23 +3,33 @@
 import { InputText } from '@primereact/ui/inputtext';
 import { Button } from '@primereact/ui/button';
 import { useState } from 'react';
-import { mockUser } from '@/mock/user-mock';
 import { useDictionary } from '@/providers/dictionary-provider';
+import type { ReturnUserDto } from '@/lib/generatedApi';
+import { useUserControllerUpdateOneByIdMutation } from '@/lib/generatedApi';
 
-export default function ProfileForm({
-  user,
-  isOwner,
-}: {
-  user: typeof mockUser;
-  isOwner: boolean;
-}) {
+export default function ProfileForm({ user, isOwner }: { user: ReturnUserDto; isOwner: boolean }) {
   const dictionary = useDictionary();
+  const [updateUser, { isLoading }] = useUserControllerUpdateOneByIdMutation();
 
   const [isEditing, setIsEditing] = useState(false);
-  const [formData, setFormData] = useState(user);
+  const [formData, setFormData] = useState({
+    firstName: user.firstName,
+    lastName: user.lastName,
+  });
 
-  function handleSave() {
-    setIsEditing(false);
+  async function handleSave() {
+    try {
+      await updateUser({
+        updateUserDto: {
+          firstName: formData.firstName,
+          lastName: formData.lastName,
+        },
+      }).unwrap();
+    } catch (error) {
+      console.error('Failed to update profile:', error);
+    } finally {
+      setIsEditing(false);
+    }
   }
 
   return (
@@ -29,7 +39,6 @@ export default function ProfileForm({
         {isOwner && !isEditing && (
           <Button label='Edit Profile' rounded onClick={() => setIsEditing(true)}>
             <i className='pi pi-pencil' />
-
             <h3 className='hidden sm:block'>{dictionary.common.edit}</h3>
           </Button>
         )}
@@ -47,9 +56,9 @@ export default function ProfileForm({
             id='firstName'
             value={formData.firstName}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              setFormData({ ...formData, firstName: e.target.value })
+              setFormData((prev) => ({ ...prev, firstName: e.target.value }))
             }
-            disabled={!isEditing}
+            disabled={!isEditing || isLoading}
             className='w-full'
           />
         </div>
@@ -65,9 +74,9 @@ export default function ProfileForm({
             id='lastName'
             value={formData.lastName}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              setFormData({ ...formData, lastName: e.target.value })
+              setFormData((prev) => ({ ...prev, lastName: e.target.value }))
             }
-            disabled={!isEditing}
+            disabled={!isEditing || isLoading}
             className='w-full'
           />
         </div>
@@ -76,12 +85,7 @@ export default function ProfileForm({
           <label htmlFor='email' className='text-surface-700 dark:text-surface-300 font-semibold'>
             {dictionary.profile.email}
           </label>
-          <InputText
-            id='email'
-            value={formData.email}
-            disabled={true}
-            className='w-full opacity-70'
-          />
+          <InputText id='email' value={user.email} disabled={true} className='w-full opacity-70' />
         </div>
       </div>
 
@@ -91,7 +95,7 @@ export default function ProfileForm({
             label='Cancel'
             severity='secondary'
             onClick={() => {
-              setFormData(user);
+              setFormData({ firstName: user.firstName, lastName: user.lastName });
               setIsEditing(false);
             }}
           >

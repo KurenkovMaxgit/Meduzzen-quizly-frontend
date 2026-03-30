@@ -5,7 +5,6 @@ import { Menu } from '@primereact/ui/menu';
 import { Popover } from '@primereact/ui/popover';
 import * as React from 'react';
 import { useState } from 'react';
-import Link from 'next/link';
 import ThemeSwitcher from './theme-switcher';
 import { mockUser } from '@/mock/user-mock';
 import { currentCompany, mockCompanyList } from '@/mock/company-mock';
@@ -15,6 +14,8 @@ import UniversalList from '../common/list';
 import { ChangeCompanyListItem } from '../companies/company-change-list-item';
 import { usePathname } from 'next/navigation';
 import { useDictionary } from '@/providers/dictionary-provider';
+import LanguageSwitcher from './language-switcher';
+import LocalizedLink from '../common/localized-link';
 
 export default function Sidebar({
   children,
@@ -56,10 +57,17 @@ export default function Sidebar({
         className={`bg-surface-0 dark:bg-surface-900 border-surface-200 dark:border-surface-700 fixed inset-y-0 left-0 z-50 flex w-72 flex-col border-r transition-transform duration-300 ease-in-out lg:relative lg:translate-x-0 ${isOpen ? 'translate-x-0' : '-translate-x-full'}`}
       >
         <div className='flex-1 overflow-y-auto p-4'>
-          <div className='mt-2 mb-4 hidden px-4 lg:block'>
-            <Link href='/'>
+          <div className='mt-2 mb-4 hidden items-center justify-between gap-4 ps-4 lg:flex'>
+            <LocalizedLink href='/'>
               <div className='text-primary text-2xl font-bold'>Quizly</div>
-            </Link>
+            </LocalizedLink>
+            <LanguageSwitcher />
+          </div>
+          <div className='ms-2 mt-2 mb-4 flex items-center justify-between lg:hidden'>
+            <LocalizedLink href='/'>
+              <span className='text-primary text-2xl font-bold'>Quizly</span>
+            </LocalizedLink>
+            <LanguageSwitcher />
           </div>
 
           <Menu.Root className='w-full border-none! bg-transparent!'>
@@ -72,17 +80,20 @@ export default function Sidebar({
 
                 <Menu.List>
                   <Menu.Item>
-                    <Link href='/companies' className='flex w-full items-center gap-2'>
+                    <LocalizedLink href='/companies' className='flex w-full items-center gap-2'>
                       <i className='pi pi-list' />
                       {dictionary.sidebar.companiesDropdown.allCompanies}
-                    </Link>
+                    </LocalizedLink>
                   </Menu.Item>
 
                   <Menu.Item>
-                    <Link href='/companies/memberships' className='flex w-full items-center gap-2'>
+                    <LocalizedLink
+                      href='/companies/memberships'
+                      className='flex w-full items-center gap-2'
+                    >
                       <i className='pi pi-users' />
                       {dictionary.sidebar.companiesDropdown.myMemberships}
-                    </Link>
+                    </LocalizedLink>
                   </Menu.Item>
                 </Menu.List>
               </Menu.Sub>
@@ -97,23 +108,23 @@ export default function Sidebar({
 
                   <Menu.List>
                     <Menu.Item>
-                      <Link
+                      <LocalizedLink
                         href={`/companies/${currentCompany.id}/members`}
                         className='flex w-full items-center gap-2'
                       >
                         <i className='pi pi-users' />
                         {dictionary.sidebar.companyActionsDropdown.membersList}
-                      </Link>
+                      </LocalizedLink>
                     </Menu.Item>
 
                     <Menu.Item>
-                      <Link
+                      <LocalizedLink
                         href='/companies/memberships'
                         className='flex w-full items-center gap-2'
                       >
                         <i className='pi pi-clipboard' />
                         {dictionary.sidebar.companyActionsDropdown.quizzesList}
-                      </Link>
+                      </LocalizedLink>
                     </Menu.Item>
                   </Menu.List>
                 </Menu.Sub>
@@ -128,39 +139,45 @@ export default function Sidebar({
 
                 <Menu.List>
                   <Menu.Item>
-                    <Link href='/messages' className='flex w-full items-center gap-2'>
+                    <LocalizedLink href='/messages' className='flex w-full items-center gap-2'>
                       <i className='pi pi-envelope' />
                       {dictionary.sidebar.inboxDropdown.allNotifications}
-                    </Link>
+                    </LocalizedLink>
                   </Menu.Item>
 
                   <Menu.Item>
-                    <Link href='/messages/sent' className='flex w-full items-center gap-2'>
+                    <LocalizedLink href='/messages/sent' className='flex w-full items-center gap-2'>
                       <i className='pi pi-send' />
                       {dictionary.sidebar.inboxDropdown.sentNotifications}
-                    </Link>
+                    </LocalizedLink>
                   </Menu.Item>
 
                   <Menu.Item>
-                    <Link href='/messages/received' className='flex w-full items-center gap-2'>
+                    <LocalizedLink
+                      href='/messages/received'
+                      className='flex w-full items-center gap-2'
+                    >
                       <i className='pi pi-download' />
                       {dictionary.sidebar.inboxDropdown.receivedNotifications}
-                    </Link>
+                    </LocalizedLink>
                   </Menu.Item>
 
                   <Menu.Item>
-                    <Link href='/messages/archived' className='flex w-full items-center gap-2'>
+                    <LocalizedLink
+                      href='/messages/archived'
+                      className='flex w-full items-center gap-2'
+                    >
                       <i className='pi pi-folder' />
                       {dictionary.sidebar.inboxDropdown.archivedNotifications}
-                    </Link>
+                    </LocalizedLink>
                   </Menu.Item>
                 </Menu.List>
               </Menu.Sub>
 
               <Menu.Item>
-                <Link href='/about' className='flex w-full items-center gap-2'>
+                <LocalizedLink href='/about' className='flex w-full items-center gap-2'>
                   <i className='pi pi-info-circle' /> {dictionary.sidebar.about}
-                </Link>
+                </LocalizedLink>
               </Menu.Item>
             </Menu.List>
           </Menu.Root>
@@ -179,9 +196,9 @@ export default function Sidebar({
               <i className='pi pi-bars text-xl' />
             </button>
 
-            <Link href='/' className='lg:hidden'>
+            <LocalizedLink href='/' className='lg:hidden'>
               <span className='text-primary text-xl font-bold'>Quizly</span>
-            </Link>
+            </LocalizedLink>
           </div>
 
           <div className='flex items-center gap-4'>
@@ -208,7 +225,9 @@ export default function Sidebar({
                     </span>
 
                     <p className='text-surface-300 w-full truncate text-sm'>
-                      {currentCompany ? currentCompany.name : 'No company'}
+                      {currentCompany
+                        ? currentCompany.name
+                        : `${dictionary.sidebar.profileDropdown.noCompany}`}
                     </p>
                   </div>
 
@@ -224,18 +243,20 @@ export default function Sidebar({
                             {`${mockUser.firstName} ${mockUser.lastName}`}
                           </span>
 
-                          <Link
+                          <LocalizedLink
                             href={currentCompany ? `/companies/${currentCompany.id}` : '#'}
                             onClick={() => setIsPopoverOpen(false)}
                             className='hover:bg-surface-100 dark:hover:bg-surface-800 text-surface-600 dark:text-surface-300 flex w-full items-center justify-between rounded-md px-2 py-1.5 text-sm transition-colors'
                           >
                             <span className='line-clamp-2 font-medium break-all'>
-                              {currentCompany ? currentCompany.name : 'No company'}
+                              {currentCompany
+                                ? currentCompany.name
+                                : `${dictionary.sidebar.profileDropdown.noCompany}`}
                             </span>
                             {currentCompany && (
                               <i className='pi pi-chevron-right text-surface-400 text-[10px]' />
                             )}
-                          </Link>
+                          </LocalizedLink>
                         </div>
 
                         <Menu.Root className='w-full border-none! bg-transparent!'>
@@ -257,14 +278,14 @@ export default function Sidebar({
                             </Menu.Item>
 
                             <Menu.Item className='m-0! p-0!'>
-                              <Link
-                                href={`/profile/${mockUser.id}`}
+                              <LocalizedLink
+                                href={`/profile/${mockUser?.id || ''}`}
                                 onClick={() => setIsPopoverOpen(false)}
                                 className='text-surface-900 dark:text-surface-0 hover:bg-surface-100 dark:hover:bg-surface-800 flex w-full items-center gap-3 rounded-md px-3 py-2 transition-colors'
                               >
                                 <i className='pi pi-user text-surface-500 dark:text-surface-400' />
                                 {dictionary.sidebar.profileDropdown.viewProfile}
-                              </Link>
+                              </LocalizedLink>
                             </Menu.Item>
 
                             <Menu.Separator className='my-1' />

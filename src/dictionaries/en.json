@@ -40,6 +40,20 @@
     "about": "About",
     "toggleTheme": "Toggle theme"
   },
+  "home": {
+    "welcome": "Welcome to Quizly!",
+    "description": "Let`s get your workspace set up so you can start collaborating.",
+    "createCompanyTile": {
+      "title": "Create a Company",
+      "description": "Start a brand new workspace from scratch. You ill become the admin and can invite your team members immediately.",
+      "buttonLabel": "Create New Company"
+    },
+    "joinCompanyTile": {
+      "title": "Join a Company",
+      "description": "Already have a team on Quizly? Search for your company`s workspace and send a request to join them.",
+      "buttonLabel": "View Available Companies"
+    }
+  },
   "companies": {
     "emptyMessage": "No companies found.",
     "listHeader": {

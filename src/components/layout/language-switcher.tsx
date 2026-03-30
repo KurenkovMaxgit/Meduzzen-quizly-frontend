@@ -5,12 +5,10 @@ import { Menu } from '@primereact/ui/menu';
 import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { usePopoverOpenChangeEvent } from '@primereact/types/shared/popover';
+import { Button } from '@primereact/ui/button';
 
-const LANGUAGES: {
-  code: string;
-  label: string;
-  flagUrl: string;
-}[] = [
+const LANGUAGES = [
   { code: 'en', label: 'English', flagUrl: 'https://flagcdn.com/gb.svg' },
   { code: 'uk', label: 'Українська', flagUrl: 'https://flagcdn.com/ua.svg' },
 ];
@@ -44,12 +42,12 @@ export default function LanguageSwitcher() {
     <div className='relative flex items-center'>
       <Popover.Root
         open={isPopoverOpen}
-        onOpenChange={(e: unknown) => {
-          const event = e as { open?: boolean; value?: boolean };
+        onOpenChange={(e: usePopoverOpenChangeEvent) => {
+          const event = e as usePopoverOpenChangeEvent & { open?: boolean };
           setIsPopoverOpen(event.open ?? event.value ?? false);
         }}
       >
-        <Popover.Trigger className='text-surface-700 dark:text-surface-0 hover:bg-surface-100 dark:hover:bg-surface-800 flex cursor-pointer items-center gap-2 rounded-md border-none bg-transparent px-3 py-2 transition-colors outline-none'>
+        <Popover.Trigger className='text-surface-700 dark:text-surface-0 hover:bg-surface-100 dark:hover:bg-surface-800 flex cursor-pointer items-center gap-2 rounded-md border-none bg-transparent p-2 transition-colors outline-none'>
           <Image
             alt={currentLang.label}
             src={currentLang.flagUrl}
@@ -71,8 +69,9 @@ export default function LanguageSwitcher() {
                   <Menu.List className='p-1!'>
                     {LANGUAGES.map((lang) => (
                       <Menu.Item key={lang.code} className='m-0! p-0!'>
-                        <button
-                          type='button'
+                        <Button
+                          variant='outlined'
+                          severity='contrast'
                           onClick={() => changeLanguage(lang.code)}
                           className='hover:bg-surface-100 dark:hover:bg-surface-800 flex w-full cursor-pointer items-center justify-start gap-3 rounded-md border-none bg-transparent px-3 py-2 text-left transition-colors outline-none'
                         >
@@ -86,7 +85,7 @@ export default function LanguageSwitcher() {
                           <span className='text-surface-700 dark:text-surface-0 font-medium'>
                             {lang.label}
                           </span>
-                        </button>
+                        </Button>
                       </Menu.Item>
                     ))}
                   </Menu.List>

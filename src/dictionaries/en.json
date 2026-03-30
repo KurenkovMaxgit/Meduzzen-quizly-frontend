@@ -7,7 +7,8 @@
     "cancel": "Cancel",
     "delete": "Delete",
     "createdAt": "Created",
-    "updatedAt": "Last Updated"
+    "updatedAt": "Last Updated",
+    "loading": "Loading..."
   },
   "sidebar": {
     "companiesDropdown": {
@@ -30,7 +31,8 @@
     "profileDropdown": {
       "changeCompany": "Change Company",
       "viewProfile": "View Profile",
-      "signOut": "Sign Out"
+      "signOut": "Sign Out",
+      "noCompany": "Not in company"
     },
     "changeCompanyDialog": {
       "title": "Change current company"

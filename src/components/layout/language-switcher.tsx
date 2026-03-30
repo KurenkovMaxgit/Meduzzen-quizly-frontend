@@ -73,7 +73,7 @@ export default function LanguageSwitcher() {
                           variant='outlined'
                           severity='contrast'
                           onClick={() => changeLanguage(lang.code)}
-                          className='hover:bg-surface-100 dark:hover:bg-surface-800 flex w-full cursor-pointer items-center justify-start gap-3 rounded-md border-none bg-transparent px-3 py-2 text-left transition-colors outline-none'
+                          className='hover:bg-surface-100 dark:hover:bg-surface-800 flex w-full cursor-pointer items-center justify-start gap-3 rounded-md border-0! border-none bg-transparent px-3 py-2 text-left transition-colors outline-none'
                         >
                           <Image
                             alt={lang.label}

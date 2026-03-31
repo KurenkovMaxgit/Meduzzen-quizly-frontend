@@ -3,7 +3,7 @@
 import { mockCompany } from '@/mock/company-mock';
 import { useDictionary } from '@/providers/dictionary-provider';
 import { Button } from '@primereact/ui/button';
-import Link from 'next/link';
+import LocalizedLink from '../common/localized-link';
 
 export const CompanyListItem = (company: typeof mockCompany) => {
   const dictionary = useDictionary();
@@ -25,7 +25,7 @@ export const CompanyListItem = (company: typeof mockCompany) => {
         </span>
       </div>
       <div className='flex items-center gap-4 sm:ml-auto'>
-        <Link href={`/companies/${company.id}`}>
+        <LocalizedLink href={`/companies/${company.id}`}>
           <Button
             rounded
             variant='outlined'
@@ -35,7 +35,7 @@ export const CompanyListItem = (company: typeof mockCompany) => {
           >
             <i className='pi pi-eye' />
           </Button>
-        </Link>
+        </LocalizedLink>
         <Button
           rounded
           variant='outlined'

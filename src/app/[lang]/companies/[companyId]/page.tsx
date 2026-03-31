@@ -1,4 +1,4 @@
-import Link from 'next/link';
+import LocalizedLink from '@/components/common/localized-link';
 import { mockCompany, mockCompanyWithMembers } from '@/mock/company-mock';
 import { CompanyRole, CompanyStatus } from '@/utils/enums';
 import EditCompanyDialog from '@/components/companies/company-edit-dialog';
@@ -22,13 +22,14 @@ export default async function CompanyDetailsPage({
   return (
     <div className='mx-auto flex w-full max-w-5xl flex-col gap-6 p-4 md:p-8'>
       <div className='flex items-center justify-between'>
-        <Link
+        <LocalizedLink
           href='/companies'
           className='text-surface-500 hover:text-surface-900 dark:hover:text-surface-0 flex items-center gap-2 transition-colors'
         >
           <i className='pi pi-arrow-left' />
+
           <span className='font-medium'>{dictionary.common.back}</span>
-        </Link>
+        </LocalizedLink>
         {company.members.find(
           (user) =>
             (user.user.id === mockUser.id && user.role === CompanyRole.OWNER) ||

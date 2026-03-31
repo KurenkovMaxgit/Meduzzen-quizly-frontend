@@ -5,7 +5,7 @@ import { CompanyRole } from '@/utils/enums';
 import { Button } from '@primereact/ui/button';
 import { Tag } from '@primereact/ui/tag';
 import { TagProps } from '@primereact/types/shared/tag';
-import Link from 'next/link';
+import LocalizedLink from '../common/localized-link';
 import { mockUser } from '@/mock/user-mock';
 import { useDictionary } from '@/providers/dictionary-provider';
 
@@ -49,7 +49,7 @@ export const CompanyMemberListItem = (companyUser: typeof mockCompanyUser) => {
             <i className='pi pi-user-minus' />
           </Button>
         ) : null}
-        <Link href={`/profile/${companyUser.user.id}`}>
+        <LocalizedLink href={`/profile/${companyUser.user.id}`}>
           <Button
             rounded
             variant='outlined'
@@ -59,7 +59,7 @@ export const CompanyMemberListItem = (companyUser: typeof mockCompanyUser) => {
           >
             <i className='pi pi-eye' />
           </Button>
-        </Link>
+        </LocalizedLink>
       </div>
     </div>
   );

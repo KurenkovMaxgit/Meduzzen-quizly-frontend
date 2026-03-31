@@ -4,7 +4,7 @@ import { Company } from '@/lib/generatedApi';
 import { currentCompany, mockCompany } from '@/mock/company-mock';
 import { useDictionary } from '@/providers/dictionary-provider';
 import { Button } from '@primereact/ui/button';
-import Link from 'next/link';
+import LocalizedLink from '../common/localized-link';
 
 export const ChangeCompanyListItem = (company: Company) => {
   const dictionary = useDictionary();
@@ -30,7 +30,7 @@ export const ChangeCompanyListItem = (company: Company) => {
         </span>
       </div>
       <div className='flex shrink-0 justify-end gap-4 sm:ml-auto sm:items-center'>
-        <Link href={`/companies/${company.id}`}>
+        <LocalizedLink href={`/companies/${company.id}`}>
           <Button
             rounded
             variant='outlined'
@@ -40,7 +40,7 @@ export const ChangeCompanyListItem = (company: Company) => {
           >
             <i className='pi pi-eye' />
           </Button>
-        </Link>
+        </LocalizedLink>
         {company.id === currentCompany?.id ? (
           <Button
             rounded

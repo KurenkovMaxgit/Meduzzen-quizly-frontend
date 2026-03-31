@@ -7,6 +7,11 @@ import SidebarLayout from '@/components/layout/sidebar-layout';
 import { getDictionary } from '@/utils/get-dictionary';
 import { DictionaryProvider } from '@/providers/dictionary-provider';
 import StoreProvider from '@/providers/store-provider';
+import HealthCheck from '@/components/common/health-check';
+import { ToastProvider } from '@/providers/toast-provider';
+import StoreInitializer from '@/components/common/store-initializer';
+import { ACCESS_TOKEN_KEY, ACTIVE_COMPANY_ID_KEY } from '@/utils/cookie-constants';
+import { cookies } from 'next/headers';
 
 const geistSans = Geist({ variable: '--font-geist-sans', subsets: ['latin'] });
 const geistMono = Geist_Mono({ variable: '--font-geist-mono', subsets: ['latin'] });
@@ -17,8 +22,12 @@ export default async function RootLayout({
   children,
   params,
 }: Readonly<{ children: React.ReactNode; params: Promise<{ lang: 'en' | 'uk' }> }>) {
+  const cookieStore = await cookies();
   const resolvedParams = await params;
   const dictionary = await getDictionary(resolvedParams.lang);
+
+  const isLoggedIn = !!cookieStore.get(ACCESS_TOKEN_KEY);
+  const activeCompanyId = cookieStore.get(ACTIVE_COMPANY_ID_KEY)?.value;
 
   return (
     <html lang={resolvedParams.lang} suppressHydrationWarning>
@@ -33,8 +42,12 @@ export default async function RootLayout({
         >
           <PrimeProvider>
             <StoreProvider>
+              <StoreInitializer activeCompanyId={activeCompanyId} isLoggedIn={isLoggedIn} />
               <DictionaryProvider dictionary={dictionary}>
-                <SidebarLayout>{children}</SidebarLayout>
+                <ToastProvider>
+                  <HealthCheck />
+                  <SidebarLayout>{children}</SidebarLayout>
+                </ToastProvider>
               </DictionaryProvider>
             </StoreProvider>
           </PrimeProvider>

@@ -2,6 +2,7 @@ import { configureStore } from '@reduxjs/toolkit';
 import { quizlyApi } from '@/lib/quizlyApi';
 import { authSlice } from './slices/auth-slice';
 import { companySlice } from './slices/company-slice';
+import { queryErrorLogger } from '@/middlewares/error-logger';
 
 export const makeStore = () => {
   return configureStore({
@@ -10,7 +11,8 @@ export const makeStore = () => {
       [authSlice.reducerPath]: authSlice.reducer,
       [companySlice.reducerPath]: companySlice.reducer,
     },
-    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(quizlyApi.middleware),
+    middleware: (getDefaultMiddleware) =>
+      getDefaultMiddleware().concat(quizlyApi.middleware, queryErrorLogger),
   });
 };
 

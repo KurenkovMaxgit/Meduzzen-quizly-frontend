@@ -3,7 +3,7 @@ import { Geist, Geist_Mono } from 'next/font/google';
 import PrimeProvider from '@/providers/prime-provider';
 import { ThemeProvider } from '@/providers/theme-provider';
 import '@/app/globals.css';
-import Sidebar from '@/components/layout/sidebar';
+import SidebarLayout from '@/components/layout/sidebar-layout';
 import { getDictionary } from '@/utils/get-dictionary';
 import { DictionaryProvider } from '@/providers/dictionary-provider';
 import StoreProvider from '@/providers/store-provider';
@@ -34,7 +34,7 @@ export default async function RootLayout({
           <PrimeProvider>
             <StoreProvider>
               <DictionaryProvider dictionary={dictionary}>
-                <Sidebar>{children}</Sidebar>
+                <SidebarLayout>{children}</SidebarLayout>
               </DictionaryProvider>
             </StoreProvider>
           </PrimeProvider>

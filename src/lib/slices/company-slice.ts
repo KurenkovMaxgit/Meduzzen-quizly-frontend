@@ -1,13 +1,10 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import type { CompanyUser } from '@/lib/generatedApi';
-
-interface CompanyState {
-  activeCompanyId: string | null;
-  activeRole: CompanyUser['role'] | null;
-}
+import { Company } from '@/entities/company.entity';
+import { CompanyState } from '@/interfaces/common/slices-interface';
 
 const initialState: CompanyState = {
-  activeCompanyId: null,
+  activeCompany: null,
   activeRole: null,
 };
 
@@ -17,13 +14,13 @@ export const companySlice = createSlice({
   reducers: {
     setActiveCompany: (
       state,
-      action: PayloadAction<{ companyId: string; role: CompanyUser['role'] }>,
+      action: PayloadAction<{ company: Company; role: CompanyUser['role'] }>,
     ) => {
-      state.activeCompanyId = action.payload.companyId;
+      state.activeCompany = action.payload.company;
       state.activeRole = action.payload.role;
     },
     clearActiveCompany: (state) => {
-      state.activeCompanyId = null;
+      state.activeCompany = null;
       state.activeRole = null;
     },
   },

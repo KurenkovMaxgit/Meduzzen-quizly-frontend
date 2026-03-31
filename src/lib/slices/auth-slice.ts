@@ -1,33 +1,31 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import type { ReturnUserDto } from '@/lib/generatedApi';
-
-interface AuthState {
-  user: ReturnUserDto | null;
-  accessToken: string | null;
-  isAuthenticated: boolean;
-}
+import { AuthState } from '@/interfaces/common/slices-interface';
+import { ReturnUser } from '@/types/user/return-user';
+import { UserRole } from '@/utils/enums';
 
 const initialState: AuthState = {
-  user: null,
-  accessToken: null,
-  isAuthenticated: false,
+  user: {
+    id: 'c5507034-2a91-44de-9da8-34c7d1a19eec',
+    firstName: 'Quizzes',
+    lastName: 'Enjoyer',
+    email: 'kurenkov.maxim3000@gmail.com',
+    role: UserRole.USER,
+    createdAt: '2026-03-31T08:31:06.509Z',
+    updatedAt: '2026-03-31T08:31:06.509Z',
+  },
+  isAuthenticated: true,
 };
 
 export const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    setCredentials: (
-      state,
-      action: PayloadAction<{ user: ReturnUserDto; accessToken: string }>,
-    ) => {
+    setCredentials: (state, action: PayloadAction<{ user: ReturnUser }>) => {
       state.user = action.payload.user;
-      state.accessToken = action.payload.accessToken;
       state.isAuthenticated = true;
     },
     logout: (state) => {
       state.user = null;
-      state.accessToken = null;
       state.isAuthenticated = false;
     },
   },

@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { ListHeaderProps } from '@/interfaces/list-interface';
+import { ListHeaderProps } from '@/interfaces/components/list-interface';
 import { Button } from '@primereact/ui/button';
 import { IconField } from '@primereact/ui/iconfield';
 import { InputText } from '@primereact/ui/inputtext';

@@ -10,26 +10,40 @@ import { Skeleton } from '@primereact/ui/skeleton';
 import { Dialog } from '@primereact/ui/dialog';
 import Image from 'next/image';
 import * as React from 'react';
-import { UniversalListProps } from '@/interfaces/list-interface';
+import { UniversalListProps } from '@/interfaces/components/list-interface';
 import { Button } from '@primereact/ui/button';
 
 export default function UniversalList<T>({
   children,
-  items,
+  items = [],
   itemTemplate,
   isLoading = false,
   emptyMessage,
   className = '',
   paginator = false,
   rows = 10,
+  page: externalPage,
+  onPageChange,
+  totalRecords,
   dialog = false,
   dialogTitle,
-  buttonLabel = '',
-  buttonIcon = 'pi-eye',
+  dialogButtonLabel = '',
+  dialogButtonIcon = 'pi-eye',
 }: UniversalListProps<T>) {
-  const [page, setPage] = React.useState(1);
+  const [internalPage, setInternalPage] = React.useState(1);
 
-  const displayedItems = paginator ? items.slice((page - 1) * rows, page * rows) : items;
+  const currentPage = externalPage !== undefined ? externalPage : internalPage;
+  const totalItems = totalRecords !== undefined ? totalRecords : items.length;
+
+  const handlePageChange = (newPage: number) => {
+    setInternalPage(newPage);
+    if (onPageChange) onPageChange(newPage);
+  };
+
+  const displayedItems =
+    paginator && totalRecords === undefined
+      ? items.slice((currentPage - 1) * rows, currentPage * rows)
+      : items;
 
   const renderContent = () => {
     if (isLoading) {
@@ -56,11 +70,10 @@ export default function UniversalList<T>({
     if (items.length === 0) {
       return (
         <div
-          className={`text-surface-500 dark:text-surface-400 border-surface-200 dark:border-surface-700 bg-surface-0 dark:bg-surface-900 rounded-xl border p-8 text-center ${className}`}
+          className={`text-surface-500 dark:text-surface-400 border-surface-200 dark:border-surface-700 bg-surface-0 dark:bg-surface-900 rounded-xl border p-8 text-center`}
         >
-          {children}
-          <div className='text-secondary mt-4 flex justify-center text-xl font-bold italic'>
-            {emptyMessage}
+          <div className='text-secondary mt-4 flex items-center justify-center gap-3 text-xl font-bold italic'>
+            <span>{emptyMessage}</span>
             <Image width={64} height={64} src='/sad-chepushila.png' alt='Sad chepushila' />
           </div>
         </div>
@@ -77,22 +90,20 @@ export default function UniversalList<T>({
             ))}
           </div>
 
-          {paginator && items.length > rows && (
+          {paginator && totalItems > rows && (
             <Paginator.Root
-              total={items.length}
+              total={totalItems}
               itemsPerPage={rows}
-              onPageChange={(e: usePaginatorChangeEvent) => setPage(e.value)}
+              onPageChange={(e: usePaginatorChangeEvent) => handlePageChange(e.value)}
               className='border-surface-200 dark:border-surface-700 mt-4 border-t pt-4'
             >
               <Paginator.Content>
                 <Paginator.First>
                   <i className='pi pi-angle-double-left' />
                 </Paginator.First>
-
                 <Paginator.Prev>
                   <i className='pi pi-angle-left' />
                 </Paginator.Prev>
-
                 <Paginator.Pages>
                   {({ paginator }: PaginatorPagesInstance) =>
                     paginator?.pages.map((p, index) =>
@@ -106,11 +117,9 @@ export default function UniversalList<T>({
                     )
                   }
                 </Paginator.Pages>
-
                 <Paginator.Next>
                   <i className='pi pi-angle-right' />
                 </Paginator.Next>
-
                 <Paginator.Last>
                   <i className='pi pi-angle-double-right' />
                 </Paginator.Last>
@@ -129,8 +138,8 @@ export default function UniversalList<T>({
   return (
     <Dialog.Root modal position='center' draggable={false}>
       <Dialog.Trigger as={Button} className='flex w-full justify-center gap-2'>
-        {buttonIcon && <i className={`pi ${buttonIcon}`} />}
-        {buttonLabel}
+        {dialogButtonIcon && <i className={`pi ${dialogButtonIcon}`} />}
+        {dialogButtonLabel}
       </Dialog.Trigger>
 
       <Dialog.Backdrop className='cursor-pointer' />

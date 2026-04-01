@@ -6,8 +6,11 @@ import UniversalList from '../common/list';
 import { CompanyMemberListItem } from './company-members-list-item';
 import { mockUser } from '@/mock/user-mock';
 import { CompanyRole } from '@/utils/enums';
+import { useDictionary } from '@/providers/dictionary-provider';
 
 export default function CompanyDetailsToolbar(params: { company: typeof mockCompanyWithMembers }) {
+  const dictionary = useDictionary();
+
   const handleExitCompany = async () => {
     //TODO: Add handling
   };
@@ -22,16 +25,16 @@ export default function CompanyDetailsToolbar(params: { company: typeof mockComp
 
   return (
     <div
-      className={`${currentCompany.members.find((member) => member.user.id === mockUser.id)?.role === CompanyRole.OWNER ? 'grid-cols-4' : 'grid-cols-3'} grid gap-2`}
+      className={`${currentCompany.members.find((member) => member.user.id === mockUser.id)?.role === CompanyRole.OWNER ? 'grid-cols-1 sm:grid-cols-2 xl:grid-cols-4' : 'grid-cols-1 sm:grid-cols-2 xl:grid-cols-3'} grid gap-2`}
     >
       <UniversalList
         items={mockCompanyMembers}
         itemTemplate={CompanyMemberListItem}
-        dialogTitle='Members'
+        dialogTitle={dictionary.companies.details.membersList.title}
         isLoading={false}
-        emptyMessage='No companies found.'
+        emptyMessage={dictionary.companies.emptyMessage}
         dialog
-        buttonLabel='Members List'
+        buttonLabel={dictionary.companies.details.membersList.buttonLabel}
         buttonIcon='pi pi-users'
       >
         {/* TODO: Add ListHeader with members management tools*/}
@@ -52,26 +55,26 @@ export default function CompanyDetailsToolbar(params: { company: typeof mockComp
       {/* PLACEHOLDER */}
       <Button>
         <i className='pi pi-clipboard' />
-        Quizzes List
+        {dictionary.companies.details.quizzesList.title}
       </Button>
       {/* PLACEHOLDER */}
 
       {params.company.id === currentCompany.id ? (
         <Button severity='danger' variant='outlined' onClick={() => handleExitCompany()}>
           <i className='pi pi-sign-out' />
-          Exit Company
+          {dictionary.companies.actions.exitCompany}
         </Button>
       ) : (
         <Button severity='success' onClick={() => handleEnterCompany()}>
           <i className='pi pi-sign-in' />
-          Enter Company
+          {dictionary.companies.actions.enterCompany}
         </Button>
       )}
       {currentCompany.members.find((member) => member.user.id === mockUser.id)?.role ===
       CompanyRole.OWNER ? (
         <Button severity='danger' variant='outlined' pt-root-onClick={() => handleDeleteCompany()}>
           <i className='pi pi-trash' />
-          Delete Company
+          {dictionary.companies.actions.deleteCompany}
         </Button>
       ) : null}
     </div>

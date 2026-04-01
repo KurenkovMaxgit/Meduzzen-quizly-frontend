@@ -5,8 +5,9 @@ import { CompanyRole } from '@/utils/enums';
 import { Button } from '@primereact/ui/button';
 import { Tag } from '@primereact/ui/tag';
 import { TagProps } from '@primereact/types/shared/tag';
-import Link from 'next/link';
+import LocalizedLink from '../common/localized-link';
 import { mockUser } from '@/mock/user-mock';
+import { useDictionary } from '@/providers/dictionary-provider';
 
 const tagProps: { [key in CompanyRole]: { props: TagProps } } = {
   [CompanyRole.OWNER]: { props: { rounded: true } },
@@ -15,6 +16,8 @@ const tagProps: { [key in CompanyRole]: { props: TagProps } } = {
 };
 
 export const CompanyMemberListItem = (companyUser: typeof mockCompanyUser) => {
+  const dictionary = useDictionary();
+
   const handleKickUser = async () => {
     //TODO: Add handling
   };
@@ -41,22 +44,22 @@ export const CompanyMemberListItem = (companyUser: typeof mockCompanyUser) => {
             variant='outlined'
             severity='danger'
             onClick={() => handleKickUser}
-            title='Kick user'
+            title={dictionary.companies.userActions.kick}
           >
             <i className='pi pi-user-minus' />
           </Button>
         ) : null}
-        <Link href={`/profile/${companyUser.user.id}`}>
+        <LocalizedLink href={`/profile/${companyUser.user.id}`}>
           <Button
             rounded
             variant='outlined'
             severity='contrast'
             className='shrink-0'
-            title='View user profile'
+            title={dictionary.companies.userActions.viewProfile}
           >
             <i className='pi pi-eye' />
           </Button>
-        </Link>
+        </LocalizedLink>
       </div>
     </div>
   );

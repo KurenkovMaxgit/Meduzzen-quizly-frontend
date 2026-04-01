@@ -1,10 +1,13 @@
 'use client';
 
 import { currentCompany, mockCompany } from '@/mock/company-mock';
+import { useDictionary } from '@/providers/dictionary-provider';
 import { Button } from '@primereact/ui/button';
-import Link from 'next/link';
+import LocalizedLink from '../common/localized-link';
 
 export const ChangeCompanyListItem = (company: typeof mockCompany) => {
+  const dictionary = useDictionary();
+
   const logInCompany = async () => {
     //TODO: Add handling
   };
@@ -26,24 +29,24 @@ export const ChangeCompanyListItem = (company: typeof mockCompany) => {
         </span>
       </div>
       <div className='flex shrink-0 justify-end gap-4 sm:ml-auto sm:items-center'>
-        <Link href={`/companies/${company.id}`}>
+        <LocalizedLink href={`/companies/${company.id}`}>
           <Button
             rounded
             variant='outlined'
             severity='contrast'
             className='shrink-0'
-            title='View company details'
+            title={dictionary.companies.actions.viewDetails}
           >
             <i className='pi pi-eye' />
           </Button>
-        </Link>
+        </LocalizedLink>
         {company.id === currentCompany?.id ? (
           <Button
             rounded
             variant='outlined'
             severity='danger'
             onClick={() => logOutOfCompany()}
-            title='Exit company'
+            title={dictionary.companies.actions.exitCompany}
           >
             <i className='pi pi-sign-out' />
           </Button>
@@ -53,7 +56,7 @@ export const ChangeCompanyListItem = (company: typeof mockCompany) => {
             variant='outlined'
             severity='success'
             onClick={() => logInCompany()}
-            title='Enter company'
+            title={dictionary.companies.actions.enterCompany}
           >
             <i className='pi pi-sign-in' />
           </Button>

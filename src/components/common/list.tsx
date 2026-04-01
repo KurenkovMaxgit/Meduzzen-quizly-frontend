@@ -18,12 +18,12 @@ export default function UniversalList<T>({
   items,
   itemTemplate,
   isLoading = false,
-  emptyMessage = 'No records found.',
+  emptyMessage,
   className = '',
   paginator = false,
   rows = 10,
   dialog = false,
-  dialogTitle = 'List',
+  dialogTitle,
   buttonLabel = '',
   buttonIcon = 'pi-eye',
 }: UniversalListProps<T>) {
@@ -130,7 +130,7 @@ export default function UniversalList<T>({
     <Dialog.Root modal position='center' draggable={false}>
       <Dialog.Trigger as={Button} className='flex w-full justify-center gap-2'>
         {buttonIcon && <i className={`pi ${buttonIcon}`} />}
-        {buttonLabel || 'Open List'}
+        {buttonLabel}
       </Dialog.Trigger>
 
       <Dialog.Backdrop className='cursor-pointer' />

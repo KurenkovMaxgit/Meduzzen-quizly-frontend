@@ -5,6 +5,7 @@ import { ListHeaderProps } from '@/interfaces/list-interface';
 import { Button } from '@primereact/ui/button';
 import { IconField } from '@primereact/ui/iconfield';
 import { InputText } from '@primereact/ui/inputtext';
+import { useDictionary } from '@/providers/dictionary-provider';
 
 export default function ListHeader({
   title,
@@ -12,6 +13,8 @@ export default function ListHeader({
   onButtonClick,
   searchbar = false,
 }: ListHeaderProps) {
+  const dictionary = useDictionary();
+
   const [searchValue, setSearchValue] = React.useState('');
 
   return (
@@ -28,7 +31,7 @@ export default function ListHeader({
               onInput={(e: React.ChangeEvent<HTMLInputElement>) =>
                 setSearchValue(e.currentTarget.value)
               }
-              placeholder='Search'
+              placeholder={dictionary.common.searchbar.placeholder}
               className='w-full'
             />
             <IconField.Icon>

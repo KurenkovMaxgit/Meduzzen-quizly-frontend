@@ -1,8 +1,4 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import {
-  AppControllerHealthCheckApiResponse,
-  AppControllerHealthCheckApiArg,
-} from './generatedApi';
 import { FindCompany } from '@/types/company/find-company';
 import { FindAllQuery, FindOneQuery } from '@/types/common/find-queries';
 import { ApiResponse, GetListResponse } from '@/interfaces/common/api-response-interface';
@@ -33,10 +29,7 @@ export const quizlyApi = createApi({
     },
   }),
   endpoints: (build) => ({
-    appControllerHealthCheck: build.query<
-      AppControllerHealthCheckApiResponse,
-      AppControllerHealthCheckApiArg
-    >({
+    appControllerHealthCheck: build.query<unknown, void>({
       query: () => ({ url: `/api/health` }),
     }),
     userControllerMe: build.query<ApiResponse<ReturnUser>, void>({

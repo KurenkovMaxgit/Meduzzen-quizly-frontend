@@ -2,7 +2,7 @@ import { currentCompany } from '@/mock/company-mock';
 import { Menu } from '@primereact/ui/menu';
 import LocalizedLink from '../common/localized-link';
 import { useDictionary } from '@/providers/dictionary-provider';
-import { COMPANIES_ROUTE } from '@/utils/router-constants';
+import { ABOUT_ROUTE, COMPANIES_ROUTE } from '@/utils/router-constants';
 
 export default function SidebarContent() {
   const dictionary = useDictionary();
@@ -114,7 +114,7 @@ export default function SidebarContent() {
           </Menu.Sub>
 
           <Menu.Item>
-            <LocalizedLink href='/about' className='flex w-full items-center gap-2'>
+            <LocalizedLink href={ABOUT_ROUTE} className='flex w-full items-center gap-2'>
               <i className='pi pi-info-circle' /> {dictionary.sidebar.about}
             </LocalizedLink>
           </Menu.Item>

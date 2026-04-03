@@ -2,6 +2,7 @@ import { currentCompany } from '@/mock/company-mock';
 import { Menu } from '@primereact/ui/menu';
 import LocalizedLink from '../common/localized-link';
 import { useDictionary } from '@/providers/dictionary-provider';
+import { COMPANIES_ROUTE } from '@/utils/router-constants';
 
 export default function SidebarContent() {
   const dictionary = useDictionary();
@@ -24,7 +25,7 @@ export default function SidebarContent() {
 
             <Menu.List>
               <Menu.Item>
-                <LocalizedLink href='/companies' className='flex w-full items-center gap-2'>
+                <LocalizedLink href={COMPANIES_ROUTE} className='flex w-full items-center gap-2'>
                   <i className='pi pi-list' />
                   {dictionary.sidebar.companiesDropdown.allCompanies}
                 </LocalizedLink>
@@ -32,7 +33,7 @@ export default function SidebarContent() {
 
               <Menu.Item>
                 <LocalizedLink
-                  href='/companies/memberships'
+                  href={`${COMPANIES_ROUTE}/memberships`}
                   className='flex w-full items-center gap-2'
                 >
                   <i className='pi pi-users' />
@@ -53,7 +54,7 @@ export default function SidebarContent() {
               <Menu.List>
                 <Menu.Item>
                   <LocalizedLink
-                    href={`/companies/${currentCompany.id}/members`}
+                    href={`${COMPANIES_ROUTE}/${currentCompany.id}/members`}
                     className='flex w-full items-center gap-2'
                   >
                     <i className='pi pi-users' />
@@ -63,7 +64,7 @@ export default function SidebarContent() {
 
                 <Menu.Item>
                   <LocalizedLink
-                    href='/companies/memberships'
+                    href={`${COMPANIES_ROUTE}/memberships`}
                     className='flex w-full items-center gap-2'
                   >
                     <i className='pi pi-clipboard' />

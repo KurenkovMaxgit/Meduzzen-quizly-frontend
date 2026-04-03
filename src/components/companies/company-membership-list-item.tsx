@@ -4,6 +4,7 @@ import { currentCompany, mockCompany } from '@/mock/company-mock';
 import { useDictionary } from '@/providers/dictionary-provider';
 import { Button } from '@primereact/ui/button';
 import LocalizedLink from '../common/localized-link';
+import { COMPANIES_ROUTE } from '@/utils/router-constants';
 
 export const CompanyMembershipListItem = (company: typeof mockCompany) => {
   const dictionary = useDictionary();
@@ -29,7 +30,7 @@ export const CompanyMembershipListItem = (company: typeof mockCompany) => {
         </span>
       </div>
       <div className='flex shrink-0 justify-end gap-4 sm:ml-auto sm:items-center'>
-        <LocalizedLink href={`/companies/${company.id}`}>
+        <LocalizedLink href={`${COMPANIES_ROUTE}/${company.id}`}>
           <Button
             rounded
             variant='outlined'

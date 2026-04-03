@@ -13,6 +13,7 @@ import { clearActiveCompany } from '@/lib/slices/company-slice';
 import QueryUniversalList from '../common/list-query';
 import { useCompanyControllerFindAllQuery } from '@/lib/quizlyApi';
 import { ReturnCompany } from '@/types/company/return-company';
+import { COMPANIES_ROUTE } from '@/utils/router-constants';
 
 export default function UserProfileTab() {
   const dictionary = useDictionary();
@@ -85,7 +86,7 @@ export default function UserProfileTab() {
                   </span>
 
                   <LocalizedLink
-                    href={currentCompany ? `/companies/${currentCompany.id}` : '#'}
+                    href={currentCompany ? `${COMPANIES_ROUTE}/${currentCompany.id}` : '#'}
                     onClick={() => setIsPopoverOpen(false)}
                     className='hover:bg-surface-100 dark:hover:bg-surface-800 text-surface-600 dark:text-surface-300 flex w-full items-center justify-between rounded-md px-2 py-1.5 text-sm transition-colors'
                   >

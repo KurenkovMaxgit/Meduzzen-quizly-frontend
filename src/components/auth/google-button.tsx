@@ -1,3 +1,5 @@
+'use client';
+
 import { ACCESS_TOKEN_KEY } from '@/utils/cookie-constants';
 import { useAuth0 } from '@auth0/auth0-react';
 import { Button } from '@primereact/ui/button';

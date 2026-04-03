@@ -1,5 +1,3 @@
-'use client';
-
 import LocalizedLink from '@/components/common/localized-link';
 import GoogleLoginButton from '@/components/auth/google-button';
 import { Divider } from '@primereact/ui/divider';

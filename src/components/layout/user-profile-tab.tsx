@@ -5,7 +5,7 @@ import { Menu } from '@primereact/ui/menu';
 import { Popover } from '@primereact/ui/popover';
 import LocalizedLink from '@/components/common/localized-link';
 import { ChangeCompanyListItem } from '@/components/companies/company-change-list-item';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useDictionary } from '@/providers/dictionary-provider';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
@@ -13,11 +13,15 @@ import { clearActiveCompany } from '@/lib/slices/company-slice';
 import QueryUniversalList from '../common/list-query';
 import { useCompanyControllerFindAllQuery } from '@/lib/quizlyApi';
 import { ReturnCompany } from '@/types/company/return-company';
+import { logout } from '@/lib/slices/auth-slice';
+import Cookies from 'js-cookie';
+import { ACCESS_TOKEN_KEY, REFRESH_TOKEN_KEY } from '@/utils/cookie-constants';
 
 export default function UserProfileTab() {
   const dictionary = useDictionary();
   const pathname = usePathname();
   const dispatch = useAppDispatch();
+  const router = useRouter();
 
   const { user: currentUser } = useAppSelector((state) => state.auth);
   const { activeCompany: currentCompany } = useAppSelector((state) => state.company);
@@ -32,19 +36,30 @@ export default function UserProfileTab() {
   }
 
   const signOut = () => {
-    //TODO: Add handling
+    dispatch(logout());
+
+    Cookies.remove(ACCESS_TOKEN_KEY);
+    Cookies.remove(REFRESH_TOKEN_KEY);
+    Cookies.remove('activeCompanyId');
+
+    router.push('/');
   };
 
   const exitCompany = () => {
     dispatch(clearActiveCompany());
+
+    Cookies.remove('activeCompanyId');
+
+    router.push('/');
   };
 
-  const userInitials = currentUser
-    ? (currentUser.firstName[0] + currentUser.lastName[0]).toUpperCase()
-    : 'U';
-  const userFullName = currentUser
-    ? `${currentUser.firstName} ${currentUser.lastName}`
-    : `${dictionary.common.loading}`;
+  const rawInitials = (currentUser?.firstName?.[0] || '') + (currentUser?.lastName?.[0] || '');
+  const userInitials = rawInitials ? rawInitials.toUpperCase() : 'U';
+
+  const userFullName =
+    currentUser?.firstName || currentUser?.lastName
+      ? `${currentUser.firstName || ''} ${currentUser.lastName || ''}`.trim()
+      : dictionary.common.loading;
 
   return (
     <div className='relative flex items-center'>
@@ -81,7 +96,7 @@ export default function UserProfileTab() {
               <Popover.Content className='p-0!'>
                 <div className='border-surface-200 dark:border-surface-700 mx-1 mt-3 mb-2 flex flex-col gap-1 border-b pb-2'>
                   <span className='text-surface-900 dark:text-surface-0 text-md w-full truncate px-2 font-semibold'>
-                    {`${currentUser?.firstName} ${currentUser?.lastName}`}
+                    {userFullName}
                   </span>
 
                   <LocalizedLink

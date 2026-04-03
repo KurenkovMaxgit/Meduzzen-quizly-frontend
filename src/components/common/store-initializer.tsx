@@ -1,10 +1,13 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useAppDispatch } from '@/lib/hooks';
 import { setActiveCompany } from '@/lib/slices/company-slice';
 import { useCompanyControllerFindOneByIdQuery, useUserControllerMeQuery } from '@/lib/quizlyApi';
-import { setCredentials } from '@/lib/slices/auth-slice';
+import { setCurrentUser } from '@/lib/slices/auth-slice';
+import { useAuth0 } from '@auth0/auth0-react';
+import Cookies from 'js-cookie';
+import { ACCESS_TOKEN_KEY } from '@/utils/cookie-constants';
 
 export default function StoreInitializer({
   activeCompanyId,
@@ -16,9 +19,27 @@ export default function StoreInitializer({
   const userInitialized = useRef(false);
   const companyInitialized = useRef(false);
   const dispatch = useAppDispatch();
+  const { isAuthenticated, isLoading: authLoading } = useAuth0();
+
+  const [shouldFetchUser, setShouldFetchUser] = useState(isLoggedIn);
+
+  useEffect(() => {
+    if (isLoggedIn) return;
+
+    if (!authLoading && isAuthenticated) {
+      const cookieInterval = setInterval(() => {
+        if (Cookies.get(ACCESS_TOKEN_KEY)) {
+          setShouldFetchUser(true);
+          clearInterval(cookieInterval);
+        }
+      }, 50);
+
+      return () => clearInterval(cookieInterval);
+    }
+  }, [isLoggedIn, isAuthenticated, authLoading]);
 
   const { data: userResponse, isSuccess: userIsSuccess } = useUserControllerMeQuery(undefined, {
-    skip: !isLoggedIn,
+    skip: !shouldFetchUser,
   });
 
   const { data: companyResponse, isSuccess: companyIsSuccess } =
@@ -31,7 +52,7 @@ export default function StoreInitializer({
     const currentUser = userResponse?.data;
 
     if (userIsSuccess && currentUser && !userInitialized.current) {
-      dispatch(setCredentials({ user: currentUser }));
+      dispatch(setCurrentUser({ user: currentUser }));
       userInitialized.current = true;
     }
   }, [userIsSuccess, userResponse, dispatch]);
@@ -52,7 +73,6 @@ export default function StoreInitializer({
             company: companyWithoutMembers,
             role: currentMember.role,
           }),
-          console.log('first'),
         );
         companyInitialized.current = true;
       }

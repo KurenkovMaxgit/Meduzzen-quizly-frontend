@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import type { CompanyUser } from '@/lib/generatedApi';
 import { Company } from '@/entities/company.entity';
 import { CompanyState } from '@/interfaces/common/slices-interface';
+import { CompanyUser } from '@/entities/company-user.entity';
 
 const initialState: CompanyState = {
   activeCompany: null,

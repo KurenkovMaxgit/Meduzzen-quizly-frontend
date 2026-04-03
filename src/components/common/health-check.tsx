@@ -1,9 +1,7 @@
-'use client';
+import serverFetch from '@/lib/server-fetch';
 
-import { useAppControllerHealthCheckQuery } from '@/lib/quizlyApi';
-
-export default function HealthCheck() {
-  useAppControllerHealthCheckQuery();
+export default async function HealthCheck() {
+  await serverFetch('/api/health');
 
   return null;
 }

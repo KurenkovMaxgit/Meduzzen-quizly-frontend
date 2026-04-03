@@ -4,11 +4,13 @@ import { FindAllQuery, FindOneQuery } from '@/types/common/find-queries';
 import { ApiResponse, GetListResponse } from '@/interfaces/common/api-response-interface';
 import { ReturnCompany } from '@/types/company/return-company';
 import { ReturnUser } from '@/types/user/return-user';
+import { API_BASE_URL } from '@/utils/api-constants';
+import { UpdateUser } from '@/types/user/update-user';
 
 export const quizlyApi = createApi({
   reducerPath: 'quizlyApi',
   baseQuery: fetchBaseQuery({
-    baseUrl: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080',
+    baseUrl: API_BASE_URL,
     credentials: 'include',
     paramsSerializer: (params) => {
       const searchParams = new URLSearchParams();
@@ -34,6 +36,21 @@ export const quizlyApi = createApi({
     }),
     userControllerMe: build.query<ApiResponse<ReturnUser>, void>({
       query: () => ({ url: `/api/user/me` }),
+    }),
+    userControllerFindOneById: build.query<ApiResponse<ReturnUser>, FindOneQuery>({
+      query: (queryArg) => ({
+        url: `/api/user/${queryArg.id}`,
+        params: {
+          relations: queryArg.relations,
+        },
+      }),
+    }),
+    userControllerUpdateOneById: build.mutation<ApiResponse<ReturnUser>, UpdateUser>({
+      query: (queryArg) => ({
+        url: `/api/user`,
+        method: 'PATCH',
+        body: queryArg,
+      }),
     }),
     companyControllerFindOneById: build.query<ApiResponse<ReturnCompany>, FindOneQuery>({
       query: (queryArg) => ({
@@ -67,8 +84,8 @@ export const {
   useUserControllerMeQuery,
   // useUserControllerFindProfileQuery,
   // useUserControllerFindAllQuery,
-  // useUserControllerFindOneByIdQuery,
-  // useUserControllerUpdateOneByIdMutation,
+  useUserControllerFindOneByIdQuery,
+  useUserControllerUpdateOneByIdMutation,
   // useUserControllerDeleteOneByIdMutation,
   // useAuthControllerSignupMutation,
   // useAuthControllerLoginMutation,

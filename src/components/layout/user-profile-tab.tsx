@@ -11,7 +11,7 @@ import { useDictionary } from '@/providers/dictionary-provider';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { clearActiveCompany } from '@/lib/slices/company-slice';
 import QueryUniversalList from '../common/list-query';
-import { useCompanyControllerFindAllQuery } from '@/lib/quizlyApi';
+import { useCompanyControllerFindAllQuery } from '@/lib/quizly-api';
 import { ReturnCompany } from '@/types/company/return-company';
 import { COMPANIES_ROUTE } from '@/utils/router-constants';
 

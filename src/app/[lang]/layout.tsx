@@ -42,7 +42,7 @@ export default async function RootLayout({
         >
           <PrimeProvider>
             <StoreProvider>
-              <StoreInitializer activeCompanyId={activeCompanyId} isLoggedIn={isLoggedIn} />
+              <StoreInitializer />
               <DictionaryProvider dictionary={dictionary}>
                 <ToastProvider>
                   <HealthCheck />

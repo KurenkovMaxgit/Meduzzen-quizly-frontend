@@ -1,63 +1,34 @@
-'use client';
+import serverFetch from '@/lib/server-fetch';
+import StoreInitializerClient from './store-initializer-client';
+import { cookies } from 'next/headers';
+import { ACCESS_TOKEN_KEY, ACTIVE_COMPANY_ID_KEY } from '@/utils/cookie-constants';
 
-import { useEffect, useRef } from 'react';
-import { useAppDispatch } from '@/lib/hooks';
-import { setActiveCompany } from '@/lib/slices/company-slice';
-import { useCompanyControllerFindOneByIdQuery, useUserControllerMeQuery } from '@/lib/quizlyApi';
-import { setCredentials } from '@/lib/slices/auth-slice';
+export default async function StoreInitializer() {
+  const cookieStore = await cookies();
 
-export default function StoreInitializer({
-  activeCompanyId,
-  isLoggedIn,
-}: {
-  activeCompanyId?: string;
-  isLoggedIn: boolean;
-}) {
-  const userInitialized = useRef(false);
-  const companyInitialized = useRef(false);
-  const dispatch = useAppDispatch();
+  const isLoggedIn = !!cookieStore.get(ACCESS_TOKEN_KEY);
+  const activeCompanyId = cookieStore.get(ACTIVE_COMPANY_ID_KEY)?.value;
 
-  const { data: userResponse, isSuccess: userIsSuccess } = useUserControllerMeQuery(undefined, {
-    skip: !isLoggedIn,
-  });
+  let userResponse = null;
+  let companyResponse = null;
 
-  const { data: companyResponse, isSuccess: companyIsSuccess } =
-    useCompanyControllerFindOneByIdQuery(
-      { id: activeCompanyId!, relations: 'members.user' },
-      { skip: !activeCompanyId },
-    );
-
-  useEffect(() => {
-    const currentUser = userResponse?.data;
-
-    if (userIsSuccess && currentUser && !userInitialized.current) {
-      dispatch(setCredentials({ user: currentUser }));
-      userInitialized.current = true;
+  try {
+    if (isLoggedIn) {
+      userResponse = await serverFetch('/api/user/me');
     }
-  }, [userIsSuccess, userResponse, dispatch]);
 
-  useEffect(() => {
-    const currentUser = userResponse?.data;
-    const company = companyResponse?.data;
-
-    if (companyIsSuccess && company && currentUser && !companyInitialized.current) {
-      const currentMember = company.members?.find((member) => member.user?.id === currentUser.id);
-
-      if (currentMember) {
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const { members, ...companyWithoutMembers } = company;
-
-        dispatch(
-          setActiveCompany({
-            company: companyWithoutMembers,
-            role: currentMember.role,
-          }),
-          console.log('first'),
-        );
-        companyInitialized.current = true;
-      }
+    if (activeCompanyId) {
+      companyResponse = await serverFetch(`/api/company/${activeCompanyId}?relations=members.user`);
     }
-  }, [companyIsSuccess, companyResponse, dispatch, userResponse?.data]);
+  } catch (error) {
+    console.error('Pre-fetching failed in StoreInitializer:', error);
+  }
 
-  return null;
+  return (
+    <StoreInitializerClient
+      userResponse={userResponse}
+      companyResponse={companyResponse}
+      activeCompanyId={activeCompanyId}
+    />
+  );
 }

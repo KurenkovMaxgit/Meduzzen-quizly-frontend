@@ -16,6 +16,7 @@
     "prepare": "git config core.hooksPath .githooks"
   },
   "dependencies": {
+    "@auth0/auth0-react": "^2.16.1",
     "@primereact/core": "^11.0.0-alpha.10",
     "@primereact/types": "^11.0.0-alpha.10",
     "@primereact/ui": "^11.0.0-alpha.10",

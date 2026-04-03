@@ -34,16 +34,14 @@ export default async function RootLayout({
           disableTransitionOnChange
         >
           <PrimeProvider>
-            <Auth0ProviderWrapper>
-              <StoreProvider>
+            <HealthCheck />
+            <StoreProvider>
+              <Auth0ProviderWrapper>
                 <DictionaryProvider dictionary={dictionary}>
-                  <ToastProvider>
-                    <HealthCheck />
-                    {children}
-                  </ToastProvider>
+                  <ToastProvider>{children}</ToastProvider>
                 </DictionaryProvider>
-              </StoreProvider>
-            </Auth0ProviderWrapper>
+              </Auth0ProviderWrapper>
+            </StoreProvider>
           </PrimeProvider>
         </ThemeProvider>
       </body>

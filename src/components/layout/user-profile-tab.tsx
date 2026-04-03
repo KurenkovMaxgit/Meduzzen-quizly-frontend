@@ -11,11 +11,16 @@ import { useDictionary } from '@/providers/dictionary-provider';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { clearActiveCompany } from '@/lib/slices/company-slice';
 import QueryUniversalList from '../common/list-query';
-import { useCompanyControllerFindAllQuery } from '@/lib/quizlyApi';
+import { useCompanyControllerFindAllQuery } from '@/lib/quizly-api';
 import { ReturnCompany } from '@/types/company/return-company';
 import { logout } from '@/lib/slices/auth-slice';
 import Cookies from 'js-cookie';
-import { ACCESS_TOKEN_KEY, REFRESH_TOKEN_KEY } from '@/utils/cookie-constants';
+import {
+  ACCESS_TOKEN_KEY,
+  ACTIVE_COMPANY_ID_KEY,
+  REFRESH_TOKEN_KEY,
+} from '@/utils/cookie-constants';
+import { COMPANIES_ROUTE, PROFILE_ROUTE } from '@/utils/router-constants';
 
 export default function UserProfileTab() {
   const dictionary = useDictionary();
@@ -40,7 +45,7 @@ export default function UserProfileTab() {
 
     Cookies.remove(ACCESS_TOKEN_KEY);
     Cookies.remove(REFRESH_TOKEN_KEY);
-    Cookies.remove('activeCompanyId');
+    Cookies.remove(ACTIVE_COMPANY_ID_KEY);
 
     router.push('/');
   };
@@ -48,7 +53,7 @@ export default function UserProfileTab() {
   const exitCompany = () => {
     dispatch(clearActiveCompany());
 
-    Cookies.remove('activeCompanyId');
+    Cookies.remove(ACTIVE_COMPANY_ID_KEY);
 
     router.push('/');
   };
@@ -100,7 +105,7 @@ export default function UserProfileTab() {
                   </span>
 
                   <LocalizedLink
-                    href={currentCompany ? `/companies/${currentCompany.id}` : '#'}
+                    href={currentCompany ? `${COMPANIES_ROUTE}/${currentCompany.id}` : '#'}
                     onClick={() => setIsPopoverOpen(false)}
                     className='hover:bg-surface-100 dark:hover:bg-surface-800 text-surface-600 dark:text-surface-300 flex w-full items-center justify-between rounded-md px-2 py-1.5 text-sm transition-colors'
                   >
@@ -135,7 +140,7 @@ export default function UserProfileTab() {
 
                     <Menu.Item className='m-0! p-0!'>
                       <LocalizedLink
-                        href={`/profile/${currentUser?.id || ''}`}
+                        href={`${PROFILE_ROUTE}/${currentUser?.id || ''}`}
                         onClick={() => setIsPopoverOpen(false)}
                         className='text-surface-900 dark:text-surface-0 hover:bg-surface-100 dark:hover:bg-surface-800 flex w-full items-center gap-3 rounded-md px-3 py-2 transition-colors'
                       >

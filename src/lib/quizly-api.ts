@@ -10,6 +10,8 @@ import { FindAllQuery, FindOneQuery } from '@/types/common/find-queries';
 import { ApiResponse, GetListResponse } from '@/interfaces/common/api-response-interface';
 import { ReturnCompany } from '@/types/company/return-company';
 import { ReturnUser } from '@/types/user/return-user';
+import { API_BASE_URL } from '@/utils/api-constants';
+import { UpdateUser } from '@/types/user/update-user';
 import { CreateUser } from '@/types/user/create-user';
 import { SigninPayload } from '@/types/auth/signin-payload';
 import Cookies from 'js-cookie';
@@ -22,7 +24,7 @@ export const setAuth0RefreshFn = (fn: (() => Promise<string>) | null) => {
 };
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080',
+  baseUrl: API_BASE_URL,
   credentials: 'include',
   prepareHeaders: (headers) => {
     const token = Cookies.get(ACCESS_TOKEN_KEY);
@@ -128,6 +130,21 @@ export const quizlyApi = createApi({
     authControllerSignin: build.mutation<ApiResponse<ReturnUser>, SigninPayload>({
       query: (queryArg) => ({ url: `/api/auth/login`, method: 'POST', body: queryArg }),
     }),
+    userControllerFindOneById: build.query<ApiResponse<ReturnUser>, FindOneQuery>({
+      query: (queryArg) => ({
+        url: `/api/user/${queryArg.id}`,
+        params: {
+          relations: queryArg.relations,
+        },
+      }),
+    }),
+    userControllerUpdateOneById: build.mutation<ApiResponse<ReturnUser>, UpdateUser>({
+      query: (queryArg) => ({
+        url: `/api/user`,
+        method: 'PATCH',
+        body: queryArg,
+      }),
+    }),
     companyControllerFindOneById: build.query<ApiResponse<ReturnCompany>, FindOneQuery>({
       query: (queryArg) => ({
         url: `/api/company/${queryArg.id}`,
@@ -160,8 +177,8 @@ export const {
   useUserControllerMeQuery,
   // useUserControllerFindProfileQuery,
   // useUserControllerFindAllQuery,
-  // useUserControllerFindOneByIdQuery,
-  // useUserControllerUpdateOneByIdMutation,
+  useUserControllerFindOneByIdQuery,
+  useUserControllerUpdateOneByIdMutation,
   // useUserControllerDeleteOneByIdMutation,
   useAuthControllerSignupMutation,
   useAuthControllerSigninMutation,

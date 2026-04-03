@@ -1,5 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { quizlyApi } from '@/lib/quizlyApi';
+import { quizlyApi } from '@/lib/quizly-api';
 import { authSlice } from './slices/auth-slice';
 import { companySlice } from './slices/company-slice';
 import { queryErrorLogger } from '@/middlewares/error-logger';

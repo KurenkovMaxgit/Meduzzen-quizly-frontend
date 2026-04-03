@@ -2,7 +2,7 @@
 
 import { HttpExceptionResponse } from '@/interfaces/common/api-exception-interface';
 import { useAppDispatch } from '@/lib/hooks';
-import { useAuthControllerSigninMutation } from '@/lib/quizlyApi';
+import { useAuthControllerSigninMutation } from '@/lib/quizly-api';
 import { setCurrentUser } from '@/lib/slices/auth-slice';
 import { Button } from '@primereact/ui/button';
 import { Divider } from '@primereact/ui/divider';

@@ -10,6 +10,7 @@ import { useRouter } from 'next/navigation';
 import { useGlobalToast } from '@/providers/toast-provider';
 import Cookies from 'js-cookie';
 import { ACTIVE_COMPANY_ID_KEY } from '@/utils/cookie-constants';
+import { COMPANIES_ROUTE } from '@/utils/router-constants';
 
 export const ChangeCompanyListItem = ({ company }: { company: ReturnCompany }) => {
   const dictionary = useDictionary();
@@ -32,7 +33,7 @@ export const ChangeCompanyListItem = ({ company }: { company: ReturnCompany }) =
 
     Cookies.set(ACTIVE_COMPANY_ID_KEY, company.id, { expires: 7 });
 
-    router.push(`/companies/${company.id}`);
+    router.push(`${COMPANIES_ROUTE}/${company.id}`);
 
     toast.showToast('success', 'Success', `You successfully entered ${company.name}`);
   };
@@ -54,7 +55,7 @@ export const ChangeCompanyListItem = ({ company }: { company: ReturnCompany }) =
         </span>
       </div>
       <div className='flex shrink-0 justify-end gap-4 sm:ml-auto sm:items-center'>
-        <LocalizedLink href={`/companies/${company.id}`}>
+        <LocalizedLink href={`${COMPANIES_ROUTE}/${company.id}`}>
           <Button
             rounded
             variant='outlined'

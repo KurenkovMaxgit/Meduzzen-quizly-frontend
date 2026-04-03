@@ -1,6 +1,6 @@
 import { HttpExceptionResponse } from '@/interfaces/common/api-exception-interface';
 import { useAppDispatch } from '@/lib/hooks';
-import { useAuthControllerSignupMutation } from '@/lib/quizlyApi';
+import { useAuthControllerSignupMutation } from '@/lib/quizly-api';
 import { setCurrentUser } from '@/lib/slices/auth-slice';
 import { Button } from '@primereact/ui/button';
 import { FloatLabel } from '@primereact/ui/floatlabel';

@@ -1,6 +1,6 @@
 'use client';
 
-import { useCompanyControllerFindOneByIdQuery } from '@/lib/quizlyApi';
+import { useCompanyControllerFindOneByIdQuery } from '@/lib/quizly-api';
 import CompanyDetailsToolbar from '@/components/companies/company-details-toolbar';
 import { CompanyStatus, CompanyRole } from '@/utils/enums';
 import { mockUser } from '@/mock/user-mock';

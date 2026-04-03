@@ -4,22 +4,35 @@ import { handleLocalization } from '@/middlewares/localization';
 import { ACCESS_TOKEN_KEY } from './utils/cookie-constants';
 
 export function proxy(request: NextRequest) {
-  const localizationResponse = handleLocalization(request);
+  const pathname = request.nextUrl.pathname;
 
-  const response = localizationResponse || NextResponse.next();
-
-  //TODO: Remove when working on auth flow
-  if (process.env.NODE_ENV === 'development' && process.env.NEXT_PUBLIC_MOCK_AUTH_TOKEN) {
-    response.cookies.set(ACCESS_TOKEN_KEY, process.env.NEXT_PUBLIC_MOCK_AUTH_TOKEN, {
-      path: '/',
-      httpOnly: true,
-      sameSite: 'lax',
-    });
+  if (pathname.startsWith('/api')) {
+    return NextResponse.next();
   }
 
-  return response;
+  const token = request.cookies.get(ACCESS_TOKEN_KEY)?.value;
+
+  const isPublicAuthRoute = pathname.includes('/signin') || pathname.includes('/signup');
+  const isAuth0Callback =
+    request.nextUrl.searchParams.has('code') && request.nextUrl.searchParams.has('state');
+
+  if (!token && !isAuth0Callback && !isPublicAuthRoute) {
+    const signInUrl = new URL('/signin', request.url);
+
+    return NextResponse.redirect(signInUrl);
+  }
+
+  if (token && isPublicAuthRoute) {
+    const homeUrl = new URL('/', request.url);
+
+    return NextResponse.redirect(homeUrl);
+  }
+
+  return handleLocalization(request) || NextResponse.next();
 }
 
 export const config = {
-  matcher: ['/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)'],
+  matcher: [
+    '/((?!api|_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
+  ],
 };

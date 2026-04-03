@@ -5,46 +5,57 @@ import { Button } from '@primereact/ui/button';
 import { useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { useDictionary } from '@/providers/dictionary-provider';
+import { useAppSelector, useAppDispatch } from '@/lib/hooks';
+import { ReturnUser } from '@/types/user/return-user';
+import { setCredentials } from '@/lib/slices/auth-slice';
 import {
-  useUserControllerUpdateOneByIdMutation,
   useUserControllerFindOneByIdQuery,
-  type ReturnUserDto,
-} from '@/lib/generatedApi';
-import { useAppSelector } from '@/lib/hooks';
+  useUserControllerUpdateOneByIdMutation,
+} from '@/lib/quizly-api';
 
 export default function ProfileForm({ userId }: { userId: string }) {
   const dictionary = useDictionary();
   const params = useParams();
   const router = useRouter();
+  const dispatch = useAppDispatch();
 
   const {
-    data,
+    data: response,
     isLoading: isFetching,
     isError,
+    refetch,
   } = useUserControllerFindOneByIdQuery({ id: userId });
+
   const { user: authUser } = useAppSelector((state) => state.auth);
   const [updateUser, { isLoading: isUpdating }] = useUserControllerUpdateOneByIdMutation();
 
-  const user = data as ReturnUserDto;
+  const user = response?.data as ReturnUser;
 
   const userIdFromRoute = params.userId as string;
   const isOwner = authUser?.id === userIdFromRoute;
 
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({
-    firstName: user.firstName || '',
-    lastName: user.lastName || '',
+    firstName: '',
+    lastName: '',
   });
+
+  const isUnchanged =
+    formData.firstName === (user?.firstName || '') && formData.lastName === (user?.lastName || '');
 
   async function handleSave() {
     try {
-      await updateUser({
-        updateUserDto: {
-          firstName: formData.firstName,
-          lastName: formData.lastName,
-        },
+      const result = await updateUser({
+        firstName: formData.firstName,
+        lastName: formData.lastName,
       }).unwrap();
+
       setIsEditing(false);
+      refetch();
+
+      if (isOwner && result?.data) {
+        dispatch(setCredentials({ user: result.data }));
+      }
     } catch (error) {
       console.error('Failed to update profile:', error);
     }
@@ -98,7 +109,17 @@ export default function ProfileForm({ userId }: { userId: string }) {
         <div className='mb-6 flex items-center justify-between'>
           <h2 className='text-2xl font-bold'>{dictionary.profile.title}</h2>
           {isOwner && !isEditing && (
-            <Button label='Edit Profile' rounded onClick={() => setIsEditing(true)}>
+            <Button
+              label='Edit Profile'
+              rounded
+              onClick={() => {
+                setFormData({
+                  firstName: user.firstName || '',
+                  lastName: user.lastName || '',
+                });
+                setIsEditing(true);
+              }}
+            >
               <i className='pi pi-pencil' />
               <h3 className='hidden sm:block'>{dictionary.common.edit}</h3>
             </Button>
@@ -115,7 +136,7 @@ export default function ProfileForm({ userId }: { userId: string }) {
             </label>
             <InputText
               id='firstName'
-              value={formData.firstName}
+              value={isEditing ? formData.firstName : user.firstName || ''}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                 setFormData((prev) => ({ ...prev, firstName: e.target.value }))
               }
@@ -133,7 +154,7 @@ export default function ProfileForm({ userId }: { userId: string }) {
             </label>
             <InputText
               id='lastName'
-              value={formData.lastName}
+              value={isEditing ? formData.lastName : user.lastName || ''}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                 setFormData((prev) => ({ ...prev, lastName: e.target.value }))
               }
@@ -161,10 +182,7 @@ export default function ProfileForm({ userId }: { userId: string }) {
               label='Cancel'
               severity='secondary'
               disabled={isUpdating}
-              onClick={() => {
-                setFormData({ firstName: user.firstName, lastName: user.lastName });
-                setIsEditing(false);
-              }}
+              onClick={() => setIsEditing(false)}
             >
               {dictionary.common.cancel}
               <i className='pi pi-times' />
@@ -174,10 +192,10 @@ export default function ProfileForm({ userId }: { userId: string }) {
               severity='success'
               raised
               onClick={handleSave}
-              loading={isUpdating}
+              disabled={isUpdating || isUnchanged}
             >
               {dictionary.common.save}
-              <i className='pi pi-check' />
+              <i className={isUpdating ? 'pi pi-spin pi-spinner' : 'pi pi-check'} />
             </Button>
           </div>
         )}

@@ -14,13 +14,12 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
   const showToast = useCallback(
     (
       variant: ToastType['variant'] | 'error',
-      summary: string,
-      detail: string,
+      content: { summary: string; detail: string },
       duration?: number,
     ) => {
       const payload = {
-        title: summary,
-        description: detail,
+        title: content.summary,
+        description: content.detail,
         duration: duration ? duration : 3000,
       };
 

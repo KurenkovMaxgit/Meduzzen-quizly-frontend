@@ -3,10 +3,9 @@
 import { useDictionary } from '@/providers/dictionary-provider';
 import { ReturnCompany } from '@/types/company/return-company';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
-import { setActiveCompany } from '@/lib/slices/company-slice';
+import { clearActiveCompany, setActiveCompany } from '@/lib/slices/company-slice';
 import { Button } from '@primereact/ui/button';
 import LocalizedLink from '../common/localized-link';
-import { useRouter } from 'next/navigation';
 import { useGlobalToast } from '@/providers/toast-provider';
 import Cookies from 'js-cookie';
 import { ACTIVE_COMPANY_ID_KEY } from '@/utils/cookie-constants';
@@ -15,7 +14,6 @@ import { COMPANIES_ROUTE } from '@/utils/router-constants';
 export const ChangeCompanyListItem = ({ company }: { company: ReturnCompany }) => {
   const dictionary = useDictionary();
   const dispatch = useAppDispatch();
-  const router = useRouter();
   const toast = useGlobalToast();
 
   const { user: currentUser } = useAppSelector((state) => state.auth);
@@ -33,13 +31,18 @@ export const ChangeCompanyListItem = ({ company }: { company: ReturnCompany }) =
 
     Cookies.set(ACTIVE_COMPANY_ID_KEY, company.id, { expires: 7 });
 
-    router.push(`${COMPANIES_ROUTE}/${company.id}`);
-
-    toast.showToast('success', 'Success', `You successfully entered ${company.name}`);
+    toast.showToast('success', {
+      summary: dictionary.toast.company.enter.success.summary,
+      detail: `${dictionary.toast.company.enter.success.detail} ${company.name}`,
+    });
   };
 
-  const exitCompany = async () => {
-    //TODO: Add handling
+  const exitCompany = () => {
+    dispatch(clearActiveCompany());
+
+    Cookies.remove(ACTIVE_COMPANY_ID_KEY);
+
+    toast.showToast('info', dictionary.toast.company.exit.success);
   };
 
   return (
@@ -67,25 +70,29 @@ export const ChangeCompanyListItem = ({ company }: { company: ReturnCompany }) =
           </Button>
         </LocalizedLink>
         {company.id === currentCompany?.id ? (
-          <Button
-            rounded
-            variant='outlined'
-            severity='danger'
-            onClick={() => exitCompany()}
-            title={dictionary.companies.actions.exitCompany}
-          >
-            <i className='pi pi-sign-out' />
-          </Button>
+          <LocalizedLink href={'/'}>
+            <Button
+              rounded
+              variant='outlined'
+              severity='danger'
+              onClick={() => exitCompany()}
+              title={dictionary.companies.actions.exitCompany}
+            >
+              <i className='pi pi-sign-out' />
+            </Button>
+          </LocalizedLink>
         ) : (
-          <Button
-            rounded
-            variant='outlined'
-            severity='success'
-            onClick={() => enterCompany()}
-            title={dictionary.companies.actions.enterCompany}
-          >
-            <i className='pi pi-sign-in' />
-          </Button>
+          <LocalizedLink href={`${COMPANIES_ROUTE}/${company.id}`}>
+            <Button
+              rounded
+              variant='outlined'
+              severity='success'
+              onClick={() => enterCompany()}
+              title={dictionary.companies.actions.enterCompany}
+            >
+              <i className='pi pi-sign-in' />
+            </Button>
+          </LocalizedLink>
         )}
       </div>
     </div>

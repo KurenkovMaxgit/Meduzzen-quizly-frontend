@@ -12,11 +12,13 @@ import {
   useUserControllerFindOneByIdQuery,
   useUserControllerUpdateOneByIdMutation,
 } from '@/lib/quizly-api';
+import { useGlobalToast } from '@/providers/toast-provider';
 
 export default function ProfileForm({ userId }: { userId: string }) {
   const dictionary = useDictionary();
   const params = useParams();
   const router = useRouter();
+  const toast = useGlobalToast();
   const dispatch = useAppDispatch();
 
   const {
@@ -56,6 +58,8 @@ export default function ProfileForm({ userId }: { userId: string }) {
       if (isOwner && result?.data) {
         dispatch(setCurrentUser({ user: result.data }));
       }
+
+      toast.showToast('success', dictionary.toast.profileUpdate.success);
     } catch (error) {
       console.error('Failed to update profile:', error);
     }

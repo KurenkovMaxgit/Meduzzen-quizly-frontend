@@ -5,28 +5,28 @@ import { Menu } from '@primereact/ui/menu';
 import { Popover } from '@primereact/ui/popover';
 import LocalizedLink from '@/components/common/localized-link';
 import { ChangeCompanyListItem } from '@/components/companies/company-change-list-item';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 import { useDictionary } from '@/providers/dictionary-provider';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { clearActiveCompany } from '@/lib/slices/company-slice';
 import QueryUniversalList from '../common/list-query';
-import { useCompanyControllerFindAllQuery } from '@/lib/quizly-api';
+import {
+  useAuthControllerLogoutMutation,
+  useCompanyControllerFindAllQuery,
+} from '@/lib/quizly-api';
 import { ReturnCompany } from '@/types/company/return-company';
 import { logout } from '@/lib/slices/auth-slice';
 import Cookies from 'js-cookie';
-import {
-  ACCESS_TOKEN_KEY,
-  ACTIVE_COMPANY_ID_KEY,
-  REFRESH_TOKEN_KEY,
-} from '@/utils/cookie-constants';
+import { ACTIVE_COMPANY_ID_KEY } from '@/utils/cookie-constants';
 import { COMPANIES_ROUTE, PROFILE_ROUTE } from '@/utils/router-constants';
+import { useGlobalToast } from '@/providers/toast-provider';
 
 export default function UserProfileTab() {
   const dictionary = useDictionary();
   const pathname = usePathname();
   const dispatch = useAppDispatch();
-  const router = useRouter();
+  const toast = useGlobalToast();
 
   const { user: currentUser } = useAppSelector((state) => state.auth);
   const { activeCompany: currentCompany } = useAppSelector((state) => state.company);
@@ -40,14 +40,20 @@ export default function UserProfileTab() {
     setIsDialogOpen(false);
   }
 
-  const signOut = () => {
+  const [logoutFromApi] = useAuthControllerLogoutMutation();
+
+  const signOut = async () => {
     dispatch(logout());
 
-    Cookies.remove(ACCESS_TOKEN_KEY);
-    Cookies.remove(REFRESH_TOKEN_KEY);
+    try {
+      await logoutFromApi().unwrap();
+    } catch (error) {
+      console.error('Failed to logout from server', error);
+    }
+
     Cookies.remove(ACTIVE_COMPANY_ID_KEY);
 
-    router.push('/');
+    window.location.assign('/auth/logout');
   };
 
   const exitCompany = () => {
@@ -55,7 +61,7 @@ export default function UserProfileTab() {
 
     Cookies.remove(ACTIVE_COMPANY_ID_KEY);
 
-    router.push('/');
+    toast.showToast('info', dictionary.toast.company.exit.success);
   };
 
   const rawInitials = (currentUser?.firstName?.[0] || '') + (currentUser?.lastName?.[0] || '');
@@ -152,25 +158,29 @@ export default function UserProfileTab() {
                     <Menu.Separator className='my-1' />
 
                     <Menu.Item className='m-0! p-0!'>
-                      <button
-                        type='button'
-                        className='hover:bg-surface-100 dark:hover:bg-surface-800 flex w-full items-center gap-3 rounded-md border-none bg-transparent px-3 py-2 text-left text-red-600 transition-colors outline-none dark:text-red-400'
-                        onClick={() => exitCompany()}
-                      >
-                        <i className='pi pi-sign-out opacity-80' />
-                        {dictionary.companies.actions.exitCompany}
-                      </button>
+                      <LocalizedLink href={'/'}>
+                        <button
+                          type='button'
+                          className='hover:bg-surface-100 dark:hover:bg-surface-800 flex w-full items-center gap-3 rounded-md border-none bg-transparent px-3 py-2 text-left text-red-600 transition-colors outline-none dark:text-red-400'
+                          onClick={() => exitCompany()}
+                        >
+                          <i className='pi pi-sign-out opacity-80' />
+                          {dictionary.companies.actions.exitCompany}
+                        </button>
+                      </LocalizedLink>
                     </Menu.Item>
 
                     <Menu.Item className='m-0! p-0!'>
-                      <button
-                        type='button'
-                        className='hover:bg-surface-100 dark:hover:bg-surface-800 flex w-full items-center gap-3 rounded-md border-none bg-transparent px-3 py-2 text-left text-red-600 transition-colors outline-none dark:text-red-400'
-                        onClick={() => signOut()}
-                      >
-                        <i className='pi pi-power-off opacity-80' />
-                        {dictionary.sidebar.profileDropdown.signOut}
-                      </button>
+                      <LocalizedLink href={'/'}>
+                        <button
+                          type='button'
+                          className='hover:bg-surface-100 dark:hover:bg-surface-800 flex w-full items-center gap-3 rounded-md border-none bg-transparent px-3 py-2 text-left text-red-600 transition-colors outline-none dark:text-red-400'
+                          onClick={() => signOut()}
+                        >
+                          <i className='pi pi-power-off opacity-80' />
+                          {dictionary.sidebar.profileDropdown.signOut}
+                        </button>
+                      </LocalizedLink>
                     </Menu.Item>
                   </Menu.List>
                 </Menu.Root>

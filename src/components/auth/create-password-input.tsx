@@ -1,3 +1,4 @@
+import { useDictionary } from '@/providers/dictionary-provider';
 import {
   PasswordMaskChangeEvent,
   PasswordValueChangeEvent,
@@ -9,40 +10,6 @@ import { Popover } from '@primereact/ui/popover';
 import { ProgressBar } from '@primereact/ui/progressbar';
 import { Tag } from '@primereact/ui/tag';
 import { useState } from 'react';
-
-const rules = [
-  {
-    id: 'length',
-    label: 'At least 12 characters long',
-    test: (v: string) => v.length >= 12,
-    weight: 20,
-  },
-  {
-    id: 'uppercase',
-    label: 'Contains uppercase letter',
-    test: (v: string) => /[A-Z]/.test(v),
-    weight: 20,
-  },
-  {
-    id: 'lowercase',
-    label: 'Contains lowercase letter',
-    test: (v: string) => /[a-z]/.test(v),
-    weight: 20,
-  },
-  { id: 'number', label: 'Contains number', test: (v: string) => /[0-9]/.test(v), weight: 20 },
-  {
-    id: 'special',
-    label: 'Contains special character (!@#$...)',
-    test: (v: string) => /[^a-zA-Z0-9]/.test(v),
-    weight: 20,
-  },
-];
-
-function getScore(value: string) {
-  if (!value) return 0;
-
-  return rules.reduce((acc, rule) => acc + (rule.test(value) ? rule.weight : 0), 0);
-}
 
 function getSeverity(score: number) {
   if (score <= 20) return 'danger';
@@ -68,11 +35,52 @@ interface CreatePasswordInputProps {
 }
 
 export default function CreatePasswordInput({ value, onChange }: CreatePasswordInputProps) {
+  const dictionary = useDictionary();
+
   const [mask, setMask] = useState(true);
   const [open, setOpen] = useState(false);
   const score = getScore(value);
   const severity = getSeverity(score);
   const label = getLabel(score);
+
+  const rules = [
+    {
+      id: 'length',
+      label: `${dictionary.auth.signUp.passwordStrength.length}`,
+      test: (v: string) => v.length >= 12,
+      weight: 20,
+    },
+    {
+      id: 'uppercase',
+      label: `${dictionary.auth.signUp.passwordStrength.uppercase}`,
+      test: (v: string) => /[A-Z]/.test(v),
+      weight: 20,
+    },
+    {
+      id: 'lowercase',
+      label: `${dictionary.auth.signUp.passwordStrength.lowercase}`,
+      test: (v: string) => /[a-z]/.test(v),
+      weight: 20,
+    },
+    {
+      id: 'number',
+      label: `${dictionary.auth.signUp.passwordStrength.number}`,
+      test: (v: string) => /[0-9]/.test(v),
+      weight: 20,
+    },
+    {
+      id: 'special',
+      label: `${dictionary.auth.signUp.passwordStrength.special}`,
+      test: (v: string) => /[^a-zA-Z0-9]/.test(v),
+      weight: 20,
+    },
+  ];
+
+  function getScore(value: string) {
+    if (!value) return 0;
+
+    return rules.reduce((acc, rule) => acc + (rule.test(value) ? rule.weight : 0), 0);
+  }
 
   return (
     <Popover.Root open={open}>
@@ -100,7 +108,7 @@ export default function CreatePasswordInput({ value, onChange }: CreatePasswordI
             </IconField.Icon>
           </IconField.Root>
           <label htmlFor='password' className='text-surface-900 dark:text-surface-0 font-medium'>
-            Password
+            {dictionary.auth.signUp.password}
           </label>
         </FloatLabel>
       </Popover.Trigger>
@@ -112,7 +120,7 @@ export default function CreatePasswordInput({ value, onChange }: CreatePasswordI
                 <div className='flex items-center gap-2'>
                   <i className='pi pi-shield text-surface-500' style={{ fontSize: '1.25rem' }} />
                   <span className='text-surface-900 dark:text-surface-0 text-sm font-semibold'>
-                    Password Strength
+                    {dictionary.auth.signUp.passwordStrength.title}
                   </span>
                 </div>
                 {label && <Tag severity={severity}>{label}</Tag>}

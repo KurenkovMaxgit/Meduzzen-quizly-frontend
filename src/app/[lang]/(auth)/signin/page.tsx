@@ -1,21 +1,29 @@
 import LocalizedLink from '@/components/common/localized-link';
-import GoogleLoginButton from '@/components/auth/google-button';
+import GoogleLogin from '@/components/auth/google-auth';
 import SignInForm from '@/components/auth/signin-form';
+import { getDictionary } from '@/utils/get-dictionary';
+import { headers } from 'next/headers';
 
-export default function SignInPage() {
+export default async function SignInPage({ params }: { params: Promise<{ lang: string }> }) {
+  const dictionary = await getDictionary((await params).lang);
+
+  const currentLocale = (await headers()).get('x-current-lang');
+
   return (
     <div className='flex w-full flex-col gap-5'>
       <div className='text-center'>
-        <h1 className='text-surface-900 dark:text-surface-0 text-3xl font-bold'>Welcome Back</h1>
+        <h1 className='text-surface-900 dark:text-surface-0 text-3xl font-bold'>
+          {dictionary.auth.signIn.title}
+        </h1>
       </div>
-      <SignInForm />
+      <SignInForm currentLocale={currentLocale} />
 
-      <GoogleLoginButton />
+      <GoogleLogin />
 
       <div className='text-surface-600 dark:text-surface-400 text-center text-sm'>
-        Don&apos;t have an account yet?{' '}
+        {dictionary.auth.signIn.noAccount}{' '}
         <LocalizedLink href='/signup' className='text-primary font-medium hover:underline'>
-          Sign up
+          {dictionary.auth.signIn.signInButton}
         </LocalizedLink>
       </div>
     </div>

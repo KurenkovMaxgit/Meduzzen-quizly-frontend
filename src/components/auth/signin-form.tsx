@@ -4,6 +4,7 @@ import { HttpExceptionResponse } from '@/interfaces/common/api-exception-interfa
 import { useAppDispatch } from '@/lib/hooks';
 import { useAuthControllerSigninMutation } from '@/lib/quizly-api';
 import { setCurrentUser } from '@/lib/slices/auth-slice';
+import { useDictionary } from '@/providers/dictionary-provider';
 import { Button } from '@primereact/ui/button';
 import { Divider } from '@primereact/ui/divider';
 import { FloatLabel } from '@primereact/ui/floatlabel';
@@ -49,7 +50,7 @@ export default function SignInForm({ currentLocale }: { currentLocale: string | 
       <Divider.Root align='center' type='solid' className='my-0!'>
         <Divider.Content>
           <span className='text-surface-600 dark:text-surface-400 mt-2 text-center text-wrap'>
-            Sign in to your Quizly account
+            {dictionary.auth.signIn.subTitle}
           </span>
         </Divider.Content>
       </Divider.Root>
@@ -71,7 +72,7 @@ export default function SignInForm({ currentLocale }: { currentLocale: string | 
             className='w-full'
           />
           <label htmlFor='email' className='text-surface-900 dark:text-surface-0 font-medium'>
-            Email
+            {dictionary.auth.signIn.email}
           </label>
         </FloatLabel>
 
@@ -85,20 +86,20 @@ export default function SignInForm({ currentLocale }: { currentLocale: string | 
             className='w-full'
           />
           <label htmlFor='password' className='text-surface-900 dark:text-surface-0 font-medium'>
-            Password
+            {dictionary.auth.signIn.password}
           </label>
         </FloatLabel>
 
         <Button type='submit' className='mt-6 w-full'>
           {isLoading ? <i className='pi pi-spinner pi-spin' /> : null}
-          Sign In
+          {dictionary.auth.signIn.signInButton}
         </Button>
       </form>
 
       <Divider.Root align='center' type='solid' className='my-0!'>
         <Divider.Content>
           <span className='text-surface-500 dark:text-surface-400 text-sm font-medium tracking-wider uppercase'>
-            Or
+            {dictionary.auth.or}
           </span>
         </Divider.Content>
       </Divider.Root>

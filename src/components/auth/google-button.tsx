@@ -1,57 +1,31 @@
 'use client';
 
-import { ACCESS_TOKEN_KEY } from '@/utils/cookie-constants';
-import { useAuth0 } from '@auth0/auth0-react';
+import { useDictionary } from '@/providers/dictionary-provider';
 import { Button } from '@primereact/ui/button';
-import { useEffect } from 'react';
-import Cookies from 'js-cookie';
+import LocalizedLink from '../common/localized-link';
 
-export default function GoogleLoginButton() {
-  const { loginWithRedirect } = useAuth0();
+export default function GoogleLoginButton({ currentLocale }: { currentLocale: string | null }) {
+  const dictionary = useDictionary();
 
-  const handleLogin = async () => {
-    await loginWithRedirect({
-      authorizationParams: {
-        connection: 'google-oauth2',
-      },
-    });
+  const handleLoginClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    window.location.assign(`/auth/login?connection=google-oauth2&returnTo=${currentLocale}`);
   };
 
-  const { getAccessTokenSilently, isAuthenticated, isLoading } = useAuth0();
-
-  useEffect(() => {
-    const syncToken = async () => {
-      if (isLoading) return;
-
-      if (isAuthenticated) {
-        try {
-          const token = await getAccessTokenSilently();
-          Cookies.set(ACCESS_TOKEN_KEY, token, {
-            expires: 1,
-            secure: true,
-            sameSite: 'strict',
-          });
-        } catch (error) {
-          console.error('Failed to sync token to cookie', error);
-          Cookies.remove(ACCESS_TOKEN_KEY);
-        }
-      } else {
-        Cookies.remove(ACCESS_TOKEN_KEY);
-      }
-    };
-
-    syncToken();
-  }, [isAuthenticated, isLoading, getAccessTokenSilently]);
-
   return (
-    <Button
-      type='button'
-      variant='outlined'
-      onClick={handleLogin}
-      className='border-surface-200 dark:border-surface-700 text-surface-700 dark:text-surface-0 hover:bg-surface-50 dark:hover:bg-surface-800 flex w-full items-center justify-center gap-3 bg-transparent transition-colors'
+    <LocalizedLink
+      href={`/auth/login?connection=google-oauth2&returnTo=${currentLocale}`}
+      prefetch={false}
+      onClick={handleLoginClick}
     >
-      <i className='pi pi-google text-xl' />
-      <span className='font-medium'>Continue with Google</span>
-    </Button>
+      <Button
+        type='button'
+        variant='outlined'
+        className='border-surface-200 dark:border-surface-700 text-surface-700 dark:text-surface-0 hover:bg-surface-50 dark:hover:bg-surface-800 flex w-full items-center justify-center gap-3 bg-transparent transition-colors'
+      >
+        <i className='pi pi-google text-xl' />
+        <span className='font-medium'>{dictionary.auth.googleButton}</span>
+      </Button>
+    </LocalizedLink>
   );
 }

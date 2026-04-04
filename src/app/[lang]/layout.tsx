@@ -8,7 +8,6 @@ import { DictionaryProvider } from '@/providers/dictionary-provider';
 import StoreProvider from '@/providers/store-provider';
 import HealthCheck from '@/components/common/health-check';
 import { ToastProvider } from '@/providers/toast-provider';
-import Auth0ProviderWrapper from '@/providers/auth0-provider-wrapper';
 
 const geistSans = Geist({ variable: '--font-geist-sans', subsets: ['latin'] });
 const geistMono = Geist_Mono({ variable: '--font-geist-mono', subsets: ['latin'] });
@@ -36,11 +35,9 @@ export default async function RootLayout({
           <PrimeProvider>
             <HealthCheck />
             <StoreProvider>
-              <Auth0ProviderWrapper>
-                <DictionaryProvider dictionary={dictionary}>
-                  <ToastProvider>{children}</ToastProvider>
-                </DictionaryProvider>
-              </Auth0ProviderWrapper>
+              <DictionaryProvider dictionary={dictionary}>
+                <ToastProvider>{children}</ToastProvider>
+              </DictionaryProvider>
             </StoreProvider>
           </PrimeProvider>
         </ThemeProvider>

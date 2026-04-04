@@ -11,7 +11,9 @@ import { InputText } from '@primereact/ui/inputtext';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
-export default function SignInForm() {
+export default function SignInForm({ currentLocale }: { currentLocale: string | null }) {
+  const dictionary = useDictionary();
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState<string | string[]>('');
@@ -29,7 +31,7 @@ export default function SignInForm() {
 
       if (response.data) {
         dispatch(setCurrentUser({ user: response.data }));
-        router.push('/');
+        router.push(`/${currentLocale}`);
       }
     } catch (error) {
       if (error && typeof error === 'object' && 'data' in error) {

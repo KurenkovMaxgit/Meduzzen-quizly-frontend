@@ -4,26 +4,63 @@ import { useRef } from 'react';
 import { useAppDispatch } from '@/lib/hooks';
 import { setCurrentUser } from '@/lib/slices/auth-slice';
 import { setActiveCompany } from '@/lib/slices/company-slice';
-import { quizlyApi } from '@/lib/quizly-api';
+import { quizlyApi, setAuth0RefreshFn } from '@/lib/quizly-api';
 import { ApiResponse } from '@/interfaces/common/api-response-interface';
 import { ReturnUser } from '@/types/user/return-user';
 import { ReturnCompany } from '@/types/company/return-company';
+import Cookies from 'js-cookie';
+import {
+  ACCESS_TOKEN_KEY,
+  ACCESS_TOKEN_OPTIONS,
+  REFRESH_TOKEN_KEY,
+  REFRESH_TOKEN_OPTIONS,
+} from '@/utils/cookie-constants';
 
 export default function StoreInitializerClient({
   userResponse,
   companyResponse,
   activeCompanyId,
+  auth0Token,
   children,
+  newAccessToken,
+  newRefreshToken,
 }: {
   userResponse: ApiResponse<ReturnUser> | null;
   companyResponse: ApiResponse<ReturnCompany> | null;
   activeCompanyId?: string;
+  auth0Token?: string;
   children: React.ReactNode;
+  newAccessToken?: string;
+  newRefreshToken?: string;
 }) {
   const initialized = useRef<boolean | null>(null);
   const dispatch = useAppDispatch();
 
+  if (newAccessToken) {
+    Cookies.set(ACCESS_TOKEN_KEY, newAccessToken, ACCESS_TOKEN_OPTIONS);
+  }
+
+  if (newRefreshToken) {
+    Cookies.set(REFRESH_TOKEN_KEY, newRefreshToken, REFRESH_TOKEN_OPTIONS);
+  }
+
   if (initialized.current === null) {
+    if (auth0Token) {
+      Cookies.set(ACCESS_TOKEN_KEY, auth0Token, {
+        expires: 1,
+        secure: true,
+        sameSite: 'strict',
+      });
+
+      setAuth0RefreshFn(async () => {
+        const res = await fetch('/api/auth/token');
+        if (!res.ok) throw new Error('Failed to refresh Auth0 token');
+        const data = await res.json();
+
+        return data.token;
+      });
+    }
+
     const currentUser = userResponse?.data;
     const company = companyResponse?.data;
 

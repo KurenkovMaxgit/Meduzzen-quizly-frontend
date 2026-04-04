@@ -130,6 +130,9 @@ export const quizlyApi = createApi({
     authControllerSignin: build.mutation<ApiResponse<ReturnUser>, SigninPayload>({
       query: (queryArg) => ({ url: `/api/auth/login`, method: 'POST', body: queryArg }),
     }),
+    authControllerLogout: build.mutation<unknown, void>({
+      query: () => ({ url: `/api/auth/logout`, method: 'POST' }),
+    }),
     userControllerFindOneById: build.query<ApiResponse<ReturnUser>, FindOneQuery>({
       query: (queryArg) => ({
         url: `/api/user/${queryArg.id}`,
@@ -182,8 +185,7 @@ export const {
   // useUserControllerDeleteOneByIdMutation,
   useAuthControllerSignupMutation,
   useAuthControllerSigninMutation,
-  // useAuthControllerRefreshMutation,
-  // useAuthControllerLogoutMutation,
+  useAuthControllerLogoutMutation,
   // useCompanyControllerCreateMutation,
   useCompanyControllerFindAllQuery,
   useCompanyControllerFindOneByIdQuery,

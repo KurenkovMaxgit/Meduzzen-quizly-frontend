@@ -10,6 +10,73 @@
     "updatedAt": "Останнє оновлення",
     "loading": "Завантаження..."
   },
+  "toast": {
+    "signup": {
+      "success": {
+        "summary": "Ласкаво просимо до Quizly!",
+        "detail": "Акаунт успішно створено!"
+      }
+    },
+    "company": {
+      "enter": {
+        "success": {
+          "summary": "Успішно",
+          "detail": "Ви успішно увійшли в"
+        }
+      },
+      "exit": {
+        "success": {
+          "summary": "Інфо",
+          "detail": "Ви успішно вийшли з компанії"
+        }
+      }
+    },
+    "profileUpdate": {
+      "success": {
+        "summary": "Успішно",
+        "detail": "Профіль успішно оновлено"
+      }
+    }
+  },
+  "auth": {
+    "or": "Або",
+    "googleButton": "Увійти через Google",
+    "signUp": {
+      "title": "Створити акаунт",
+      "subTitle": "Зареєструйтеся, щоб почати",
+      "firstName": "Ім'я",
+      "lastName": "Прізвище",
+      "email": "Email",
+      "password": "Пароль",
+      "passwordStrength": {
+        "title": "Надійність пароля",
+        "length": "Мінімум 12 символів",
+        "uppercase": "Містить великі літери",
+        "lowercase": "Містить малі літери",
+        "number": "Містить цифри",
+        "special": "Містить спеціальні символи (!@#$...)"
+      },
+      "confirmPassword": "Підтвердження пароля",
+      "signUpButton": "Зареєструватися",
+      "alreadyHaveAccount": "Вже є акаунт?",
+      "validationErrors": {
+        "firstName": "Ім'я має містити від 1 до 250 символів.",
+        "lastName": "Прізвище має містити від 1 до 250 символів.",
+        "email": "Будь ласка, введіть коректну email-адресу.",
+        "password": "Пароль має містити від 8 до 255 символів.",
+        "confirmPassword": "Паролі не збігаються.",
+        "accountAlreadyExists": "Акаунт з таким email вже існує."
+      }
+    },
+    "signIn": {
+      "title": "З поверненням",
+      "subTitle": "Увійдіть до свого акаунту Quizly",
+      "email": "Email",
+      "password": "Пароль",
+      "signInButton": "Увійти",
+      "noAccount": "Ще не маєте акаунту?"
+    }
+  },
   "sidebar": {
     "companiesDropdown": {
       "title": "Компанії",

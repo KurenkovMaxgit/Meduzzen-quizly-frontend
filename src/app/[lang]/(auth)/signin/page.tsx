@@ -20,7 +20,7 @@ export default async function SignInPage({ params }: { params: Promise<{ lang: s
       <div className='text-surface-600 dark:text-surface-400 text-center text-sm'>
         {dictionary.auth.signIn.noAccount}{' '}
         <LocalizedLink href='/signup' className='text-primary font-medium hover:underline'>
-          {dictionary.auth.signIn.signInButton}
+          {dictionary.auth.signUp.signUpButton}
         </LocalizedLink>
       </div>
     </div>

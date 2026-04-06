@@ -52,8 +52,6 @@ export default function UserProfileTab() {
       console.error('Failed to logout from server', error);
     }
 
-    Cookies.remove(ACTIVE_COMPANY_ID_KEY);
-
     window.location.assign(`/auth/logout?returnTo=${window.location.origin}/${currentLocale}`);
   };
 

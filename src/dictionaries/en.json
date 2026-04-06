@@ -99,7 +99,12 @@
     "title": "Profile Details",
     "firstName": "First Name",
     "lastName": "Last Name",
-    "email": "Email Address"
+    "email": "Email Address",
+    "loadingMessage": "Loading profile details...",
+    "userNotFound": {
+      "title": "User not found.",
+      "description": "The user profile you are looking for does not exist ."
+    }
   },
   "about": {
     "title": "About Quizly",

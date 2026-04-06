@@ -1,20 +1,27 @@
-import { currentCompany, mockCompanyList } from '@/mock/company-mock';
-import { mockUser } from '@/mock/user-mock';
 import { DialogRootChangeEvent } from '@primereact/types/shared/dialog';
 import { Avatar } from '@primereact/ui/avatar';
 import { Dialog } from '@primereact/ui/dialog';
 import { Menu } from '@primereact/ui/menu';
 import { Popover } from '@primereact/ui/popover';
-import UniversalList from '../common/list';
-import LocalizedLink from '../common/localized-link';
-import { ChangeCompanyListItem } from '../companies/company-change-list-item';
+import LocalizedLink from '@/components/common/localized-link';
+import { ChangeCompanyListItem } from '@/components/companies/company-change-list-item';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 import { useDictionary } from '@/providers/dictionary-provider';
+import { useAppDispatch, useAppSelector } from '@/lib/hooks';
+import { clearActiveCompany } from '@/lib/slices/company-slice';
+import QueryUniversalList from '../common/list-query';
+import { useCompanyControllerFindAllQuery } from '@/lib/quizly-api';
+import { ReturnCompany } from '@/types/company/return-company';
+import { COMPANIES_ROUTE, PROFILE_ROUTE } from '@/utils/router-constants';
 
 export default function UserProfileTab() {
   const dictionary = useDictionary();
   const pathname = usePathname();
+  const dispatch = useAppDispatch();
+
+  const { user: currentUser } = useAppSelector((state) => state.auth);
+  const { activeCompany: currentCompany } = useAppSelector((state) => state.company);
 
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -30,8 +37,15 @@ export default function UserProfileTab() {
   };
 
   const exitCompany = () => {
-    //TODO: Add handling
+    dispatch(clearActiveCompany());
   };
+
+  const userInitials = currentUser
+    ? (currentUser.firstName[0] + currentUser.lastName[0]).toUpperCase()
+    : 'U';
+  const userFullName = currentUser
+    ? `${currentUser.firstName} ${currentUser.lastName}`
+    : `${dictionary.common.loading}`;
 
   return (
     <div className='relative flex items-center'>
@@ -44,12 +58,12 @@ export default function UserProfileTab() {
       >
         <Popover.Trigger className='hover:bg-surface-100 dark:hover:bg-surface-800 flex w-auto cursor-pointer items-center gap-2 rounded-lg border-none bg-transparent p-2 transition-colors outline-none sm:w-56 sm:gap-3'>
           <Avatar.Root shape='circle' size='normal' className='shrink-0'>
-            <Avatar.Fallback>{mockUser.firstName[0] + mockUser.lastName[0]}</Avatar.Fallback>
+            <Avatar.Fallback>{userInitials}</Avatar.Fallback>
           </Avatar.Root>
 
           <div className='hidden min-w-0 flex-1 flex-col items-start text-left sm:flex'>
             <span className='text-surface-900 dark:text-surface-0 w-full truncate text-sm font-semibold'>
-              {mockUser.firstName + ' ' + mockUser.lastName}
+              {userFullName}
             </span>
 
             <p className='text-surface-300 w-full truncate text-sm'>
@@ -68,11 +82,11 @@ export default function UserProfileTab() {
               <Popover.Content className='p-0!'>
                 <div className='border-surface-200 dark:border-surface-700 mx-1 mt-3 mb-2 flex flex-col gap-1 border-b pb-2'>
                   <span className='text-surface-900 dark:text-surface-0 text-md w-full truncate px-2 font-semibold'>
-                    {`${mockUser.firstName} ${mockUser.lastName}`}
+                    {`${currentUser?.firstName} ${currentUser?.lastName}`}
                   </span>
 
                   <LocalizedLink
-                    href={currentCompany ? `/companies/${currentCompany.id}` : '#'}
+                    href={currentCompany ? `${COMPANIES_ROUTE}/${currentCompany.id}` : '#'}
                     onClick={() => setIsPopoverOpen(false)}
                     className='hover:bg-surface-100 dark:hover:bg-surface-800 text-surface-600 dark:text-surface-300 flex w-full items-center justify-between rounded-md px-2 py-1.5 text-sm transition-colors'
                   >
@@ -107,7 +121,7 @@ export default function UserProfileTab() {
 
                     <Menu.Item className='m-0! p-0!'>
                       <LocalizedLink
-                        href={`/profile/${mockUser?.id || ''}`}
+                        href={`${PROFILE_ROUTE}/${currentUser?.id || ''}`}
                         onClick={() => setIsPopoverOpen(false)}
                         className='text-surface-900 dark:text-surface-0 hover:bg-surface-100 dark:hover:bg-surface-800 flex w-full items-center gap-3 rounded-md px-3 py-2 transition-colors'
                       >
@@ -177,12 +191,20 @@ export default function UserProfileTab() {
               return (
                 <div className='flex max-h-[75vh] flex-col gap-4 pt-3 sm:gap-6'>
                   <div className='mx-auto w-full max-w-5xl'>
-                    <UniversalList
-                      className='bg-surface-0 dark:bg-surface-900 w-full rounded-2xl'
-                      items={mockCompanyList}
-                      itemTemplate={ChangeCompanyListItem}
-                      isLoading={false}
-                      emptyMessage='No companies found.'
+                    <QueryUniversalList
+                      queryHook={useCompanyControllerFindAllQuery}
+                      queryParams={{
+                        where: {
+                          members: { user: { id: currentUser?.id } },
+                        },
+                        relations: 'members.user',
+                      }}
+                      paginator={true}
+                      rows={12}
+                      itemTemplate={(company: ReturnCompany) => (
+                        <ChangeCompanyListItem company={company} />
+                      )}
+                      emptyMessage={dictionary.companies.emptyMessage}
                     />
                   </div>
                 </div>

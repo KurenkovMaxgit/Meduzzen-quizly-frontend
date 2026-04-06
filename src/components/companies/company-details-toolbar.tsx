@@ -1,14 +1,15 @@
 'use client';
 
-import { currentCompany, mockCompanyMembers, mockCompanyWithMembers } from '@/mock/company-mock';
+import { currentCompany, mockCompanyMembers } from '@/mock/company-mock';
 import { Button } from '@primereact/ui/button';
 import UniversalList from '../common/list';
 import { CompanyMemberListItem } from './company-members-list-item';
 import { mockUser } from '@/mock/user-mock';
 import { CompanyRole } from '@/utils/enums';
 import { useDictionary } from '@/providers/dictionary-provider';
+import { ReturnCompany } from '@/types/company/return-company';
 
-export default function CompanyDetailsToolbar(params: { company: typeof mockCompanyWithMembers }) {
+export default function CompanyDetailsToolbar(params: { company: ReturnCompany }) {
   const dictionary = useDictionary();
 
   const handleExitCompany = async () => {
@@ -34,8 +35,8 @@ export default function CompanyDetailsToolbar(params: { company: typeof mockComp
         isLoading={false}
         emptyMessage={dictionary.companies.emptyMessage}
         dialog
-        buttonLabel={dictionary.companies.details.membersList.buttonLabel}
-        buttonIcon='pi pi-users'
+        dialogButtonLabel={dictionary.companies.details.membersList.buttonLabel}
+        dialogButtonIcon='pi pi-users'
       >
         {/* TODO: Add ListHeader with members management tools*/}
       </UniversalList>
@@ -65,7 +66,7 @@ export default function CompanyDetailsToolbar(params: { company: typeof mockComp
           {dictionary.companies.actions.exitCompany}
         </Button>
       ) : (
-        <Button severity='success' onClick={() => handleEnterCompany()}>
+        <Button severity='success' variant='outlined' onClick={() => handleEnterCompany()}>
           <i className='pi pi-sign-in' />
           {dictionary.companies.actions.enterCompany}
         </Button>

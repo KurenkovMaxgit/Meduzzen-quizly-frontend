@@ -1,18 +1,44 @@
 'use client';
 
-import { currentCompany, mockCompany } from '@/mock/company-mock';
 import { useDictionary } from '@/providers/dictionary-provider';
+import { ReturnCompany } from '@/types/company/return-company';
+import { useAppDispatch, useAppSelector } from '@/lib/hooks';
+import { setActiveCompany } from '@/lib/slices/company-slice';
 import { Button } from '@primereact/ui/button';
 import LocalizedLink from '../common/localized-link';
+import { useRouter } from 'next/navigation';
+import { useGlobalToast } from '@/providers/toast-provider';
+import Cookies from 'js-cookie';
+import { ACTIVE_COMPANY_ID_KEY } from '@/utils/cookie-constants';
+import { COMPANIES_ROUTE } from '@/utils/router-constants';
 
-export const ChangeCompanyListItem = (company: typeof mockCompany) => {
+export const ChangeCompanyListItem = ({ company }: { company: ReturnCompany }) => {
   const dictionary = useDictionary();
+  const dispatch = useAppDispatch();
+  const router = useRouter();
+  const toast = useGlobalToast();
 
-  const logInCompany = async () => {
-    //TODO: Add handling
+  const { user: currentUser } = useAppSelector((state) => state.auth);
+  const { activeCompany: currentCompany } = useAppSelector((state) => state.company);
+
+  const enterCompany = async () => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { members, ...companyWithoutMembers } = company;
+    dispatch(
+      setActiveCompany({
+        company: companyWithoutMembers,
+        role: company.members.find((member) => member.user.id === currentUser?.id)!.role,
+      }),
+    );
+
+    Cookies.set(ACTIVE_COMPANY_ID_KEY, company.id, { expires: 7 });
+
+    router.push(`${COMPANIES_ROUTE}/${company.id}`);
+
+    toast.showToast('success', 'Success', `You successfully entered ${company.name}`);
   };
 
-  const logOutOfCompany = async () => {
+  const exitCompany = async () => {
     //TODO: Add handling
   };
 
@@ -29,7 +55,7 @@ export const ChangeCompanyListItem = (company: typeof mockCompany) => {
         </span>
       </div>
       <div className='flex shrink-0 justify-end gap-4 sm:ml-auto sm:items-center'>
-        <LocalizedLink href={`/companies/${company.id}`}>
+        <LocalizedLink href={`${COMPANIES_ROUTE}/${company.id}`}>
           <Button
             rounded
             variant='outlined'
@@ -45,7 +71,7 @@ export const ChangeCompanyListItem = (company: typeof mockCompany) => {
             rounded
             variant='outlined'
             severity='danger'
-            onClick={() => logOutOfCompany()}
+            onClick={() => exitCompany()}
             title={dictionary.companies.actions.exitCompany}
           >
             <i className='pi pi-sign-out' />
@@ -55,7 +81,7 @@ export const ChangeCompanyListItem = (company: typeof mockCompany) => {
             rounded
             variant='outlined'
             severity='success'
-            onClick={() => logInCompany()}
+            onClick={() => enterCompany()}
             title={dictionary.companies.actions.enterCompany}
           >
             <i className='pi pi-sign-in' />

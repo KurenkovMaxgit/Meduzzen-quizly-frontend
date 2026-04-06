@@ -6,6 +6,7 @@ export const mockUser = {
   firstName: 'John',
   lastName: 'Doe',
   role: UserRole.USER,
-  createdAt: new Date(),
-  updatedAt: new Date(),
+  memberships: [],
+  createdAt: new Date().toISOString(),
+  updatedAt: new Date().toISOString(),
 };

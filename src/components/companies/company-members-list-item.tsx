@@ -8,6 +8,7 @@ import { TagProps } from '@primereact/types/shared/tag';
 import LocalizedLink from '../common/localized-link';
 import { mockUser } from '@/mock/user-mock';
 import { useDictionary } from '@/providers/dictionary-provider';
+import { PROFILE_ROUTE } from '@/utils/router-constants';
 
 const tagProps: { [key in CompanyRole]: { props: TagProps } } = {
   [CompanyRole.OWNER]: { props: { rounded: true } },
@@ -49,7 +50,7 @@ export const CompanyMemberListItem = (companyUser: typeof mockCompanyUser) => {
             <i className='pi pi-user-minus' />
           </Button>
         ) : null}
-        <LocalizedLink href={`/profile/${companyUser.user.id}`}>
+        <LocalizedLink href={`${PROFILE_ROUTE}/${companyUser.user.id}`}>
           <Button
             rounded
             variant='outlined'

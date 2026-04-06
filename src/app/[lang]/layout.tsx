@@ -6,6 +6,10 @@ import '@/app/globals.css';
 import SidebarLayout from '@/components/layout/sidebar-layout';
 import { getDictionary } from '@/utils/get-dictionary';
 import { DictionaryProvider } from '@/providers/dictionary-provider';
+import StoreProvider from '@/providers/store-provider';
+import HealthCheck from '@/components/common/health-check';
+import { ToastProvider } from '@/providers/toast-provider';
+import StoreInitializer from '@/components/common/store-initializer';
 
 const geistSans = Geist({ variable: '--font-geist-sans', subsets: ['latin'] });
 const geistMono = Geist_Mono({ variable: '--font-geist-mono', subsets: ['latin'] });
@@ -31,9 +35,15 @@ export default async function RootLayout({
           disableTransitionOnChange
         >
           <PrimeProvider>
-            <DictionaryProvider dictionary={dictionary}>
-              <SidebarLayout>{children}</SidebarLayout>
-            </DictionaryProvider>
+            <HealthCheck />
+            <StoreProvider>
+              <StoreInitializer />
+              <DictionaryProvider dictionary={dictionary}>
+                <ToastProvider>
+                  <SidebarLayout>{children}</SidebarLayout>
+                </ToastProvider>
+              </DictionaryProvider>
+            </StoreProvider>
           </PrimeProvider>
         </ThemeProvider>
       </body>

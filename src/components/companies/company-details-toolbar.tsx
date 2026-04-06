@@ -73,7 +73,7 @@ export function CompanyDetailsToolbar(params: { company: ReturnCompany }) {
           {dictionary.companies.actions.exitCompany}
         </Button>
       ) : (
-        <Button severity='success' variant='outlined' onClick={() => handleEnterCompany()}>
+        <Button severity='success' variant='outlined' onClick={() => enterCompany(company)}>
           <i className='pi pi-sign-in' />
           {dictionary.companies.actions.enterCompany}
         </Button>

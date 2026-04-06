@@ -4,7 +4,7 @@ import { HttpExceptionResponse } from '@/interfaces/common/api-exception-interfa
 import { useAppDispatch } from '@/lib/hooks';
 import { useAuthControllerSigninMutation } from '@/lib/quizly-api';
 import { setCurrentUser } from '@/lib/slices/auth-slice';
-import { useDictionary } from '@/providers/dictionary-provider';
+import { useCurrentLocale, useDictionary } from '@/providers/dictionary-provider';
 import { Button } from '@primereact/ui/button';
 import { Divider } from '@primereact/ui/divider';
 import { FloatLabel } from '@primereact/ui/floatlabel';
@@ -12,8 +12,9 @@ import { InputText } from '@primereact/ui/inputtext';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
-export default function SignInForm({ currentLocale }: { currentLocale: string | null }) {
+export default function SignInForm() {
   const dictionary = useDictionary();
+  const currentLocale = useCurrentLocale();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');

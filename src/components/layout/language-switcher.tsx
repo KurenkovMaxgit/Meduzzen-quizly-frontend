@@ -3,10 +3,12 @@
 import { Popover } from '@primereact/ui/popover';
 import { Menu } from '@primereact/ui/menu';
 import Image from 'next/image';
-import { usePathname, useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { startTransition, useState } from 'react';
 import { usePopoverOpenChangeEvent } from '@primereact/types/shared/popover';
 import { Button } from '@primereact/ui/button';
+import { useCurrentLocale } from '@/providers/dictionary-provider';
+import Cookies from 'js-cookie';
+import { useRouter } from 'next/navigation';
 
 const LANGUAGES = [
   { code: 'en', label: 'English', flagUrl: 'https://flagcdn.com/gb.svg' },
@@ -15,27 +17,18 @@ const LANGUAGES = [
 
 export default function LanguageSwitcher() {
   const router = useRouter();
-  const pathname = usePathname();
+  const currentLocale = useCurrentLocale();
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
 
-  const currentPathSegment = pathname.split('/')[1];
-  const isLangInUrl = LANGUAGES.some((lang) => lang.code === currentPathSegment);
-
-  const currentLangCode = isLangInUrl ? currentPathSegment : 'en';
-  const currentLang = LANGUAGES.find((lang) => lang.code === currentLangCode) || LANGUAGES[0];
+  const currentLang = LANGUAGES.find((lang) => lang.code === currentLocale) || LANGUAGES[0];
 
   const changeLanguage = (code: string) => {
-    const segments = pathname.split('/');
-
-    if (isLangInUrl) {
-      segments[1] = code;
-    } else {
-      segments.splice(1, 0, code);
-    }
-
-    const newPath = segments.join('/');
+    Cookies.set('QUIZLY_LANGUAGE', code, { path: '/' });
     setIsPopoverOpen(false);
-    router.push(newPath);
+
+    startTransition(() => {
+      router.refresh();
+    });
   };
 
   return (

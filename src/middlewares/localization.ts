@@ -4,47 +4,30 @@ import { NextResponse } from 'next/server';
 const locales = ['en', 'uk'];
 const defaultLocale = 'en';
 
-function detectLocale(request: NextRequest): string {
-  const { pathname } = request.nextUrl;
-  const host = request.headers.get('host') || '';
-
-  const localeFromPath = locales.find(
-    (locale) => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`,
-  );
-  if (localeFromPath) return localeFromPath;
-
-  if (process.env.NODE_ENV === 'development' && host.includes('.ua')) {
-    return 'uk';
-  }
-
-  return defaultLocale;
-}
-
 export function handleLocalization(request: NextRequest) {
   const url = request.nextUrl;
-  const currentLocale = detectLocale(request);
+  const host = request.headers.get('host') || '';
 
-  const requestHeaders = new Headers(request.headers);
-  requestHeaders.set('x-current-lang', currentLocale);
-
-  const pathnameHasLocale = locales.some(
+  const localeInPath = locales.find(
     (locale) => url.pathname.startsWith(`/${locale}/`) || url.pathname === `/${locale}`,
   );
 
-  if (pathnameHasLocale) {
-    return NextResponse.next({
-      request: { headers: requestHeaders },
-    });
+  if (localeInPath) {
+    const cleanPath = url.pathname.replace(`/${localeInPath}`, '') || '/';
+
+    return NextResponse.redirect(new URL(`${cleanPath}${url.search}`, request.url));
   }
 
-  if (process.env.NODE_ENV === 'development') {
-    return NextResponse.rewrite(
-      new URL(`/${currentLocale}${url.pathname}${url.search}`, request.url),
-      { request: { headers: requestHeaders } },
-    );
+  let currentLocale = defaultLocale;
+  const cookieLocale = request.cookies.get('QUIZLY_LANGUAGE')?.value;
+
+  if (cookieLocale && locales.includes(cookieLocale)) {
+    currentLocale = cookieLocale;
+  } else if (process.env.NODE_ENV === 'development' && host.includes('.ua')) {
+    currentLocale = 'uk';
   }
 
-  url.pathname = `/${defaultLocale}${url.pathname}`;
+  const rewriteUrl = new URL(`/${currentLocale}${url.pathname}${url.search}`, request.url);
 
-  return NextResponse.redirect(url);
+  return NextResponse.rewrite(rewriteUrl);
 }

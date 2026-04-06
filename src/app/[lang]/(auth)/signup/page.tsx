@@ -1,7 +1,7 @@
 import LocalizedLink from '@/components/common/localized-link';
 import SignupForm from '@/components/auth/signup-form';
-import GoogleLogin from '@/components/auth/google-auth';
 import { getDictionary } from '@/utils/get-dictionary';
+import GoogleLoginButton from '@/components/auth/google-button';
 
 export default async function SignUpPage({ params }: { params: Promise<{ lang: string }> }) {
   const dictionary = await getDictionary((await params).lang);
@@ -16,7 +16,7 @@ export default async function SignUpPage({ params }: { params: Promise<{ lang: s
 
       <SignupForm />
 
-      <GoogleLogin />
+      <GoogleLoginButton />
 
       <div className='text-surface-600 dark:text-surface-400 text-center text-sm'>
         {dictionary.auth.signUp.alreadyHaveAccount}{' '}

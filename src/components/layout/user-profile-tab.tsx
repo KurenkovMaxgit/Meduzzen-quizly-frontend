@@ -7,7 +7,7 @@ import LocalizedLink from '@/components/common/localized-link';
 import { ChangeCompanyListItem } from '@/components/companies/company-change-list-item';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
-import { useDictionary } from '@/providers/dictionary-provider';
+import { useCurrentLocale, useDictionary } from '@/providers/dictionary-provider';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { clearActiveCompany } from '@/lib/slices/company-slice';
 import QueryUniversalList from '../common/list-query';
@@ -27,6 +27,7 @@ export default function UserProfileTab() {
   const pathname = usePathname();
   const dispatch = useAppDispatch();
   const toast = useGlobalToast();
+  const currentLocale = useCurrentLocale();
 
   const { user: currentUser } = useAppSelector((state) => state.auth);
   const { activeCompany: currentCompany } = useAppSelector((state) => state.company);
@@ -53,7 +54,7 @@ export default function UserProfileTab() {
 
     Cookies.remove(ACTIVE_COMPANY_ID_KEY);
 
-    window.location.assign('/auth/logout');
+    window.location.assign(`/auth/logout?returnTo=${window.location.origin}/${currentLocale}`);
   };
 
   const exitCompany = () => {
@@ -171,16 +172,14 @@ export default function UserProfileTab() {
                     </Menu.Item>
 
                     <Menu.Item className='m-0! p-0!'>
-                      <LocalizedLink href={'/'}>
-                        <button
-                          type='button'
-                          className='hover:bg-surface-100 dark:hover:bg-surface-800 flex w-full items-center gap-3 rounded-md border-none bg-transparent px-3 py-2 text-left text-red-600 transition-colors outline-none dark:text-red-400'
-                          onClick={() => signOut()}
-                        >
-                          <i className='pi pi-power-off opacity-80' />
-                          {dictionary.sidebar.profileDropdown.signOut}
-                        </button>
-                      </LocalizedLink>
+                      <button
+                        type='button'
+                        className='hover:bg-surface-100 dark:hover:bg-surface-800 flex w-full items-center gap-3 rounded-md border-none bg-transparent px-3 py-2 text-left text-red-600 transition-colors outline-none dark:text-red-400'
+                        onClick={() => signOut()}
+                      >
+                        <i className='pi pi-power-off opacity-80' />
+                        {dictionary.sidebar.profileDropdown.signOut}
+                      </button>
                     </Menu.Item>
                   </Menu.List>
                 </Menu.Root>

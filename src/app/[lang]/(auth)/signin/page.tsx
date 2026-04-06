@@ -1,13 +1,10 @@
 import LocalizedLink from '@/components/common/localized-link';
-import GoogleLogin from '@/components/auth/google-auth';
 import SignInForm from '@/components/auth/signin-form';
 import { getDictionary } from '@/utils/get-dictionary';
-import { headers } from 'next/headers';
+import GoogleLoginButton from '@/components/auth/google-button';
 
 export default async function SignInPage({ params }: { params: Promise<{ lang: string }> }) {
   const dictionary = await getDictionary((await params).lang);
-
-  const currentLocale = (await headers()).get('x-current-lang');
 
   return (
     <div className='flex w-full flex-col gap-5'>
@@ -16,9 +13,9 @@ export default async function SignInPage({ params }: { params: Promise<{ lang: s
           {dictionary.auth.signIn.title}
         </h1>
       </div>
-      <SignInForm currentLocale={currentLocale} />
+      <SignInForm />
 
-      <GoogleLogin />
+      <GoogleLoginButton />
 
       <div className='text-surface-600 dark:text-surface-400 text-center text-sm'>
         {dictionary.auth.signIn.noAccount}{' '}

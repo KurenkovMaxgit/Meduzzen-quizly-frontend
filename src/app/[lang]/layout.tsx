@@ -35,7 +35,7 @@ export default async function RootLayout({
           <PrimeProvider>
             <HealthCheck />
             <StoreProvider>
-              <DictionaryProvider dictionary={dictionary}>
+              <DictionaryProvider dictionary={dictionary} locale={resolvedParams.lang}>
                 <ToastProvider>{children}</ToastProvider>
               </DictionaryProvider>
             </StoreProvider>

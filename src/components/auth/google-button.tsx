@@ -1,11 +1,12 @@
 'use client';
 
-import { useDictionary } from '@/providers/dictionary-provider';
+import { useCurrentLocale, useDictionary } from '@/providers/dictionary-provider';
 import { Button } from '@primereact/ui/button';
 import LocalizedLink from '../common/localized-link';
 
-export default function GoogleLoginButton({ currentLocale }: { currentLocale: string | null }) {
+export default function GoogleLoginButton() {
   const dictionary = useDictionary();
+  const currentLocale = useCurrentLocale();
 
   const handleLoginClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();

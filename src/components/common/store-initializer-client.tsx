@@ -18,7 +18,7 @@ export default function StoreInitializerClient({
   companyResponse: ApiResponse<ReturnCompany>;
   activeCompanyId?: string;
 }) {
-  const initialized = useRef(false);
+  const initialized = useRef<boolean | null>(null);
   const dispatch = useAppDispatch();
 
   if (initialized.current === null) {

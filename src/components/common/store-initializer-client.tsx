@@ -36,15 +36,15 @@ export default function StoreInitializerClient({
   const initialized = useRef<boolean | null>(null);
   const dispatch = useAppDispatch();
 
-  if (newAccessToken) {
-    Cookies.set(ACCESS_TOKEN_KEY, newAccessToken, ACCESS_TOKEN_OPTIONS);
-  }
-
-  if (newRefreshToken) {
-    Cookies.set(REFRESH_TOKEN_KEY, newRefreshToken, REFRESH_TOKEN_OPTIONS);
-  }
-
   if (initialized.current === null) {
+    if (newAccessToken) {
+      Cookies.set(ACCESS_TOKEN_KEY, newAccessToken, ACCESS_TOKEN_OPTIONS);
+    }
+
+    if (newRefreshToken) {
+      Cookies.set(REFRESH_TOKEN_KEY, newRefreshToken, REFRESH_TOKEN_OPTIONS);
+    }
+
     if (auth0Token) {
       Cookies.set(ACCESS_TOKEN_KEY, auth0Token, {
         expires: 1,

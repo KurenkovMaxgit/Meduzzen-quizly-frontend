@@ -16,11 +16,28 @@
       "success": { "summary": "Welcome to Quizly!", "detail": "Account created successfully!" }
     },
     "company": {
-      "enter": { "success": { "summary": "Success", "detail": "You successfully entered" } },
-      "exit": { "success": { "summary": "Info", "detail": "Company exited" } }
+      "enter": { "success": { "summary": "Success!", "detail": "You successfully entered" } },
+      "exit": { "success": { "summary": "Info", "detail": "Company exited" } },
+      "create": {
+        "success": { "summary": "Success!", "detail": "Company created successfully" }
+      },
+      "update": {
+        "success": { "summary": "Success!", "detail": "Company updated successfully" }
+      },
+      "membershipUpdate": {
+        "success": { "summary": "Success!", "detail": "Membership updated successfully" }
+      },
+      "delete": {
+        "success": { "summary": "Success!", "detail": "Company deleted successfully" }
+      },
+      "leave": {
+        "success": { "summary": "Success!", "detail": "Company left successfully" }
+      }
     },
-    "profileUpdate": {
-      "success": { "summary": "Success", "detail": "Profile updated successfully" }
+    "profile": {
+      "update": {
+        "success": { "summary": "Success!", "detail": "Profile updated successfully" }
+      }
     }
   },
   "auth": {
@@ -123,7 +140,10 @@
       "viewDetails": "View company details",
       "enterCompany": "Enter Company",
       "exitCompany": "Exit Company",
+      "leaveCompany": "Leave Company",
       "deleteCompany": "Delete Company",
+      "deleteCompanyConfirmation": "Are you sure you want to delete this company?",
+      "editCompany": "Edit Company",
       "sendRequest": "Send membership request"
     },
     "details": {
@@ -139,6 +159,12 @@
     },
     "editDialog": {
       "title": "Edit Company",
+      "name": "Company Name",
+      "description": "Description",
+      "visibility": "Company visibility"
+    },
+    "createDialog": {
+      "title": "Create Company",
       "name": "Company Name",
       "description": "Description",
       "visibility": "Company visibility"

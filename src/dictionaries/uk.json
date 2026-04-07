@@ -21,21 +21,32 @@
     "company": {
       "enter": {
         "success": {
-          "summary": "Успішно",
+          "summary": "Успіх!",
           "detail": "Ви успішно увійшли в"
         }
       },
       "exit": {
-        "success": {
-          "summary": "Інфо",
-          "detail": "Ви успішно вийшли з компанії"
-        }
+        "success": { "summary": "Інфо", "detail": "Ви успішно вийшли з компанії" }
+      },
+      "create": {
+        "success": { "summary": "Успіх!", "detail": "Компанію успішно створено" }
+      },
+      "update": {
+        "success": { "summary": "Успіх!", "detail": "Компанію успішно оновлено" }
+      },
+      "delete": {
+        "success": { "summary": "Успіх!", "detail": "Компанію успішно видалено" }
+      },
+      "membershipUpdate": {
+        "success": { "summary": "Успіх!", "detail": "Членство успішно оновлено" }
+      },
+      "leave": {
+        "success": { "summary": "Успіх!", "detail": "Компанію успішно покинуто" }
       }
     },
-    "profileUpdate": {
-      "success": {
-        "summary": "Успішно",
-        "detail": "Профіль успішно оновлено"
+    "profile": {
+      "update": {
+        "success": { "summary": "Успіх!", "detail": "Профіль успішно оновлено" }
       }
     }
   },
@@ -139,7 +150,10 @@
       "viewDetails": "Переглянути деталі компанії",
       "enterCompany": "Увійти в компанію",
       "exitCompany": "Вийти з компанії",
-      "deleteCompany": "Видалити компанію",
+      "leaveCompany": "Покинути компанію",
+      "deleteCompany": "Видалити",
+      "deleteCompanyConfirmation": "Ви впевнені, що хочете видалити цю компанію?",
+      "editCompany": "Редагувати компанію",
       "sendRequest": "Надіслати запит на участь"
     },
     "details": {
@@ -155,6 +169,12 @@
     },
     "editDialog": {
       "title": "Редагувати",
+      "name": "Назва компанії",
+      "description": "Опис",
+      "visibility": "Видимість компанії"
+    },
+    "createDialog": {
+      "title": "Створити",
       "name": "Назва компанії",
       "description": "Опис",
       "visibility": "Видимість компанії"

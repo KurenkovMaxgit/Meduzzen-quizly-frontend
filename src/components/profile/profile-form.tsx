@@ -66,7 +66,7 @@ export function ProfileForm({ userId }: { userId: string }) {
         dispatch(setCurrentUser({ user: result.data }));
       }
 
-      toast.showToast('success', dictionary.toast.profileUpdate.success);
+      toast.showToast('success', dictionary.toast.profile.update.success);
     } catch (error) {
       console.error('Failed to update profile:', error);
     }
@@ -144,9 +144,10 @@ export function ProfileForm({ userId }: { userId: string }) {
         <Button
           icon='pi pi-arrow-left'
           severity='secondary'
-          variant='outlined'
+          variant='text'
           onClick={() => router.back()}
         >
+          <i className='pi pi-arrow-left' />
           {dictionary.common.back}
         </Button>
       </div>
@@ -155,6 +156,15 @@ export function ProfileForm({ userId }: { userId: string }) {
 
   return (
     <div className='mx-auto max-w-4xl space-y-6'>
+      <Button
+        icon='pi pi-arrow-left'
+        severity='secondary'
+        variant='text'
+        onClick={() => router.back()}
+      >
+        <i className='pi pi-arrow-left' />
+        {dictionary.common.back}
+      </Button>
       <div className='mb-8 flex items-center gap-4'>
         <div className='bg-primary text-surface-0 flex h-16 w-16 items-center justify-center rounded-full text-2xl font-bold uppercase'>
           {user.firstName[0]}

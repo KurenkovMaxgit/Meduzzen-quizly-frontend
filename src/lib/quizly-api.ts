@@ -16,6 +16,8 @@ import { CreateUser } from '@/types/user/create-user';
 import { SigninPayload } from '@/types/auth/signin-payload';
 import Cookies from 'js-cookie';
 import { ACCESS_TOKEN_KEY } from '@/utils/cookie-constants';
+import { UpdateCompany } from '@/types/company/update-company';
+import { CreateCompany } from '@/types/company/create-company';
 
 export let auth0RefreshTokenFn: (() => Promise<string>) | null = null;
 
@@ -151,6 +153,13 @@ export const quizlyApi = createApi({
     userControllerDeleteOneById: build.mutation<ApiResponse<unknown>, void>({
       query: () => ({ url: `/api/user`, method: 'DELETE' }),
     }),
+    companyControllerCreate: build.mutation<ApiResponse<ReturnCompany>, CreateCompany>({
+      query: (queryArg) => ({
+        url: `/api/company`,
+        method: 'POST',
+        body: queryArg,
+      }),
+    }),
     companyControllerFindOneById: build.query<ApiResponse<ReturnCompany>, FindOneQuery>({
       query: (queryArg) => ({
         url: `/api/company/${queryArg.id}`,
@@ -175,7 +184,27 @@ export const quizlyApi = createApi({
         },
       }),
     }),
+    companyControllerUpdateOneById: build.mutation<ApiResponse<ReturnCompany>, UpdateCompany>({
+      query: ({ id, ...body }) => ({
+        url: `/api/company/${id}`,
+        method: 'PATCH',
+        body: body,
+      }),
+    }),
+    companyControllerDeleteOneById: build.mutation<ApiResponse<unknown>, string>({
+      query: (id) => ({
+        url: `/api/company/${id}`,
+        method: 'DELETE',
+      }),
+    }),
+    companyControllerLeaveCompany: build.mutation<ApiResponse<unknown>, string>({
+      query: (companyId) => ({
+        url: `/api/company/leave/${companyId}`,
+        method: 'DELETE',
+      }),
+    }),
   }),
+  refetchOnReconnect: true,
 });
 
 export const {
@@ -187,14 +216,14 @@ export const {
   useAuthControllerSignupMutation,
   useAuthControllerSigninMutation,
   useAuthControllerLogoutMutation,
-  // useCompanyControllerCreateMutation,
+  useCompanyControllerCreateMutation,
   useCompanyControllerFindAllQuery,
   useCompanyControllerFindOneByIdQuery,
-  // useCompanyControllerUpdateOneByIdMutation,
-  // useCompanyControllerDeleteOneByIdMutation,
+  useCompanyControllerUpdateOneByIdMutation,
+  useCompanyControllerDeleteOneByIdMutation,
   // useCompanyControllerUpdateRolesMutation,
   // useCompanyControllerAddNewOwnerMutation,
-  // useCompanyControllerLeaveCompanyMutation,
+  useCompanyControllerLeaveCompanyMutation,
   // useCompanyControllerKickUsersMutation,
   // useActionControllerInviteUserMutation,
   // useActionControllerCancelInviteMutation,

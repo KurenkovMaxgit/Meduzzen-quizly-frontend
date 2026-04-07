@@ -5,9 +5,19 @@ import { useMessages } from 'next-intl';
 import { Button } from '@primereact/ui/button';
 import { Link } from '@/i18n/routing';
 import { COMPANIES_ROUTE } from '@/utils/router-constants';
+import { ReturnCompany } from '@/types/company/return-company';
+import { useAppSelector } from '@/lib/hooks';
+import { useCompanySession } from '@/hooks/use-company-session';
 
-export const CompanyListItem = (company: typeof mockCompany) => {
+export const CompanyListItem = (company: ReturnCompany) => {
   const dictionary = useMessages();
+
+  const currentUser = useAppSelector((state) => state.auth.user);
+  const { activeCompany: currentCompany } = useAppSelector((state) => state.company);
+
+  const isMember = company.members?.some((member) => member.user.id === currentUser?.id);
+
+  const { enterCompany, exitCompany } = useCompanySession();
 
   const handleSendRequest = async () => {
     //TODO: Add handling
@@ -37,15 +47,41 @@ export const CompanyListItem = (company: typeof mockCompany) => {
             <i className='pi pi-eye' />
           </Button>
         </Link>
-        <Button
-          rounded
-          variant='outlined'
-          severity='success'
-          onClick={() => handleSendRequest()}
-          title={dictionary.companies.actions.sendRequest}
-        >
-          <i className='pi pi-envelope' />
-        </Button>
+        {isMember ? (
+          company.id === currentCompany?.id ? (
+            <Button
+              rounded
+              variant='outlined'
+              severity='danger'
+              onClick={() => exitCompany()}
+              title={dictionary.companies.actions.exitCompany}
+            >
+              <i className='pi pi-sign-out' />
+            </Button>
+          ) : (
+            <Link href={`${COMPANIES_ROUTE}/${company.id}`}>
+              <Button
+                rounded
+                variant='outlined'
+                severity='success'
+                onClick={() => enterCompany(company)}
+                title={dictionary.companies.actions.enterCompany}
+              >
+                <i className='pi pi-sign-in' />
+              </Button>
+            </Link>
+          )
+        ) : (
+          <Button
+            rounded
+            variant='outlined'
+            severity='info'
+            onClick={() => handleSendRequest()}
+            title={dictionary.companies.actions.sendRequest}
+          >
+            <i className='pi pi-envelope' />
+          </Button>
+        )}
       </div>
     </div>
   );

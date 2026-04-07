@@ -1,4 +1,3 @@
-import { currentCompany } from '@/mock/company-mock';
 import { Menu } from '@primereact/ui/menu';
 import { Link } from '@/i18n/routing';
 import { useMessages } from 'next-intl';
@@ -8,9 +7,12 @@ import {
   HOME_ROUTE,
   MEMBERSHIPS_ROUTE,
 } from '@/utils/router-constants';
+import { useAppSelector } from '@/lib/hooks';
 
 export function SidebarContent() {
   const dictionary = useMessages();
+
+  const currentCompany = useAppSelector((state) => state.company.activeCompany);
 
   return (
     <>

@@ -23,6 +23,8 @@ export interface ListHeaderProps {
   buttonLabel?: string;
   onButtonClick?: () => void;
   searchbar?: boolean;
+  searchValue?: string;
+  setSearchValue?: (value: string) => void;
 }
 
 export interface QueryUniversalListProps<T, Q> extends Omit<

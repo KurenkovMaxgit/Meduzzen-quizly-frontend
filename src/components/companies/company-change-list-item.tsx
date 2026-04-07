@@ -3,7 +3,6 @@
 import { useMessages } from 'next-intl';
 import { ReturnCompany } from '@/types/company/return-company';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
-import { clearActiveCompany, setActiveCompany } from '@/lib/slices/company-slice';
 import { Button } from '@primereact/ui/button';
 import { Link } from '@/i18n/routing';
 import { useGlobalToast } from '@/providers/toast-provider';
@@ -17,7 +16,6 @@ export const ChangeCompanyListItem = ({ company }: { company: ReturnCompany }) =
   const dispatch = useAppDispatch();
   const toast = useGlobalToast();
 
-  const { user: currentUser } = useAppSelector((state) => state.auth);
   const { activeCompany: currentCompany } = useAppSelector((state) => state.company);
 
   const { enterCompany, exitCompany } = useCompanySession();

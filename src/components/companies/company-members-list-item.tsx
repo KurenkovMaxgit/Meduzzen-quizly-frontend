@@ -9,6 +9,7 @@ import { Link } from '@/i18n/routing';
 import { mockUser } from '@/mock/user-mock';
 import { useMessages } from 'next-intl';
 import { PROFILE_ROUTE } from '@/utils/router-constants';
+import { CompanyUser } from '@/entities/company-user.entity';
 
 const tagProps: { [key in CompanyRole]: { props: TagProps } } = {
   [CompanyRole.OWNER]: { props: { rounded: true } },
@@ -16,7 +17,7 @@ const tagProps: { [key in CompanyRole]: { props: TagProps } } = {
   [CompanyRole.MEMBER]: { props: { severity: 'secondary', rounded: true } },
 };
 
-export const CompanyMemberListItem = (companyUser: typeof mockCompanyUser) => {
+export const CompanyMemberListItem = (companyUser: CompanyUser) => {
   const dictionary = useMessages();
 
   const handleKickUser = async () => {

@@ -8,21 +8,26 @@ export function handleLocalization(request: NextRequest) {
   const url = request.nextUrl;
   const host = request.headers.get('host') || '';
 
-  const pathnameHasLocale = locales.some(
+  const localeInPath = locales.find(
     (locale) => url.pathname.startsWith(`/${locale}/`) || url.pathname === `/${locale}`,
   );
 
-  if (pathnameHasLocale) return NextResponse.next();
+  if (localeInPath) {
+    const cleanPath = url.pathname.replace(`/${localeInPath}`, '') || '/';
 
-  if (process.env.NODE_ENV === 'development') {
-    if (host.includes('.ua')) {
-      return NextResponse.rewrite(new URL(`/uk${url.pathname}${url.search}`, request.url));
-    }
-
-    return NextResponse.rewrite(new URL(`/en${url.pathname}${url.search}`, request.url));
+    return NextResponse.redirect(new URL(`${cleanPath}${url.search}`, request.url));
   }
 
-  url.pathname = `/${defaultLocale}${url.pathname}`;
+  let currentLocale = defaultLocale;
+  const cookieLocale = request.cookies.get('QUIZLY_LANGUAGE')?.value;
 
-  return NextResponse.redirect(url);
+  if (cookieLocale && locales.includes(cookieLocale)) {
+    currentLocale = cookieLocale;
+  } else if (process.env.NODE_ENV === 'development' && host.includes('.ua')) {
+    currentLocale = 'uk';
+  }
+
+  const rewriteUrl = new URL(`/${currentLocale}${url.pathname}${url.search}`, request.url);
+
+  return NextResponse.rewrite(rewriteUrl);
 }

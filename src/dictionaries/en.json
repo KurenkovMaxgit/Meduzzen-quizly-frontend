@@ -10,6 +10,57 @@
     "updatedAt": "Last Updated",
     "loading": "Loading..."
   },
+  "toast": {
+    "signup": {
+      "success": { "summary": "Welcome to Quizly!", "detail": "Account created successfully!" }
+    },
+    "company": {
+      "enter": { "success": { "summary": "Success", "detail": "You successfully entered" } },
+      "exit": { "success": { "summary": "Info", "detail": "Company exited" } }
+    },
+    "profileUpdate": {
+      "success": { "summary": "Success", "detail": "Profile updated successfully" }
+    }
+  },
+  "auth": {
+    "or": "Or",
+    "googleButton": "Sign in with Google",
+    "signUp": {
+      "title": "Create an Account",
+      "subTitle": "Sign up to get started",
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "email": "Email",
+      "password": "Password",
+      "passwordStrength": {
+        "title": "Password Strength",
+        "length": "At least 12 characters long",
+        "uppercase": "Contains uppercase letters",
+        "lowercase": "Contains lowercase letters",
+        "number": "Contains numbers",
+        "special": "Contains special characters (!@#$...)"
+      },
+      "confirmPassword": "Confirm Password",
+      "signUpButton": "Sign Up",
+      "alreadyHaveAccount": "Already have an account?",
+      "validationErrors": {
+        "firstName": "First name must be between 1 and 250 characters.",
+        "lastName": "Last name must be between 1 and 250 characters.",
+        "email": "Please enter a valid email address.",
+        "password": "Password must be between 8 and 255 characters.",
+        "confirmPassword": "Passwords do not match.",
+        "accountAlreadyExists": "An account with this email already exists."
+      }
+    },
+    "signIn": {
+      "title": "Welcome Back",
+      "subTitle": "Sign in to your Quizly account",
+      "email": "Email",
+      "password": "Password",
+      "signInButton": "Sign In",
+      "noAccount": "Don`t have an account yet?"
+    }
+  },
   "sidebar": {
     "companiesDropdown": {
       "title": "Companies",

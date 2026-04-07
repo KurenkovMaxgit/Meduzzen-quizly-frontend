@@ -7,18 +7,27 @@ import LocalizedLink from '@/components/common/localized-link';
 import { ChangeCompanyListItem } from '@/components/companies/company-change-list-item';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
-import { useDictionary } from '@/providers/dictionary-provider';
+import { useCurrentLocale, useDictionary } from '@/providers/dictionary-provider';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { clearActiveCompany } from '@/lib/slices/company-slice';
 import QueryUniversalList from '../common/list-query';
-import { useCompanyControllerFindAllQuery } from '@/lib/quizly-api';
+import {
+  useAuthControllerLogoutMutation,
+  useCompanyControllerFindAllQuery,
+} from '@/lib/quizly-api';
 import { ReturnCompany } from '@/types/company/return-company';
+import { logout } from '@/lib/slices/auth-slice';
+import Cookies from 'js-cookie';
+import { ACTIVE_COMPANY_ID_KEY } from '@/utils/cookie-constants';
 import { COMPANIES_ROUTE, PROFILE_ROUTE } from '@/utils/router-constants';
+import { useGlobalToast } from '@/providers/toast-provider';
 
 export default function UserProfileTab() {
   const dictionary = useDictionary();
   const pathname = usePathname();
   const dispatch = useAppDispatch();
+  const toast = useGlobalToast();
+  const currentLocale = useCurrentLocale();
 
   const { user: currentUser } = useAppSelector((state) => state.auth);
   const { activeCompany: currentCompany } = useAppSelector((state) => state.company);
@@ -32,20 +41,35 @@ export default function UserProfileTab() {
     setIsDialogOpen(false);
   }
 
-  const signOut = () => {
-    //TODO: Add handling
+  const [logoutFromApi] = useAuthControllerLogoutMutation();
+
+  const signOut = async () => {
+    dispatch(logout());
+
+    try {
+      await logoutFromApi().unwrap();
+    } catch (error) {
+      console.error('Failed to logout from server', error);
+    }
+
+    window.location.assign(`/auth/logout?returnTo=${window.location.origin}/${currentLocale}`);
   };
 
   const exitCompany = () => {
     dispatch(clearActiveCompany());
+
+    Cookies.remove(ACTIVE_COMPANY_ID_KEY);
+
+    toast.showToast('info', dictionary.toast.company.exit.success);
   };
 
-  const userInitials = currentUser
-    ? (currentUser.firstName[0] + currentUser.lastName[0]).toUpperCase()
-    : 'U';
-  const userFullName = currentUser
-    ? `${currentUser.firstName} ${currentUser.lastName}`
-    : `${dictionary.common.loading}`;
+  const rawInitials = (currentUser?.firstName?.[0] || '') + (currentUser?.lastName?.[0] || '');
+  const userInitials = rawInitials ? rawInitials.toUpperCase() : 'U';
+
+  const userFullName =
+    currentUser?.firstName || currentUser?.lastName
+      ? `${currentUser.firstName || ''} ${currentUser.lastName || ''}`.trim()
+      : dictionary.common.loading;
 
   return (
     <div className='relative flex items-center'>
@@ -82,7 +106,7 @@ export default function UserProfileTab() {
               <Popover.Content className='p-0!'>
                 <div className='border-surface-200 dark:border-surface-700 mx-1 mt-3 mb-2 flex flex-col gap-1 border-b pb-2'>
                   <span className='text-surface-900 dark:text-surface-0 text-md w-full truncate px-2 font-semibold'>
-                    {`${currentUser?.firstName} ${currentUser?.lastName}`}
+                    {userFullName}
                   </span>
 
                   <LocalizedLink
@@ -133,14 +157,16 @@ export default function UserProfileTab() {
                     <Menu.Separator className='my-1' />
 
                     <Menu.Item className='m-0! p-0!'>
-                      <button
-                        type='button'
-                        className='hover:bg-surface-100 dark:hover:bg-surface-800 flex w-full items-center gap-3 rounded-md border-none bg-transparent px-3 py-2 text-left text-red-600 transition-colors outline-none dark:text-red-400'
-                        onClick={() => exitCompany()}
-                      >
-                        <i className='pi pi-sign-out opacity-80' />
-                        {dictionary.companies.actions.exitCompany}
-                      </button>
+                      <LocalizedLink href={'/'}>
+                        <button
+                          type='button'
+                          className='hover:bg-surface-100 dark:hover:bg-surface-800 flex w-full items-center gap-3 rounded-md border-none bg-transparent px-3 py-2 text-left text-red-600 transition-colors outline-none dark:text-red-400'
+                          onClick={() => exitCompany()}
+                        >
+                          <i className='pi pi-sign-out opacity-80' />
+                          {dictionary.companies.actions.exitCompany}
+                        </button>
+                      </LocalizedLink>
                     </Menu.Item>
 
                     <Menu.Item className='m-0! p-0!'>

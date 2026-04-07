@@ -2,18 +2,32 @@ import { cookies } from 'next/headers';
 import { API_BASE_URL, REQUEST_TIMEOUT } from '@/utils/api-constants';
 import { HttpError, HttpExceptionResponse } from '@/interfaces/common/api-exception-interface';
 import { ACCESS_TOKEN_KEY, REFRESH_TOKEN_KEY } from '@/utils/cookie-constants';
+import { auth0 } from '@/lib/auth0';
 
 const serverFetch = async (url: string, options?: RequestInit & { timeout?: number }) => {
   const { timeout = REQUEST_TIMEOUT, ...restOptions } = options || {};
 
   const cookieStore = await cookies();
 
-  const accessToken = cookieStore.get(ACCESS_TOKEN_KEY)?.value;
-  const refreshToken = cookieStore.get(REFRESH_TOKEN_KEY)?.value;
+  const customAccessToken = cookieStore.get(ACCESS_TOKEN_KEY)?.value;
+  const customRefreshToken = cookieStore.get(REFRESH_TOKEN_KEY)?.value;
+
+  let auth0AccessToken = undefined;
+
+  try {
+    const session = await auth0.getSession();
+    if (session) {
+      const { token } = await auth0.getAccessToken();
+      auth0AccessToken = token;
+    }
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  } catch (error) {}
+
+  const finalAccessToken = auth0AccessToken || customAccessToken;
 
   const cookiesToForward = [];
-  if (accessToken) cookiesToForward.push(`${ACCESS_TOKEN_KEY}=${accessToken}`);
-  if (refreshToken) cookiesToForward.push(`${REFRESH_TOKEN_KEY}=${refreshToken}`);
+  if (finalAccessToken) cookiesToForward.push(`${ACCESS_TOKEN_KEY}=${finalAccessToken}`);
+  if (customRefreshToken) cookiesToForward.push(`${REFRESH_TOKEN_KEY}=${customRefreshToken}`);
 
   const cookieString = cookiesToForward.join('; ');
 
@@ -27,7 +41,6 @@ const serverFetch = async (url: string, options?: RequestInit & { timeout?: numb
       headers: {
         'Content-Type': 'application/json',
         ...(cookieString ? { Cookie: cookieString } : {}),
-        ...(accessToken ? { Authorization: `Bearer ${accessToken}` } : {}),
         ...restOptions.headers,
       },
       signal: AbortSignal.timeout(timeout),
@@ -38,8 +51,6 @@ const serverFetch = async (url: string, options?: RequestInit & { timeout?: numb
     }
 
     if (!response.ok) {
-      if (response.status === 401) {
-      }
       const errorData = (await response.json()) as HttpExceptionResponse;
       throw new HttpError({
         message: response.statusText,

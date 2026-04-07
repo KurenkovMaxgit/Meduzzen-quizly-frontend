@@ -1,25 +1,51 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { handleLocalization } from '@/middlewares/localization';
-import { ACCESS_TOKEN_KEY } from './utils/cookie-constants';
+import { auth0 } from '@/lib/auth0';
+import { ACCESS_TOKEN_KEY, REFRESH_TOKEN_KEY } from './utils/cookie-constants';
 
-export function proxy(request: NextRequest) {
-  const localizationResponse = handleLocalization(request);
+export async function proxy(request: NextRequest) {
+  const pathname = request.nextUrl.pathname;
 
-  const response = localizationResponse || NextResponse.next();
-
-  //TODO: Remove when working on auth flow
-  if (process.env.NODE_ENV === 'development' && process.env.NEXT_PUBLIC_MOCK_AUTH_TOKEN) {
-    response.cookies.set(ACCESS_TOKEN_KEY, process.env.NEXT_PUBLIC_MOCK_AUTH_TOKEN, {
-      path: '/',
-      httpOnly: true,
-      sameSite: 'lax',
-    });
+  if (pathname.startsWith('/auth')) {
+    return await auth0.middleware(request);
   }
 
-  return response;
+  if (pathname.startsWith('/api')) {
+    return NextResponse.next();
+  }
+
+  let hasAuth0Session = false;
+  try {
+    const session = await auth0.getSession();
+    hasAuth0Session = !!session?.user;
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  } catch (error) {}
+
+  const customAccessToken = request.cookies.get(ACCESS_TOKEN_KEY)?.value;
+  const customRefreshToken = request.cookies.get(REFRESH_TOKEN_KEY)?.value;
+
+  const hasAuth = hasAuth0Session || !!customAccessToken || !!customRefreshToken;
+
+  const isPublicAuthRoute = pathname.includes('/signin') || pathname.includes('/signup');
+
+  if (hasAuth && isPublicAuthRoute) {
+    const homeUrl = new URL('/', request.url);
+
+    return NextResponse.redirect(homeUrl);
+  }
+
+  if (!hasAuth && !isPublicAuthRoute) {
+    const signInUrl = new URL('/signin', request.url);
+
+    return NextResponse.redirect(signInUrl);
+  }
+
+  return handleLocalization(request) || NextResponse.next();
 }
 
 export const config = {
-  matcher: ['/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)'],
+  matcher: [
+    '/((?!api|_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
+  ],
 };

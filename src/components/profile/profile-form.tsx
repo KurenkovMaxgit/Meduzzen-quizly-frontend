@@ -7,16 +7,18 @@ import { useParams, useRouter } from 'next/navigation';
 import { useDictionary } from '@/providers/dictionary-provider';
 import { useAppSelector, useAppDispatch } from '@/lib/hooks';
 import { ReturnUser } from '@/types/user/return-user';
-import { setCredentials } from '@/lib/slices/auth-slice';
+import { setCurrentUser } from '@/lib/slices/auth-slice';
 import {
   useUserControllerFindOneByIdQuery,
   useUserControllerUpdateOneByIdMutation,
 } from '@/lib/quizly-api';
+import { useGlobalToast } from '@/providers/toast-provider';
 
 export default function ProfileForm({ userId }: { userId: string }) {
   const dictionary = useDictionary();
   const params = useParams();
   const router = useRouter();
+  const toast = useGlobalToast();
   const dispatch = useAppDispatch();
 
   const {
@@ -54,8 +56,10 @@ export default function ProfileForm({ userId }: { userId: string }) {
       refetch();
 
       if (isOwner && result?.data) {
-        dispatch(setCredentials({ user: result.data }));
+        dispatch(setCurrentUser({ user: result.data }));
       }
+
+      toast.showToast('success', dictionary.toast.profileUpdate.success);
     } catch (error) {
       console.error('Failed to update profile:', error);
     }

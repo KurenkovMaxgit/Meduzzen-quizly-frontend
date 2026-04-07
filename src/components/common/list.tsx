@@ -74,7 +74,15 @@ export default function UniversalList<T>({
         >
           <div className='text-secondary mt-4 flex items-center justify-center gap-3 text-xl font-bold italic'>
             <span>{emptyMessage}</span>
-            <Image width={64} height={64} src='/sad-chepushila.png' alt='Sad chepushila' />
+            <div className='relative h-24 w-24 shrink-0'>
+              <Image
+                src='/sad-chepushila.png'
+                alt='Sad chepushila'
+                fill
+                sizes='128px'
+                className='object-contain'
+              />
+            </div>
           </div>
         </div>
       );

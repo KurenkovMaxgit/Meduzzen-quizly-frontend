@@ -32,9 +32,9 @@ export default function UserProfileTab() {
   const { user: currentUser } = useAppSelector((state) => state.auth);
   const { activeCompany: currentCompany } = useAppSelector((state) => state.company);
 
-  const [isPopoverOpen, setIsPopoverOpen] = useState(false);
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [prevPathname, setPrevPathname] = useState(pathname);
+  const [isPopoverOpen, setIsPopoverOpen] = useState<boolean>(false);
+  const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
+  const [prevPathname, setPrevPathname] = useState<string>(pathname);
 
   if (pathname !== prevPathname) {
     setPrevPathname(pathname);

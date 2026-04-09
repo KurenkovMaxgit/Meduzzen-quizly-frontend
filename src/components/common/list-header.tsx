@@ -15,7 +15,7 @@ export default function ListHeader({
 }: ListHeaderProps) {
   const dictionary = useDictionary();
 
-  const [searchValue, setSearchValue] = React.useState('');
+  const [searchValue, setSearchValue] = React.useState<string>('');
 
   return (
     <div className='mb-6 flex flex-wrap items-center justify-between gap-4'>

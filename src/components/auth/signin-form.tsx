@@ -16,15 +16,15 @@ export default function SignInForm() {
   const dictionary = useDictionary();
   const currentLocale = useCurrentLocale();
 
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
   const [errorMessage, setErrorMessage] = useState<string | string[]>('');
 
   const router = useRouter();
   const dispatch = useAppDispatch();
   const [signIn, { isLoading }] = useAuthControllerSigninMutation();
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault();
     setErrorMessage('');
 

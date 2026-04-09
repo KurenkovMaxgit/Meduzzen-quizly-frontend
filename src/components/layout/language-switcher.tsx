@@ -18,7 +18,7 @@ const LANGUAGES = [
 export default function LanguageSwitcher() {
   const router = useRouter();
   const currentLocale = useCurrentLocale();
-  const [isPopoverOpen, setIsPopoverOpen] = useState(false);
+  const [isPopoverOpen, setIsPopoverOpen] = useState<boolean>(false);
 
   const currentLang = LANGUAGES.find((lang) => lang.code === currentLocale) || LANGUAGES[0];
 

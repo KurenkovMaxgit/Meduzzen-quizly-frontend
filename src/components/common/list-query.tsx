@@ -12,7 +12,7 @@ export default function QueryUniversalList<T, Q>({
   rows = 10,
   ...props
 }: QueryUniversalListProps<T, Q>) {
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState<number>(1);
 
   const params = {
     ...queryParams,

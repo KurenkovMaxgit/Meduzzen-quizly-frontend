@@ -6,7 +6,7 @@ import { useState, useEffect } from 'react';
 
 export default function ThemeSwitcher() {
   const { setTheme, resolvedTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
+  const [mounted, setMounted] = useState<boolean>(false);
 
   useEffect(() => {
     queueMicrotask(() => {

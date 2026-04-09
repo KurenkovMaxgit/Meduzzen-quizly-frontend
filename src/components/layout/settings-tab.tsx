@@ -9,8 +9,8 @@ import ThemeSwitcher from './theme-switcher';
 
 export default function SettingsTab() {
   const { resolvedTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
-  const [isOpen, setIsOpen] = useState(false);
+  const [mounted, setMounted] = useState<boolean>(false);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
 
   useEffect(() => {
     queueMicrotask(() => {

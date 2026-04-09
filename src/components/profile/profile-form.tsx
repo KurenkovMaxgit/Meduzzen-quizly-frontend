@@ -16,12 +16,7 @@ import {
 import { useGlobalToast } from '@/providers/toast-provider';
 import { ConfirmPopup } from '@primereact/ui/confirmpopup';
 import { Skeleton } from '@primereact/ui/skeleton';
-import Cookies from 'js-cookie';
-import {
-  ACCESS_TOKEN_KEY,
-  ACTIVE_COMPANY_ID_KEY,
-  REFRESH_TOKEN_KEY,
-} from '@/utils/cookie-constants';
+import { clearAuthCookies } from '@/utils/clear-cookies';
 
 export default function ProfileForm({ userId }: { userId: string }) {
   const dictionary = useDictionary();
@@ -47,8 +42,8 @@ export default function ProfileForm({ userId }: { userId: string }) {
   const userIdFromRoute = params.userId as string;
   const isOwner = authUser?.id === userIdFromRoute;
 
-  const [isEditing, setIsEditing] = useState(false);
-  const [formData, setFormData] = useState({
+  const [isEditing, setIsEditing] = useState<boolean>(false);
+  const [formData, setFormData] = useState<{ firstName: string; lastName: string }>({
     firstName: '',
     lastName: '',
   });
@@ -82,9 +77,7 @@ export default function ProfileForm({ userId }: { userId: string }) {
 
       await deleteUser().unwrap();
 
-      Cookies.remove(ACTIVE_COMPANY_ID_KEY);
-      Cookies.remove(ACCESS_TOKEN_KEY);
-      Cookies.remove(REFRESH_TOKEN_KEY);
+      await clearAuthCookies();
 
       window.location.assign(`/auth/logout?returnTo=${window.location.origin}/${currentLocale}`);
     } catch (error) {

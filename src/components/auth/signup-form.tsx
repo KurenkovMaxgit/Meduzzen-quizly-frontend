@@ -8,7 +8,7 @@ import { Button } from '@primereact/ui/button';
 import { FloatLabel } from '@primereact/ui/floatlabel';
 import { InputText } from '@primereact/ui/inputtext';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import CreatePasswordInput from './create-password-input';
 import { useGlobalToast } from '@/providers/toast-provider';
 import { Divider } from '@primereact/ui/divider';
@@ -22,14 +22,20 @@ export default function SignupForm() {
   const toast = useGlobalToast();
   const [signup, { isLoading, isSuccess }] = useAuthControllerSignupMutation();
 
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [firstName, setFirstName] = useState<string>('');
+  const [lastName, setLastName] = useState<string>('');
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+  const [confirmPassword, setConfirmPassword] = useState<string>('');
   const [errorMessage, setErrorMessage] = useState<string | string[]>('');
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  useEffect(() => {
+    if (isSuccess) {
+      toast.showToast('success', dictionary.toast.signup.success);
+    }
+  }, [isSuccess, toast, dictionary]);
+
+  const handleSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault();
     setErrorMessage('');
 
@@ -99,7 +105,6 @@ export default function SignupForm() {
         </Divider.Content>
       </Divider.Root>
 
-      {isSuccess ? toast.showToast('success', dictionary.toast.signup.success) : null}
       <form onSubmit={handleSubmit} className='flex flex-col gap-8 pt-2'>
         {errorMessage ? (
           <div className='rounded-md bg-red-50 p-3 text-center text-sm font-medium text-red-600 dark:bg-red-900/20 dark:text-red-400'>

@@ -14,9 +14,9 @@ export default function SidebarLayout({
 }>) {
   const pathname = usePathname();
 
-  const [prevPathname, setPrevPathname] = useState(pathname);
+  const [prevPathname, setPrevPathname] = useState<string>(pathname);
 
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
   if (pathname !== prevPathname) {
     setPrevPathname(pathname);
     setIsOpen(false);

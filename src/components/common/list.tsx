@@ -30,7 +30,7 @@ export default function UniversalList<T>({
   dialogButtonLabel = '',
   dialogButtonIcon = 'pi-eye',
 }: UniversalListProps<T>) {
-  const [internalPage, setInternalPage] = React.useState(1);
+  const [internalPage, setInternalPage] = React.useState<number>(1);
 
   const currentPage = externalPage !== undefined ? externalPage : internalPage;
   const totalItems = totalRecords !== undefined ? totalRecords : items.length;

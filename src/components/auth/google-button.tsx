@@ -1,12 +1,12 @@
 'use client';
 
-import { useCurrentLocale, useDictionary } from '@/providers/dictionary-provider';
+import { useLocale, useMessages } from 'next-intl';
 import { Button } from '@primereact/ui/button';
-import LocalizedLink from '../common/localized-link';
+import { Link } from '@/i18n/routing';
 
-export default function GoogleLoginButton() {
-  const dictionary = useDictionary();
-  const currentLocale = useCurrentLocale();
+export function GoogleLoginButton() {
+  const dictionary = useMessages();
+  const currentLocale = useLocale();
 
   const handleLoginClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
@@ -14,7 +14,7 @@ export default function GoogleLoginButton() {
   };
 
   return (
-    <LocalizedLink
+    <Link
       href={`/auth/login?connection=google-oauth2&returnTo=${currentLocale}`}
       prefetch={false}
       onClick={handleLoginClick}
@@ -27,6 +27,6 @@ export default function GoogleLoginButton() {
         <i className='pi pi-google text-xl' />
         <span className='font-medium'>{dictionary.auth.googleButton}</span>
       </Button>
-    </LocalizedLink>
+    </Link>
   );
 }

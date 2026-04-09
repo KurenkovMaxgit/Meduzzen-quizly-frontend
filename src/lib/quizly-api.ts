@@ -148,6 +148,9 @@ export const quizlyApi = createApi({
         body: queryArg,
       }),
     }),
+    userControllerDeleteOneById: build.mutation<ApiResponse<unknown>, void>({
+      query: () => ({ url: `/api/user`, method: 'DELETE' }),
+    }),
     companyControllerFindOneById: build.query<ApiResponse<ReturnCompany>, FindOneQuery>({
       query: (queryArg) => ({
         url: `/api/company/${queryArg.id}`,
@@ -178,11 +181,9 @@ export const quizlyApi = createApi({
 export const {
   useAppControllerHealthCheckQuery,
   useUserControllerMeQuery,
-  // useUserControllerFindProfileQuery,
-  // useUserControllerFindAllQuery,
   useUserControllerFindOneByIdQuery,
   useUserControllerUpdateOneByIdMutation,
-  // useUserControllerDeleteOneByIdMutation,
+  useUserControllerDeleteOneByIdMutation,
   useAuthControllerSignupMutation,
   useAuthControllerSigninMutation,
   useAuthControllerLogoutMutation,

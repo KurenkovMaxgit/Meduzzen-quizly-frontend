@@ -1,93 +1,17 @@
 'use client';
 
-import { HttpExceptionResponse } from '@/interfaces/common/api-exception-interface';
-import { useAppDispatch } from '@/lib/hooks';
-import { useAuthControllerSignupMutation } from '@/lib/quizly-api';
-import { setCurrentUser } from '@/lib/slices/auth-slice';
 import { Button } from '@primereact/ui/button';
 import { FloatLabel } from '@primereact/ui/floatlabel';
 import { InputText } from '@primereact/ui/inputtext';
-import { useRouter } from 'next/navigation';
-import { useState } from 'react';
-import CreatePasswordInput from './create-password-input';
-import { useGlobalToast } from '@/providers/toast-provider';
+import { CreatePasswordInput } from './create-password-input';
 import { Divider } from '@primereact/ui/divider';
-import { useDictionary } from '@/providers/dictionary-provider';
+import { useMessages } from 'next-intl';
+import { useSignupForm } from '@/hooks/use-signup-validation';
 
-export default function SignupForm() {
-  const dictionary = useDictionary();
+export function SignupForm() {
+  const dictionary = useMessages();
 
-  const router = useRouter();
-  const dispatch = useAppDispatch();
-  const toast = useGlobalToast();
-  const [signup, { isLoading, isSuccess }] = useAuthControllerSignupMutation();
-
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [errorMessage, setErrorMessage] = useState<string | string[]>('');
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setErrorMessage('');
-
-    const validationErrors: string[] = [];
-
-    if (firstName.trim().length < 1 || firstName.length > 250) {
-      validationErrors.push(`${dictionary.auth.signUp.validationErrors.firstName}`);
-    }
-
-    if (lastName.trim().length < 1 || lastName.length > 250) {
-      validationErrors.push(`${dictionary.auth.signUp.validationErrors.lastName}`);
-    }
-
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email) || email.length > 255) {
-      validationErrors.push(`${dictionary.auth.signUp.validationErrors.email}`);
-    }
-
-    if (password.length < 8 || password.length > 255) {
-      validationErrors.push(`${dictionary.auth.signUp.validationErrors.password}`);
-    }
-
-    if (password !== confirmPassword) {
-      validationErrors.push(`${dictionary.auth.signUp.validationErrors.confirmPassword}`);
-    }
-
-    if (validationErrors.length > 0) {
-      setErrorMessage(validationErrors.join(' '));
-
-      return;
-    }
-
-    try {
-      const response = await signup({ firstName, lastName, email, password }).unwrap();
-
-      if (response.data) {
-        dispatch(setCurrentUser({ user: response.data }));
-        router.push('/');
-      }
-    } catch (error) {
-      if (error && typeof error === 'object' && 'data' in error) {
-        const apiError = (error as { data: HttpExceptionResponse }).data;
-
-        if (apiError.statusCode === 409) {
-          setErrorMessage(`${dictionary.auth.signUp.validationErrors.accountAlreadyExists}`);
-        }
-
-        if (Array.isArray(apiError.details) && apiError.details.length > 0) {
-          const validationMessages = apiError.details
-            .flatMap((detail: { messages?: string[] }) => detail.messages || [])
-            .join(', ');
-          setErrorMessage(validationMessages);
-        }
-      } else {
-        setErrorMessage('An unexpected error occurred.');
-      }
-    }
-  };
+  const { formData, errorMessage, isLoading, updateField, handleSubmit } = useSignupForm();
 
   return (
     <>
@@ -99,20 +23,21 @@ export default function SignupForm() {
         </Divider.Content>
       </Divider.Root>
 
-      {isSuccess ? toast.showToast('success', dictionary.toast.signup.success) : null}
       <form onSubmit={handleSubmit} className='flex flex-col gap-8 pt-2'>
-        {errorMessage ? (
+        {errorMessage && (
           <div className='rounded-md bg-red-50 p-3 text-center text-sm font-medium text-red-600 dark:bg-red-900/20 dark:text-red-400'>
             {errorMessage}
           </div>
-        ) : null}
+        )}
 
         <FloatLabel>
           <InputText
             id='firstName'
             type='text'
-            value={firstName}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFirstName(e.target.value)}
+            value={formData.firstName}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              updateField('firstName', e.target.value)
+            }
             required
             className='w-full'
           />
@@ -125,8 +50,10 @@ export default function SignupForm() {
           <InputText
             id='lastName'
             type='text'
-            value={lastName}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setLastName(e.target.value)}
+            value={formData.lastName}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              updateField('lastName', e.target.value)
+            }
             required
             className='w-full'
           />
@@ -139,8 +66,10 @@ export default function SignupForm() {
           <InputText
             id='email'
             type='email'
-            value={email}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
+            value={formData.email}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              updateField('email', e.target.value)
+            }
             required
             className='w-full'
           />
@@ -149,15 +78,18 @@ export default function SignupForm() {
           </label>
         </FloatLabel>
 
-        <CreatePasswordInput value={password} onChange={setPassword} />
+        <CreatePasswordInput
+          value={formData.password}
+          onChange={(value) => updateField('password', value)}
+        />
 
         <FloatLabel>
           <InputText
             id='confirmPassword'
             type='password'
-            value={confirmPassword}
+            value={formData.confirmPassword}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              setConfirmPassword(e.target.value)
+              updateField('confirmPassword', e.target.value)
             }
             required
             className='w-full'
@@ -171,7 +103,7 @@ export default function SignupForm() {
         </FloatLabel>
 
         <Button type='submit' className='mt-6 w-full'>
-          {isLoading ? <i className='pi pi-spinner pi-spin' /> : null}
+          {isLoading && <i className='pi pi-spinner pi-spin' />}
           {dictionary.auth.signUp.signUpButton}
         </Button>
       </form>

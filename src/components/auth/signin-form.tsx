@@ -4,7 +4,7 @@ import { HttpExceptionResponse } from '@/interfaces/common/api-exception-interfa
 import { useAppDispatch } from '@/lib/hooks';
 import { useAuthControllerSigninMutation } from '@/lib/quizly-api';
 import { setCurrentUser } from '@/lib/slices/auth-slice';
-import { useCurrentLocale, useDictionary } from '@/providers/dictionary-provider';
+import { useLocale, useMessages } from 'next-intl';
 import { Button } from '@primereact/ui/button';
 import { Divider } from '@primereact/ui/divider';
 import { FloatLabel } from '@primereact/ui/floatlabel';
@@ -12,19 +12,19 @@ import { InputText } from '@primereact/ui/inputtext';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
-export default function SignInForm() {
-  const dictionary = useDictionary();
-  const currentLocale = useCurrentLocale();
+export function SignInForm() {
+  const dictionary = useMessages();
+  const currentLocale = useLocale();
 
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
   const [errorMessage, setErrorMessage] = useState<string | string[]>('');
 
   const router = useRouter();
   const dispatch = useAppDispatch();
   const [signIn, { isLoading }] = useAuthControllerSigninMutation();
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault();
     setErrorMessage('');
 
@@ -57,11 +57,11 @@ export default function SignInForm() {
       </Divider.Root>
 
       <form onSubmit={handleSubmit} className='flex flex-col gap-8 pt-2'>
-        {errorMessage ? (
+        {errorMessage && (
           <div className='rounded-md bg-red-50 p-3 text-center text-sm font-medium text-red-600 dark:bg-red-900/20 dark:text-red-400'>
             {errorMessage}
           </div>
-        ) : null}
+        )}
 
         <FloatLabel>
           <InputText
@@ -92,7 +92,7 @@ export default function SignInForm() {
         </FloatLabel>
 
         <Button type='submit' className='mt-6 w-full'>
-          {isLoading ? <i className='pi pi-spinner pi-spin' /> : null}
+          {isLoading && <i className='pi pi-spinner pi-spin' />}
           {dictionary.auth.signIn.signInButton}
         </Button>
       </form>

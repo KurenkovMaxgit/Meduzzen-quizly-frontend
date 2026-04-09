@@ -6,28 +6,28 @@ import Image from 'next/image';
 import { startTransition, useState } from 'react';
 import { usePopoverOpenChangeEvent } from '@primereact/types/shared/popover';
 import { Button } from '@primereact/ui/button';
-import { useCurrentLocale } from '@/providers/dictionary-provider';
-import Cookies from 'js-cookie';
-import { useRouter } from 'next/navigation';
+import { useLocale } from 'next-intl';
+import { usePathname, useRouter } from '@/i18n/routing';
+import { cn } from '@/utils/cn';
 
 const LANGUAGES = [
   { code: 'en', label: 'English', flagUrl: 'https://flagcdn.com/gb.svg' },
   { code: 'uk', label: 'Українська', flagUrl: 'https://flagcdn.com/ua.svg' },
 ];
 
-export default function LanguageSwitcher() {
+export function LanguageSwitcher() {
   const router = useRouter();
-  const currentLocale = useCurrentLocale();
-  const [isPopoverOpen, setIsPopoverOpen] = useState(false);
+  const pathname = usePathname();
+  const currentLocale = useLocale();
+  const [isPopoverOpen, setIsPopoverOpen] = useState<boolean>(false);
 
   const currentLang = LANGUAGES.find((lang) => lang.code === currentLocale) || LANGUAGES[0];
 
   const changeLanguage = (code: string) => {
-    Cookies.set('QUIZLY_LANGUAGE', code, { path: '/' });
     setIsPopoverOpen(false);
 
     startTransition(() => {
-      router.refresh();
+      router.replace(pathname, { locale: code });
     });
   };
 
@@ -50,7 +50,10 @@ export default function LanguageSwitcher() {
           />
           <span className='hidden font-medium uppercase sm:inline'>{currentLang.code}</span>
           <i
-            className={`pi pi-chevron-down text-xs opacity-70 transition-transform ${isPopoverOpen ? 'rotate-180' : ''}`}
+            className={cn(
+              'pi pi-chevron-down text-xs opacity-70 transition-transform',
+              isPopoverOpen && 'rotate-180',
+            )}
           />
         </Popover.Trigger>
 

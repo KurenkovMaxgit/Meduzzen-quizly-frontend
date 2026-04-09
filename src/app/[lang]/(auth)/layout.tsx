@@ -1,5 +1,5 @@
-import LanguageSwitcher from '@/components/layout/language-switcher';
-import ThemeSwitcher from '@/components/layout/theme-switcher';
+import { LanguageSwitcher } from '@/components/layout/language-switcher';
+import { ThemeSwitcher } from '@/components/layout/theme-switcher';
 
 export default function AuthLayout({ children }: { children: React.ReactNode }) {
   return (

@@ -1,8 +1,12 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
-import { handleLocalization } from '@/middlewares/localization';
+import createMiddleware from 'next-intl/middleware';
+import { routing } from './i18n/routing';
 import { auth0 } from '@/lib/auth0';
 import { ACCESS_TOKEN_KEY, REFRESH_TOKEN_KEY } from './utils/cookie-constants';
+import { HOME_ROUTE, SIGNIN_ROUTE, SIGNUP_ROUTE } from './utils/router-constants';
+
+const intlMiddleware = createMiddleware(routing);
 
 export async function proxy(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
@@ -27,21 +31,17 @@ export async function proxy(request: NextRequest) {
 
   const hasAuth = hasAuth0Session || !!customAccessToken || !!customRefreshToken;
 
-  const isPublicAuthRoute = pathname.includes('/signin') || pathname.includes('/signup');
+  const isPublicAuthRoute = pathname.includes(SIGNIN_ROUTE) || pathname.includes(SIGNUP_ROUTE);
 
   if (hasAuth && isPublicAuthRoute) {
-    const homeUrl = new URL('/', request.url);
-
-    return NextResponse.redirect(homeUrl);
+    return NextResponse.redirect(new URL(HOME_ROUTE, request.url));
   }
 
   if (!hasAuth && !isPublicAuthRoute) {
-    const signInUrl = new URL('/signin', request.url);
-
-    return NextResponse.redirect(signInUrl);
+    return NextResponse.redirect(new URL(SIGNIN_ROUTE, request.url));
   }
 
-  return handleLocalization(request) || NextResponse.next();
+  return intlMiddleware(request);
 }
 
 export const config = {

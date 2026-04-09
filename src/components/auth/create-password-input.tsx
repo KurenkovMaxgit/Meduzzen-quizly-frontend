@@ -1,4 +1,6 @@
-import { useDictionary } from '@/providers/dictionary-provider';
+import { usePasswordStrength } from '@/hooks/use-password-strength';
+import { useMessages } from 'next-intl';
+import { cn } from '@/utils/cn';
 import {
   PasswordMaskChangeEvent,
   PasswordValueChangeEvent,
@@ -11,76 +13,19 @@ import { ProgressBar } from '@primereact/ui/progressbar';
 import { Tag } from '@primereact/ui/tag';
 import { useState } from 'react';
 
-function getSeverity(score: number) {
-  if (score <= 20) return 'danger';
-  if (score <= 40) return 'warn';
-  if (score <= 60) return 'info';
-
-  return 'success';
-}
-
-function getLabel(score: number): string {
-  if (score === 0) return '';
-  if (score <= 20) return 'Too Weak';
-  if (score <= 40) return 'Weak';
-  if (score <= 60) return 'Fair';
-  if (score <= 80) return 'Strong';
-
-  return 'Very Strong';
-}
-
-interface CreatePasswordInputProps {
+export function CreatePasswordInput({
+  value,
+  onChange,
+}: {
   value: string;
   onChange: (value: string) => void;
-}
+}) {
+  const dictionary = useMessages();
 
-export default function CreatePasswordInput({ value, onChange }: CreatePasswordInputProps) {
-  const dictionary = useDictionary();
+  const [mask, setMask] = useState<boolean>(true);
+  const [open, setOpen] = useState<boolean>(false);
 
-  const [mask, setMask] = useState(true);
-  const [open, setOpen] = useState(false);
-  const score = getScore(value);
-  const severity = getSeverity(score);
-  const label = getLabel(score);
-
-  const rules = [
-    {
-      id: 'length',
-      label: `${dictionary.auth.signUp.passwordStrength.length}`,
-      test: (v: string) => v.length >= 12,
-      weight: 20,
-    },
-    {
-      id: 'uppercase',
-      label: `${dictionary.auth.signUp.passwordStrength.uppercase}`,
-      test: (v: string) => /[A-Z]/.test(v),
-      weight: 20,
-    },
-    {
-      id: 'lowercase',
-      label: `${dictionary.auth.signUp.passwordStrength.lowercase}`,
-      test: (v: string) => /[a-z]/.test(v),
-      weight: 20,
-    },
-    {
-      id: 'number',
-      label: `${dictionary.auth.signUp.passwordStrength.number}`,
-      test: (v: string) => /[0-9]/.test(v),
-      weight: 20,
-    },
-    {
-      id: 'special',
-      label: `${dictionary.auth.signUp.passwordStrength.special}`,
-      test: (v: string) => /[^a-zA-Z0-9]/.test(v),
-      weight: 20,
-    },
-  ];
-
-  function getScore(value: string) {
-    if (!value) return 0;
-
-    return rules.reduce((acc, rule) => acc + (rule.test(value) ? rule.weight : 0), 0);
-  }
+  const { rules, score, strengthProps, strengthLabel } = usePasswordStrength(value, dictionary);
 
   return (
     <Popover.Root open={open}>
@@ -118,29 +63,27 @@ export default function CreatePasswordInput({ value, onChange }: CreatePasswordI
             <div className='flex flex-col gap-3'>
               <div className='flex items-center justify-between'>
                 <div className='flex items-center gap-2'>
-                  <i className='pi pi-shield text-surface-500' style={{ fontSize: '1.25rem' }} />
+                  <i className='pi pi-shield text-surface-500 text-xl' />
                   <span className='text-surface-900 dark:text-surface-0 text-sm font-semibold'>
                     {dictionary.auth.signUp.passwordStrength.title}
                   </span>
                 </div>
-                {label && <Tag severity={severity}>{label}</Tag>}
+                {strengthLabel && <Tag severity={strengthProps.severity}>{strengthLabel}</Tag>}
               </div>
 
               <ProgressBar.Root value={score}>
-                <ProgressBar.Track
-                  style={{ height: '6px' }}
-                  className='bg-surface-200 dark:bg-surface-700 overflow-hidden rounded-md'
-                >
+                <ProgressBar.Track className='bg-surface-200 dark:bg-surface-700 h-1.5! overflow-hidden rounded-md'>
                   <ProgressBar.Indicator
-                    className={
+                    className={cn(
+                      'h-full transition-all duration-300',
                       score <= 20
-                        ? 'bg-red-400'
+                        ? 'bg-red-400!'
                         : score <= 40
-                          ? 'bg-amber-400'
+                          ? 'bg-amber-400!'
                           : score <= 60
-                            ? 'bg-blue-400'
-                            : 'bg-green-400'
-                    }
+                            ? 'bg-blue-400!'
+                            : 'bg-green-400!',
+                    )}
                   />
                 </ProgressBar.Track>
               </ProgressBar.Root>
@@ -152,14 +95,16 @@ export default function CreatePasswordInput({ value, onChange }: CreatePasswordI
                   return (
                     <div key={rule.id} className='flex items-center gap-2 text-xs'>
                       <i
-                        className={met ? 'pi pi-check text-green-500' : 'pi pi-times text-red-400'}
+                        className={cn(
+                          met ? 'pi pi-check text-green-500' : 'pi pi-times text-red-400',
+                        )}
                       />
                       <span
-                        className={
+                        className={cn(
                           met
                             ? 'text-surface-500 dark:text-surface-400'
-                            : 'text-surface-700 dark:text-surface-200'
-                        }
+                            : 'text-surface-700 dark:text-surface-200',
+                        )}
                       >
                         {rule.label}
                       </span>

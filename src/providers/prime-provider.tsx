@@ -1,6 +1,6 @@
 'use client';
 
-import Pink from '@/themes/pink';
+import { Pink } from '@/themes/pink';
 import { PrimeReactProvider, PrimeReactStyleSheet } from '@primereact/core';
 import { useServerInsertedHTML } from 'next/navigation';
 
@@ -15,7 +15,7 @@ const primereact = {
   },
 };
 
-export default function PrimeProvider({
+export function PrimeProvider({
   children,
 }: Readonly<{
   children?: React.ReactNode;

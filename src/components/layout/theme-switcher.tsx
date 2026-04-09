@@ -3,10 +3,11 @@
 import { useTheme } from 'next-themes';
 import { Button } from '@primereact/ui/button';
 import { useState, useEffect } from 'react';
+import { cn } from '@/utils/cn';
 
-export default function ThemeSwitcher() {
+export function ThemeSwitcher() {
   const { setTheme, resolvedTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
+  const [mounted, setMounted] = useState<boolean>(false);
 
   useEffect(() => {
     queueMicrotask(() => {
@@ -34,7 +35,7 @@ export default function ThemeSwitcher() {
       className='h-10 w-10 p-0'
       aria-label='Toggle Theme'
     >
-      <i className={isDark ? 'pi pi-sun' : 'pi pi-moon'} />
+      <i className={cn(isDark ? 'pi pi-sun' : 'pi pi-moon')} />
     </Button>
   );
 }

@@ -1,7 +1,7 @@
 import { definePreset } from '@primeuix/themes';
 import Aura from '@primeuix/themes/aura';
 
-const Pink = definePreset(Aura, {
+export const Pink = definePreset(Aura, {
   semantic: {
     primary: {
       50: '{pink.50}',
@@ -48,5 +48,3 @@ const Pink = definePreset(Aura, {
     },
   },
 });
-
-export default Pink;

@@ -1,10 +1,11 @@
-import LocalizedLink from '@/components/common/localized-link';
-import SignupForm from '@/components/auth/signup-form';
-import { getDictionary } from '@/utils/get-dictionary';
-import GoogleLoginButton from '@/components/auth/google-button';
+import { Link } from '@/i18n/routing';
+import { SignupForm } from '@/components/auth/signup-form';
+import { getMessages } from 'next-intl/server';
+import { GoogleLoginButton } from '@/components/auth/google-button';
+import { SIGNIN_ROUTE } from '@/utils/router-constants';
 
-export default async function SignUpPage({ params }: { params: Promise<{ lang: string }> }) {
-  const dictionary = await getDictionary((await params).lang);
+export default async function SignUpPage() {
+  const dictionary = await getMessages();
 
   return (
     <div className='flex w-full flex-col gap-5'>
@@ -20,9 +21,9 @@ export default async function SignUpPage({ params }: { params: Promise<{ lang: s
 
       <div className='text-surface-600 dark:text-surface-400 text-center text-sm'>
         {dictionary.auth.signUp.alreadyHaveAccount}{' '}
-        <LocalizedLink href='/signin' className='text-primary font-medium hover:underline'>
+        <Link href={SIGNIN_ROUTE} className='text-primary font-medium hover:underline'>
           {dictionary.auth.signIn.signInButton}
-        </LocalizedLink>
+        </Link>
       </div>
     </div>
   );

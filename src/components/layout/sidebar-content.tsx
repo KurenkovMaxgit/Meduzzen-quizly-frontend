@@ -2,7 +2,12 @@ import { currentCompany } from '@/mock/company-mock';
 import { Menu } from '@primereact/ui/menu';
 import { LocalizedLink } from '../common/localized-link';
 import { useDictionary } from '@/providers/dictionary-provider';
-import { ABOUT_ROUTE, COMPANIES_ROUTE } from '@/utils/router-constants';
+import {
+  ABOUT_ROUTE,
+  COMPANIES_ROUTE,
+  HOME_ROUTE,
+  MEMBERSHIPS_ROUTE,
+} from '@/utils/router-constants';
 
 export function SidebarContent() {
   const dictionary = useDictionary();
@@ -10,7 +15,7 @@ export function SidebarContent() {
   return (
     <>
       <div className='ms-2 mt-2 mb-4 flex items-center justify-between lg:hidden'>
-        <LocalizedLink href='/'>
+        <LocalizedLink href={HOME_ROUTE}>
           <span className='text-primary text-2xl font-bold'>Quizly</span>
         </LocalizedLink>
       </div>
@@ -32,10 +37,7 @@ export function SidebarContent() {
               </Menu.Item>
 
               <Menu.Item>
-                <LocalizedLink
-                  href={`${COMPANIES_ROUTE}/memberships`}
-                  className='flex w-full items-center gap-2'
-                >
+                <LocalizedLink href={MEMBERSHIPS_ROUTE} className='flex w-full items-center gap-2'>
                   <i className='pi pi-users' />
                   {dictionary.sidebar.companiesDropdown.myMemberships}
                 </LocalizedLink>
@@ -64,7 +66,7 @@ export function SidebarContent() {
 
                 <Menu.Item>
                   <LocalizedLink
-                    href={`${COMPANIES_ROUTE}/memberships`}
+                    href={MEMBERSHIPS_ROUTE}
                     className='flex w-full items-center gap-2'
                   >
                     <i className='pi pi-clipboard' />

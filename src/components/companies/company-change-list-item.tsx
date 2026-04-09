@@ -9,7 +9,7 @@ import { LocalizedLink } from '../common/localized-link';
 import { useGlobalToast } from '@/providers/toast-provider';
 import Cookies from 'js-cookie';
 import { ACTIVE_COMPANY_ID_KEY } from '@/utils/cookie-constants';
-import { COMPANIES_ROUTE } from '@/utils/router-constants';
+import { COMPANIES_ROUTE, HOME_ROUTE } from '@/utils/router-constants';
 
 export const ChangeCompanyListItem = ({ company }: { company: ReturnCompany }) => {
   const dictionary = useDictionary();
@@ -70,7 +70,7 @@ export const ChangeCompanyListItem = ({ company }: { company: ReturnCompany }) =
           </Button>
         </LocalizedLink>
         {company.id === currentCompany?.id ? (
-          <LocalizedLink href={'/'}>
+          <LocalizedLink href={HOME_ROUTE}>
             <Button
               rounded
               variant='outlined'

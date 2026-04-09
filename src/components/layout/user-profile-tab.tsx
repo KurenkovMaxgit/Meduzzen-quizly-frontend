@@ -19,7 +19,7 @@ import { ReturnCompany } from '@/types/company/return-company';
 import { logout } from '@/lib/slices/auth-slice';
 import Cookies from 'js-cookie';
 import { ACTIVE_COMPANY_ID_KEY } from '@/utils/cookie-constants';
-import { COMPANIES_ROUTE, PROFILE_ROUTE } from '@/utils/router-constants';
+import { COMPANIES_ROUTE, HOME_ROUTE, PROFILE_ROUTE } from '@/utils/router-constants';
 import { useGlobalToast } from '@/providers/toast-provider';
 
 export function UserProfileTab() {
@@ -157,7 +157,7 @@ export function UserProfileTab() {
                     <Menu.Separator className='my-1' />
 
                     <Menu.Item className='m-0! p-0!'>
-                      <LocalizedLink href={'/'}>
+                      <LocalizedLink href={HOME_ROUTE}>
                         <button
                           type='button'
                           className='hover:bg-surface-100 dark:hover:bg-surface-800 flex w-full items-center gap-3 rounded-md border-none bg-transparent px-3 py-2 text-left text-red-600 transition-colors outline-none dark:text-red-400'

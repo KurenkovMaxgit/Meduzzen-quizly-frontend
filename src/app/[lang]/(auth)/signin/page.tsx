@@ -2,6 +2,7 @@ import { LocalizedLink } from '@/components/common/localized-link';
 import { SignInForm } from '@/components/auth/signin-form';
 import { getDictionary } from '@/utils/get-dictionary';
 import { GoogleLoginButton } from '@/components/auth/google-button';
+import { SIGNUP_ROUTE } from '@/utils/router-constants';
 
 export default async function SignInPage({ params }: { params: Promise<{ lang: string }> }) {
   const dictionary = await getDictionary((await params).lang);
@@ -19,7 +20,7 @@ export default async function SignInPage({ params }: { params: Promise<{ lang: s
 
       <div className='text-surface-600 dark:text-surface-400 text-center text-sm'>
         {dictionary.auth.signIn.noAccount}{' '}
-        <LocalizedLink href='/signup' className='text-primary font-medium hover:underline'>
+        <LocalizedLink href={SIGNUP_ROUTE} className='text-primary font-medium hover:underline'>
           {dictionary.auth.signUp.signUpButton}
         </LocalizedLink>
       </div>

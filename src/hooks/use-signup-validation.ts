@@ -8,6 +8,7 @@ import { setCurrentUser } from '@/lib/slices/auth-slice';
 import { HttpExceptionResponse } from '@/interfaces/common/api-exception-interface';
 import { CreateUser } from '@/types/user/create-user';
 import { validateSignup } from '@/utils/signup-form-validation-rules';
+import { HOME_ROUTE } from '@/utils/router-constants';
 
 export function useSignupForm() {
   const dictionary = useDictionary();
@@ -60,7 +61,7 @@ export function useSignupForm() {
 
       if (response.data) {
         dispatch(setCurrentUser({ user: response.data }));
-        router.push('/');
+        router.push(HOME_ROUTE);
       }
     } catch (error) {
       const apiError = (error as { data: HttpExceptionResponse }).data;

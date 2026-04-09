@@ -7,6 +7,7 @@ import { UserProfileTab } from './user-profile-tab';
 import { usePathname } from 'next/navigation';
 import { SidebarContent } from './sidebar-content';
 import { cn } from '@/utils/cn';
+import { HOME_ROUTE } from '@/utils/router-constants';
 
 export function SidebarLayout({
   children,
@@ -40,7 +41,7 @@ export function SidebarLayout({
       >
         <div className='flex-1 overflow-y-auto p-4'>
           <div className='mt-2 mb-4 hidden items-center justify-between gap-4 ps-4 lg:flex'>
-            <LocalizedLink href='/'>
+            <LocalizedLink href={HOME_ROUTE}>
               <div className='text-primary text-2xl font-bold'>Quizly</div>
             </LocalizedLink>
           </div>
@@ -61,7 +62,7 @@ export function SidebarLayout({
               <i className='pi pi-bars text-xl' />
             </button>
 
-            <LocalizedLink href='/' className='lg:hidden'>
+            <LocalizedLink href={HOME_ROUTE} className='lg:hidden'>
               <span className='text-primary text-xl font-bold'>Quizly</span>
             </LocalizedLink>
           </div>

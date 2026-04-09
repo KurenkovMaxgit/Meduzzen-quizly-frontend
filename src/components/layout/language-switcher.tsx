@@ -9,13 +9,14 @@ import { Button } from '@primereact/ui/button';
 import { useCurrentLocale } from '@/providers/dictionary-provider';
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/navigation';
+import { cn } from '@/utils/cn';
 
 const LANGUAGES = [
   { code: 'en', label: 'English', flagUrl: 'https://flagcdn.com/gb.svg' },
   { code: 'uk', label: 'Українська', flagUrl: 'https://flagcdn.com/ua.svg' },
 ];
 
-export default function LanguageSwitcher() {
+export function LanguageSwitcher() {
   const router = useRouter();
   const currentLocale = useCurrentLocale();
   const [isPopoverOpen, setIsPopoverOpen] = useState<boolean>(false);
@@ -50,7 +51,10 @@ export default function LanguageSwitcher() {
           />
           <span className='hidden font-medium uppercase sm:inline'>{currentLang.code}</span>
           <i
-            className={`pi pi-chevron-down text-xs opacity-70 transition-transform ${isPopoverOpen ? 'rotate-180' : ''}`}
+            className={cn(
+              'pi pi-chevron-down text-xs opacity-70 transition-transform',
+              isPopoverOpen && 'rotate-180',
+            )}
           />
         </Popover.Trigger>
 

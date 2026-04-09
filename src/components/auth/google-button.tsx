@@ -2,9 +2,9 @@
 
 import { useCurrentLocale, useDictionary } from '@/providers/dictionary-provider';
 import { Button } from '@primereact/ui/button';
-import LocalizedLink from '../common/localized-link';
+import { LocalizedLink } from '../common/localized-link';
 
-export default function GoogleLoginButton() {
+export function GoogleLoginButton() {
   const dictionary = useDictionary();
   const currentLocale = useCurrentLocale();
 

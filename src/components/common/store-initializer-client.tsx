@@ -16,7 +16,7 @@ import {
   REFRESH_TOKEN_OPTIONS,
 } from '@/utils/cookie-constants';
 
-export default function StoreInitializerClient({
+export function StoreInitializerClient({
   userResponse,
   companyResponse,
   activeCompanyId,
@@ -96,5 +96,5 @@ export default function StoreInitializerClient({
     initialized.current = true;
   }
 
-  return <>{children}</>;
+  return children;
 }

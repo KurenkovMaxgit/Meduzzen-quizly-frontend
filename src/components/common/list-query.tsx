@@ -1,10 +1,10 @@
 'use client';
 
-import React, { useState } from 'react';
-import UniversalList from './list';
+import { useState } from 'react';
+import { UniversalList } from './list';
 import { QueryUniversalListProps } from '@/interfaces/components/list-interface';
 
-export default function QueryUniversalList<T, Q>({
+export function QueryUniversalList<T, Q>({
   queryHook,
   queryParams,
   dataPath = (response) => response?.data?.items || [],

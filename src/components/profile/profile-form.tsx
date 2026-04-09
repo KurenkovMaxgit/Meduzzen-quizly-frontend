@@ -17,8 +17,9 @@ import { useGlobalToast } from '@/providers/toast-provider';
 import { ConfirmPopup } from '@primereact/ui/confirmpopup';
 import { Skeleton } from '@primereact/ui/skeleton';
 import { clearAuthCookies } from '@/utils/clear-cookies';
+import { cn } from '@/utils/cn';
 
-export default function ProfileForm({ userId }: { userId: string }) {
+export function ProfileForm({ userId }: { userId: string }) {
   const dictionary = useDictionary();
   const params = useParams();
   const router = useRouter();
@@ -293,7 +294,7 @@ export default function ProfileForm({ userId }: { userId: string }) {
               disabled={isUpdating || isUnchanged}
             >
               {dictionary.common.save}
-              <i className={isUpdating ? 'pi pi-spin pi-spinner' : 'pi pi-check'} />
+              <i className={cn(isUpdating ? 'pi pi-spin pi-spinner' : 'pi pi-check')} />
             </Button>
           </div>
         )}

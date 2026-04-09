@@ -1,4 +1,4 @@
-import HomePageTiles from '@/components/home/home-page-tiles';
+import { HomePageTiles } from '@/components/home/home-page-tiles';
 import { getDictionary } from '@/utils/get-dictionary';
 
 export default async function HomePage({ params }: { params: Promise<{ lang: string }> }) {

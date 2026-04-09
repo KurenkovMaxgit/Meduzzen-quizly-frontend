@@ -1,14 +1,15 @@
 'use client';
 
 import { useCompanyControllerFindOneByIdQuery } from '@/lib/quizly-api';
-import CompanyDetailsToolbar from '@/components/companies/company-details-toolbar';
+import { CompanyDetailsToolbar } from '@/components/companies/company-details-toolbar';
 import { CompanyStatus, CompanyRole } from '@/utils/enums';
 import { mockUser } from '@/mock/user-mock';
-import EditCompanyDialog from '@/components/companies/company-edit-dialog';
+import { EditCompanyDialog } from '@/components/companies/company-edit-dialog';
 import { useDictionary } from '@/providers/dictionary-provider';
 import { CompanyUser } from '@/entities/company-user.entity';
+import { cn } from '@/utils/cn';
 
-export default function CompanyFetcher({ companyId }: { companyId: string }) {
+export function CompanyFetcher({ companyId }: { companyId: string }) {
   const { data: response, isLoading } = useCompanyControllerFindOneByIdQuery({ id: companyId });
   const company = response?.data;
 
@@ -42,14 +43,18 @@ export default function CompanyFetcher({ companyId }: { companyId: string }) {
                 {company.name}
               </h1>
               <div
-                className={`flex shrink-0 items-center gap-2 self-start rounded-full px-3 py-1 text-xs font-bold tracking-wide uppercase ${
+                className={cn(
+                  'flex shrink-0 items-center gap-2 self-start rounded-full px-3 py-1 text-xs font-bold tracking-wide uppercase',
                   company.status === CompanyStatus.VISIBLE
                     ? 'bg-green-100 text-green-700 dark:bg-green-500/20 dark:text-green-400'
-                    : 'bg-surface-100 text-surface-700 dark:bg-surface-500/20 dark:text-surface-400'
-                }`}
+                    : 'bg-surface-100 text-surface-700 dark:bg-surface-500/20 dark:text-surface-400',
+                )}
               >
                 <i
-                  className={`pi ${company.status === CompanyStatus.VISIBLE ? 'pi-check-circle' : 'pi-eye-slash'} text-[10px]`}
+                  className={cn(
+                    'pi text-[10px]',
+                    company.status === CompanyStatus.VISIBLE ? 'pi-check-circle' : 'pi-eye-slash',
+                  )}
                 />
                 {company.status}
               </div>

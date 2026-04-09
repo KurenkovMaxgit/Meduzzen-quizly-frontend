@@ -1,5 +1,5 @@
-import serverFetch from '@/lib/server-fetch';
-import StoreInitializerClient from './store-initializer-client';
+import { serverFetch } from '@/lib/server-fetch';
+import { StoreInitializerClient } from './store-initializer-client';
 import { cookies } from 'next/headers';
 import {
   ACCESS_TOKEN_KEY,
@@ -9,7 +9,7 @@ import {
 import { auth0 } from '@/lib/auth0';
 import { ApiResponse } from '@/interfaces/common/api-response-interface';
 
-export default async function StoreInitializer({ children }: { children: React.ReactNode }) {
+export async function StoreInitializer({ children }: { children: React.ReactNode }) {
   const cookieStore = await cookies();
   const activeCompanyId = cookieStore.get(ACTIVE_COMPANY_ID_KEY)?.value;
   const accessToken = cookieStore.get(ACCESS_TOKEN_KEY)?.value;

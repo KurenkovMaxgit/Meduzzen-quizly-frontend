@@ -2,14 +2,15 @@
 
 import { currentCompany, mockCompanyMembers } from '@/mock/company-mock';
 import { Button } from '@primereact/ui/button';
-import UniversalList from '../common/list';
+import { UniversalList } from '../common/list';
 import { CompanyMemberListItem } from './company-members-list-item';
 import { mockUser } from '@/mock/user-mock';
 import { CompanyRole } from '@/utils/enums';
 import { useDictionary } from '@/providers/dictionary-provider';
 import { ReturnCompany } from '@/types/company/return-company';
+import { cn } from '@/utils/cn';
 
-export default function CompanyDetailsToolbar(params: { company: ReturnCompany }) {
+export function CompanyDetailsToolbar(params: { company: ReturnCompany }) {
   const dictionary = useDictionary();
 
   const handleExitCompany = async () => {
@@ -26,7 +27,13 @@ export default function CompanyDetailsToolbar(params: { company: ReturnCompany }
 
   return (
     <div
-      className={`${currentCompany.members.find((member) => member.user.id === mockUser.id)?.role === CompanyRole.OWNER ? 'grid-cols-1 sm:grid-cols-2 xl:grid-cols-4' : 'grid-cols-1 sm:grid-cols-2 xl:grid-cols-3'} grid gap-2`}
+      className={cn(
+        currentCompany.members.find((member) => member.user.id === mockUser.id)?.role ===
+          CompanyRole.OWNER
+          ? 'grid-cols-1 sm:grid-cols-2 xl:grid-cols-4'
+          : 'grid-cols-1 sm:grid-cols-2 xl:grid-cols-3',
+        'grid gap-2',
+      )}
     >
       <UniversalList
         items={mockCompanyMembers}
@@ -72,12 +79,12 @@ export default function CompanyDetailsToolbar(params: { company: ReturnCompany }
         </Button>
       )}
       {currentCompany.members.find((member) => member.user.id === mockUser.id)?.role ===
-      CompanyRole.OWNER ? (
+        CompanyRole.OWNER && (
         <Button severity='danger' variant='outlined' pt-root-onClick={() => handleDeleteCompany()}>
           <i className='pi pi-trash' />
           {dictionary.companies.actions.deleteCompany}
         </Button>
-      ) : null}
+      )}
     </div>
   );
 }

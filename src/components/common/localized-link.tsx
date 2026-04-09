@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { ComponentProps } from 'react';
 
-export default function LocalizedLink({ href, ...props }: ComponentProps<typeof Link>) {
+export function LocalizedLink({ href, ...props }: ComponentProps<typeof Link>) {
   const pathname = usePathname();
 
   const segments = pathname.split('/');

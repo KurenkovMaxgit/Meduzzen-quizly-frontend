@@ -1,6 +1,6 @@
-import LocalizedLink from '@/components/common/localized-link';
+import { LocalizedLink } from '@/components/common/localized-link';
 import { getDictionary } from '@/utils/get-dictionary';
-import CompanyFetcher from '@/components/companies/company-fetcher';
+import { CompanyFetcher } from '@/components/companies/company-fetcher';
 import { COMPANIES_ROUTE } from '@/utils/router-constants';
 
 export default async function CompanyDetailsPage({

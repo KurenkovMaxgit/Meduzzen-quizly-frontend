@@ -1,10 +1,10 @@
 import { currentCompany } from '@/mock/company-mock';
 import { Menu } from '@primereact/ui/menu';
-import LocalizedLink from '../common/localized-link';
+import { LocalizedLink } from '../common/localized-link';
 import { useDictionary } from '@/providers/dictionary-provider';
 import { ABOUT_ROUTE, COMPANIES_ROUTE } from '@/utils/router-constants';
 
-export default function SidebarContent() {
+export function SidebarContent() {
   const dictionary = useDictionary();
 
   return (
@@ -43,7 +43,7 @@ export default function SidebarContent() {
             </Menu.List>
           </Menu.Sub>
 
-          {currentCompany ? (
+          {currentCompany && (
             <Menu.Sub defaultOpen={true}>
               <Menu.Trigger>
                 <i className='pi pi-th-large' />
@@ -73,7 +73,7 @@ export default function SidebarContent() {
                 </Menu.Item>
               </Menu.List>
             </Menu.Sub>
-          ) : null}
+          )}
 
           <Menu.Sub defaultOpen={true}>
             <Menu.Trigger>

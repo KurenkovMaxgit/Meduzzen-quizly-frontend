@@ -1,11 +1,11 @@
 'use client';
 
 import { Button } from '@primereact/ui/button';
-import LocalizedLink from '../common/localized-link';
+import { LocalizedLink } from '../common/localized-link';
 import { useDictionary } from '@/providers/dictionary-provider';
 import { COMPANIES_ROUTE } from '@/utils/router-constants';
 
-export default function HomePageTiles() {
+export function HomePageTiles() {
   const dictionary = useDictionary();
 
   const handleCreateCompany = () => {};

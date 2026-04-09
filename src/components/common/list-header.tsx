@@ -1,13 +1,13 @@
 'use client';
 
-import * as React from 'react';
+import React from 'react';
 import { ListHeaderProps } from '@/interfaces/components/list-interface';
 import { Button } from '@primereact/ui/button';
 import { IconField } from '@primereact/ui/iconfield';
 import { InputText } from '@primereact/ui/inputtext';
 import { useDictionary } from '@/providers/dictionary-provider';
 
-export default function ListHeader({
+export function ListHeader({
   title,
   buttonLabel,
   onButtonClick,
@@ -20,7 +20,7 @@ export default function ListHeader({
   return (
     <div className='mb-6 flex flex-wrap items-center justify-between gap-4'>
       <h1 className='text-3xl font-bold'>{title}</h1>
-      {searchbar ? (
+      {searchbar && (
         <div className='order-last flex w-full justify-center sm:order-0 sm:w-auto sm:flex-1 sm:px-4'>
           <IconField.Root className='w-full max-w-md'>
             <IconField.Icon>
@@ -39,14 +39,14 @@ export default function ListHeader({
             </IconField.Icon>
           </IconField.Root>
         </div>
-      ) : null}
+      )}
 
-      {buttonLabel && onButtonClick ? (
+      {buttonLabel && onButtonClick && (
         <Button raised onClick={onButtonClick} className='shrink-0'>
           <i className='pi pi-plus sm:mr-2' />
           <h3 className='hidden sm:block'>{buttonLabel}</h3>
         </Button>
-      ) : null}
+      )}
     </div>
   );
 }

@@ -5,7 +5,7 @@ import { ReturnCompany } from '@/types/company/return-company';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { clearActiveCompany, setActiveCompany } from '@/lib/slices/company-slice';
 import { Button } from '@primereact/ui/button';
-import LocalizedLink from '../common/localized-link';
+import { LocalizedLink } from '../common/localized-link';
 import { useGlobalToast } from '@/providers/toast-provider';
 import Cookies from 'js-cookie';
 import { ACTIVE_COMPANY_ID_KEY } from '@/utils/cookie-constants';

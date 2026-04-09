@@ -5,7 +5,7 @@ import { CompanyRole } from '@/utils/enums';
 import { Button } from '@primereact/ui/button';
 import { Tag } from '@primereact/ui/tag';
 import { TagProps } from '@primereact/types/shared/tag';
-import LocalizedLink from '../common/localized-link';
+import { LocalizedLink } from '../common/localized-link';
 import { mockUser } from '@/mock/user-mock';
 import { useDictionary } from '@/providers/dictionary-provider';
 import { PROFILE_ROUTE } from '@/utils/router-constants';
@@ -38,18 +38,18 @@ export const CompanyMemberListItem = (companyUser: typeof mockCompanyUser) => {
       </div>
       <div className='flex items-center gap-4 sm:ml-auto'>
         {mockUser.id !== companyUser.user.id &&
-        currentCompany.members.find((member) => member.user.id === mockUser.id)?.role ===
-          CompanyRole.OWNER ? (
-          <Button
-            rounded
-            variant='outlined'
-            severity='danger'
-            onClick={() => handleKickUser}
-            title={dictionary.companies.userActions.kick}
-          >
-            <i className='pi pi-user-minus' />
-          </Button>
-        ) : null}
+          currentCompany.members.find((member) => member.user.id === mockUser.id)?.role ===
+            CompanyRole.OWNER && (
+            <Button
+              rounded
+              variant='outlined'
+              severity='danger'
+              onClick={() => handleKickUser}
+              title={dictionary.companies.userActions.kick}
+            >
+              <i className='pi pi-user-minus' />
+            </Button>
+          )}
         <LocalizedLink href={`${PROFILE_ROUTE}/${companyUser.user.id}`}>
           <Button
             rounded

@@ -1,7 +1,7 @@
-import LocalizedLink from '@/components/common/localized-link';
-import SignInForm from '@/components/auth/signin-form';
+import { LocalizedLink } from '@/components/common/localized-link';
+import { SignInForm } from '@/components/auth/signin-form';
 import { getDictionary } from '@/utils/get-dictionary';
-import GoogleLoginButton from '@/components/auth/google-button';
+import { GoogleLoginButton } from '@/components/auth/google-button';
 
 export default async function SignInPage({ params }: { params: Promise<{ lang: string }> }) {
   const dictionary = await getDictionary((await params).lang);

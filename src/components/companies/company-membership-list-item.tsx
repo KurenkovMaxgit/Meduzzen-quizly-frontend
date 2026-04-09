@@ -3,7 +3,7 @@
 import { currentCompany, mockCompany } from '@/mock/company-mock';
 import { useDictionary } from '@/providers/dictionary-provider';
 import { Button } from '@primereact/ui/button';
-import LocalizedLink from '../common/localized-link';
+import { LocalizedLink } from '../common/localized-link';
 import { COMPANIES_ROUTE } from '@/utils/router-constants';
 
 export const CompanyMembershipListItem = (company: typeof mockCompany) => {

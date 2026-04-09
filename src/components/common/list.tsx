@@ -9,11 +9,11 @@ import { DataView } from '@primereact/ui/dataview';
 import { Skeleton } from '@primereact/ui/skeleton';
 import { Dialog } from '@primereact/ui/dialog';
 import Image from 'next/image';
-import * as React from 'react';
+import React from 'react';
 import { UniversalListProps } from '@/interfaces/components/list-interface';
 import { Button } from '@primereact/ui/button';
 
-export default function UniversalList<T>({
+export function UniversalList<T>({
   children,
   items = [],
   itemTemplate,
@@ -69,9 +69,7 @@ export default function UniversalList<T>({
 
     if (items.length === 0) {
       return (
-        <div
-          className={`text-surface-500 dark:text-surface-400 border-surface-200 dark:border-surface-700 bg-surface-0 dark:bg-surface-900 rounded-xl border p-8 text-center`}
-        >
+        <div className='text-surface-500 dark:text-surface-400 border-surface-200 dark:border-surface-700 bg-surface-0 dark:bg-surface-900 rounded-xl border p-8 text-center'>
           <div className='text-secondary mt-4 flex items-center justify-center gap-3 text-xl font-bold italic'>
             <span>{emptyMessage}</span>
             <div className='relative h-24 w-24 shrink-0'>

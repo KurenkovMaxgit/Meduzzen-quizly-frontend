@@ -4,7 +4,7 @@ import { HttpError, HttpExceptionResponse } from '@/interfaces/common/api-except
 import { ACCESS_TOKEN_KEY, REFRESH_TOKEN_KEY } from '@/utils/cookie-constants';
 import { auth0 } from '@/lib/auth0';
 
-const serverFetch = async (url: string, options?: RequestInit & { timeout?: number }) => {
+export const serverFetch = async (url: string, options?: RequestInit & { timeout?: number }) => {
   const { timeout = REQUEST_TIMEOUT, ...restOptions } = options || {};
 
   const cookieStore = await cookies();
@@ -77,5 +77,3 @@ const serverFetch = async (url: string, options?: RequestInit & { timeout?: numb
     throw new Error('Unknown error', { cause: error });
   }
 };
-
-export default serverFetch;

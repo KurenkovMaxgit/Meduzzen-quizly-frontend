@@ -12,7 +12,7 @@ import { InputText } from '@primereact/ui/inputtext';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
-export default function SignInForm() {
+export function SignInForm() {
   const dictionary = useDictionary();
   const currentLocale = useCurrentLocale();
 
@@ -57,11 +57,11 @@ export default function SignInForm() {
       </Divider.Root>
 
       <form onSubmit={handleSubmit} className='flex flex-col gap-8 pt-2'>
-        {errorMessage ? (
+        {errorMessage && (
           <div className='rounded-md bg-red-50 p-3 text-center text-sm font-medium text-red-600 dark:bg-red-900/20 dark:text-red-400'>
             {errorMessage}
           </div>
-        ) : null}
+        )}
 
         <FloatLabel>
           <InputText
@@ -92,7 +92,7 @@ export default function SignInForm() {
         </FloatLabel>
 
         <Button type='submit' className='mt-6 w-full'>
-          {isLoading ? <i className='pi pi-spinner pi-spin' /> : null}
+          {isLoading && <i className='pi pi-spinner pi-spin' />}
           {dictionary.auth.signIn.signInButton}
         </Button>
       </form>

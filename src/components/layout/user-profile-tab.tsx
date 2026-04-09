@@ -3,14 +3,14 @@ import { Avatar } from '@primereact/ui/avatar';
 import { Dialog } from '@primereact/ui/dialog';
 import { Menu } from '@primereact/ui/menu';
 import { Popover } from '@primereact/ui/popover';
-import LocalizedLink from '@/components/common/localized-link';
+import { LocalizedLink } from '@/components/common/localized-link';
 import { ChangeCompanyListItem } from '@/components/companies/company-change-list-item';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 import { useCurrentLocale, useDictionary } from '@/providers/dictionary-provider';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { clearActiveCompany } from '@/lib/slices/company-slice';
-import QueryUniversalList from '../common/list-query';
+import { QueryUniversalList } from '../common/list-query';
 import {
   useAuthControllerLogoutMutation,
   useCompanyControllerFindAllQuery,
@@ -22,7 +22,7 @@ import { ACTIVE_COMPANY_ID_KEY } from '@/utils/cookie-constants';
 import { COMPANIES_ROUTE, PROFILE_ROUTE } from '@/utils/router-constants';
 import { useGlobalToast } from '@/providers/toast-provider';
 
-export default function UserProfileTab() {
+export function UserProfileTab() {
   const dictionary = useDictionary();
   const pathname = usePathname();
   const dispatch = useAppDispatch();

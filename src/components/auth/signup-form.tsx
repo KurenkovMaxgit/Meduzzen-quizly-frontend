@@ -9,12 +9,12 @@ import { FloatLabel } from '@primereact/ui/floatlabel';
 import { InputText } from '@primereact/ui/inputtext';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import CreatePasswordInput from './create-password-input';
+import { CreatePasswordInput } from './create-password-input';
 import { useGlobalToast } from '@/providers/toast-provider';
 import { Divider } from '@primereact/ui/divider';
 import { useDictionary } from '@/providers/dictionary-provider';
 
-export default function SignupForm() {
+export function SignupForm() {
   const dictionary = useDictionary();
 
   const router = useRouter();
@@ -106,11 +106,11 @@ export default function SignupForm() {
       </Divider.Root>
 
       <form onSubmit={handleSubmit} className='flex flex-col gap-8 pt-2'>
-        {errorMessage ? (
+        {errorMessage && (
           <div className='rounded-md bg-red-50 p-3 text-center text-sm font-medium text-red-600 dark:bg-red-900/20 dark:text-red-400'>
             {errorMessage}
           </div>
-        ) : null}
+        )}
 
         <FloatLabel>
           <InputText
@@ -176,7 +176,7 @@ export default function SignupForm() {
         </FloatLabel>
 
         <Button type='submit' className='mt-6 w-full'>
-          {isLoading ? <i className='pi pi-spinner pi-spin' /> : null}
+          {isLoading && <i className='pi pi-spinner pi-spin' />}
           {dictionary.auth.signUp.signUpButton}
         </Button>
       </form>

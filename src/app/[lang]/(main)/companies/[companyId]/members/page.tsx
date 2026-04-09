@@ -1,4 +1,4 @@
-import UniversalList from '@/components/common/list';
+import { UniversalList } from '@/components/common/list';
 import { CompanyMemberListItem } from '@/components/companies/company-members-list-item';
 import { mockCompanyMembers } from '@/mock/company-mock';
 import { getDictionary } from '@/utils/get-dictionary';

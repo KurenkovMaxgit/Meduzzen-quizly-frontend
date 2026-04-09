@@ -1,4 +1,5 @@
 import { useDictionary } from '@/providers/dictionary-provider';
+import { cn } from '@/utils/cn';
 import {
   PasswordMaskChangeEvent,
   PasswordValueChangeEvent,
@@ -29,12 +30,13 @@ function getLabel(score: number): string {
   return 'Very Strong';
 }
 
-interface CreatePasswordInputProps {
+export function CreatePasswordInput({
+  value,
+  onChange,
+}: {
   value: string;
   onChange: (value: string) => void;
-}
-
-export default function CreatePasswordInput({ value, onChange }: CreatePasswordInputProps) {
+}) {
   const dictionary = useDictionary();
 
   const [mask, setMask] = useState<boolean>(true);
@@ -128,20 +130,18 @@ export default function CreatePasswordInput({ value, onChange }: CreatePasswordI
               </div>
 
               <ProgressBar.Root value={score}>
-                <ProgressBar.Track
-                  style={{ height: '6px' }}
-                  className='bg-surface-200 dark:bg-surface-700 overflow-hidden rounded-md'
-                >
+                <ProgressBar.Track className='bg-surface-200 dark:bg-surface-700 h-1.5! overflow-hidden rounded-md'>
                   <ProgressBar.Indicator
-                    className={
+                    className={cn(
+                      'h-full transition-all duration-300',
                       score <= 20
-                        ? 'bg-red-400'
+                        ? 'bg-red-400!'
                         : score <= 40
-                          ? 'bg-amber-400'
+                          ? 'bg-amber-400!'
                           : score <= 60
-                            ? 'bg-blue-400'
-                            : 'bg-green-400'
-                    }
+                            ? 'bg-blue-400!'
+                            : 'bg-green-400!',
+                    )}
                   />
                 </ProgressBar.Track>
               </ProgressBar.Root>
@@ -153,14 +153,16 @@ export default function CreatePasswordInput({ value, onChange }: CreatePasswordI
                   return (
                     <div key={rule.id} className='flex items-center gap-2 text-xs'>
                       <i
-                        className={met ? 'pi pi-check text-green-500' : 'pi pi-times text-red-400'}
+                        className={cn(
+                          met ? 'pi pi-check text-green-500' : 'pi pi-times text-red-400',
+                        )}
                       />
                       <span
-                        className={
+                        className={cn(
                           met
                             ? 'text-surface-500 dark:text-surface-400'
-                            : 'text-surface-700 dark:text-surface-200'
-                        }
+                            : 'text-surface-700 dark:text-surface-200',
+                        )}
                       >
                         {rule.label}
                       </span>

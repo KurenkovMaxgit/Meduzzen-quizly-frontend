@@ -1,6 +1,6 @@
 import { CompanyListItem } from '@/components/companies/company-list-item';
-import UniversalList from '@/components/common/list';
-import ListHeader from '@/components/common/list-header';
+import { UniversalList } from '@/components/common/list';
+import { ListHeader } from '@/components/common/list-header';
 import { mockCompanyList } from '@/mock/company-mock';
 import { getDictionary } from '@/utils/get-dictionary';
 

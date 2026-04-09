@@ -12,9 +12,9 @@ import { InputText } from '@primereact/ui/inputtext';
 import { Label } from '@primereact/ui/label';
 import { Select } from '@primereact/ui/select';
 import { Textarea } from '@primereact/ui/textarea';
-import * as React from 'react';
+import React from 'react';
 
-export default function EditCompanyDialog({ company }: { company: typeof mockCompany }) {
+export function EditCompanyDialog({ company }: { company: typeof mockCompany }) {
   const dictionary = useDictionary();
 
   const [companyStatus, setCompanyStatus] = React.useState<CompanyStatus>(CompanyStatus.VISIBLE);

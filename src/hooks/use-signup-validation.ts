@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { useDictionary } from '@/providers/dictionary-provider';
+import { useMessages } from 'next-intl';
 import { useGlobalToast } from '@/providers/toast-provider';
 import { useAppDispatch } from '@/lib/hooks';
 import { useAuthControllerSignupMutation } from '@/lib/quizly-api';
@@ -11,7 +11,7 @@ import { validateSignup } from '@/utils/signup-form-validation-rules';
 import { HOME_ROUTE } from '@/utils/router-constants';
 
 export function useSignupForm() {
-  const dictionary = useDictionary();
+  const dictionary = useMessages();
   const router = useRouter();
   const dispatch = useAppDispatch();
   const toast = useGlobalToast();

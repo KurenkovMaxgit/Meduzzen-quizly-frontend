@@ -1,7 +1,7 @@
-import { getDictionary } from '@/utils/get-dictionary';
+import { getMessages } from 'next-intl/server';
 
-export default async function AboutPage({ params }: { params: Promise<{ lang: string }> }) {
-  const dictionary = await getDictionary((await params).lang);
+export default async function AboutPage() {
+  const dictionary = await getMessages();
 
   return (
     <div className='mx-auto max-w-5xl space-y-12 pb-12'>

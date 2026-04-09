@@ -6,12 +6,12 @@ import { UniversalList } from '../common/list';
 import { CompanyMemberListItem } from './company-members-list-item';
 import { mockUser } from '@/mock/user-mock';
 import { CompanyRole } from '@/utils/enums';
-import { useDictionary } from '@/providers/dictionary-provider';
+import { useMessages } from 'next-intl';
 import { ReturnCompany } from '@/types/company/return-company';
 import { cn } from '@/utils/cn';
 
 export function CompanyDetailsToolbar(params: { company: ReturnCompany }) {
-  const dictionary = useDictionary();
+  const dictionary = useMessages();
 
   const handleExitCompany = async () => {
     //TODO: Add handling

@@ -1,14 +1,10 @@
 import { UniversalList } from '@/components/common/list';
 import { CompanyMemberListItem } from '@/components/companies/company-members-list-item';
 import { mockCompanyMembers } from '@/mock/company-mock';
-import { getDictionary } from '@/utils/get-dictionary';
+import { getMessages } from 'next-intl/server';
 
-export default async function CompanyMembersPage({
-  params,
-}: {
-  params: Promise<{ lang: string }>;
-}) {
-  const dictionary = await getDictionary((await params).lang);
+export default async function CompanyMembersPage() {
+  const dictionary = await getMessages();
 
   return (
     <div className='mx-auto max-w-5xl'>

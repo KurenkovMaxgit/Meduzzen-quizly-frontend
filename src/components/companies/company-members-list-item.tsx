@@ -5,9 +5,9 @@ import { CompanyRole } from '@/utils/enums';
 import { Button } from '@primereact/ui/button';
 import { Tag } from '@primereact/ui/tag';
 import { TagProps } from '@primereact/types/shared/tag';
-import { LocalizedLink } from '../common/localized-link';
+import { Link } from '@/i18n/routing';
 import { mockUser } from '@/mock/user-mock';
-import { useDictionary } from '@/providers/dictionary-provider';
+import { useMessages } from 'next-intl';
 import { PROFILE_ROUTE } from '@/utils/router-constants';
 
 const tagProps: { [key in CompanyRole]: { props: TagProps } } = {
@@ -17,7 +17,7 @@ const tagProps: { [key in CompanyRole]: { props: TagProps } } = {
 };
 
 export const CompanyMemberListItem = (companyUser: typeof mockCompanyUser) => {
-  const dictionary = useDictionary();
+  const dictionary = useMessages();
 
   const handleKickUser = async () => {
     //TODO: Add handling
@@ -50,7 +50,7 @@ export const CompanyMemberListItem = (companyUser: typeof mockCompanyUser) => {
               <i className='pi pi-user-minus' />
             </Button>
           )}
-        <LocalizedLink href={`${PROFILE_ROUTE}/${companyUser.user.id}`}>
+        <Link href={`${PROFILE_ROUTE}/${companyUser.user.id}`}>
           <Button
             rounded
             variant='outlined'
@@ -60,7 +60,7 @@ export const CompanyMemberListItem = (companyUser: typeof mockCompanyUser) => {
           >
             <i className='pi pi-eye' />
           </Button>
-        </LocalizedLink>
+        </Link>
       </div>
     </div>
   );

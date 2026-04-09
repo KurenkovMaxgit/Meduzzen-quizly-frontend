@@ -1,8 +1,8 @@
 import { HomePageTiles } from '@/components/home/home-page-tiles';
-import { getDictionary } from '@/utils/get-dictionary';
+import { getMessages } from 'next-intl/server';
 
-export default async function HomePage({ params }: { params: Promise<{ lang: string }> }) {
-  const dictionary = await getDictionary((await params).lang);
+export default async function HomePage() {
+  const dictionary = await getMessages();
 
   return (
     <div className='bg-surface-50 dark:bg-surface-950 flex min-h-[80vh] flex-col items-center justify-center px-4 py-12'>

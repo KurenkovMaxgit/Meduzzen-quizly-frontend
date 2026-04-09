@@ -1,7 +1,7 @@
 'use client';
 
 import { mockCompany } from '@/mock/company-mock';
-import { useDictionary } from '@/providers/dictionary-provider';
+import { useMessages } from 'next-intl';
 import { CompanyStatus } from '@/utils/enums';
 import { DialogContentInstance } from '@primereact/types/shared/dialog';
 import { SelectValueChangeEvent } from '@primereact/types/shared/select';
@@ -15,7 +15,7 @@ import { Textarea } from '@primereact/ui/textarea';
 import React from 'react';
 
 export function EditCompanyDialog({ company }: { company: typeof mockCompany }) {
-  const dictionary = useDictionary();
+  const dictionary = useMessages();
 
   const [companyStatus, setCompanyStatus] = React.useState<CompanyStatus>(CompanyStatus.VISIBLE);
 

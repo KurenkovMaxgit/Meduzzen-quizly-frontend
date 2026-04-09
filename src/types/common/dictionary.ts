@@ -1,8 +1,3 @@
-import { getDictionary } from '@/utils/get-dictionary';
+import { getMessages } from 'next-intl/server';
 
-export type Dictionary = Awaited<ReturnType<typeof getDictionary>>;
-
-export type DictionaryContextType = {
-  dictionary: Dictionary;
-  locale: string;
-};
+export type Dictionary = Awaited<ReturnType<typeof getMessages>>;

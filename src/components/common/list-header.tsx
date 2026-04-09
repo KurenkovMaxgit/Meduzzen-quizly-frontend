@@ -5,7 +5,7 @@ import { ListHeaderProps } from '@/interfaces/components/list-interface';
 import { Button } from '@primereact/ui/button';
 import { IconField } from '@primereact/ui/iconfield';
 import { InputText } from '@primereact/ui/inputtext';
-import { useDictionary } from '@/providers/dictionary-provider';
+import { useMessages } from 'next-intl';
 
 export function ListHeader({
   title,
@@ -13,7 +13,7 @@ export function ListHeader({
   onButtonClick,
   searchbar = false,
 }: ListHeaderProps) {
-  const dictionary = useDictionary();
+  const dictionary = useMessages();
 
   const [searchValue, setSearchValue] = React.useState<string>('');
 

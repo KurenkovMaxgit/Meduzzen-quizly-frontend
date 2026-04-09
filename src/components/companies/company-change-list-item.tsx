@@ -1,18 +1,18 @@
 'use client';
 
-import { useDictionary } from '@/providers/dictionary-provider';
+import { useMessages } from 'next-intl';
 import { ReturnCompany } from '@/types/company/return-company';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { clearActiveCompany, setActiveCompany } from '@/lib/slices/company-slice';
 import { Button } from '@primereact/ui/button';
-import { LocalizedLink } from '../common/localized-link';
+import { Link } from '@/i18n/routing';
 import { useGlobalToast } from '@/providers/toast-provider';
 import Cookies from 'js-cookie';
 import { ACTIVE_COMPANY_ID_KEY } from '@/utils/cookie-constants';
 import { COMPANIES_ROUTE, HOME_ROUTE } from '@/utils/router-constants';
 
 export const ChangeCompanyListItem = ({ company }: { company: ReturnCompany }) => {
-  const dictionary = useDictionary();
+  const dictionary = useMessages();
   const dispatch = useAppDispatch();
   const toast = useGlobalToast();
 
@@ -58,7 +58,7 @@ export const ChangeCompanyListItem = ({ company }: { company: ReturnCompany }) =
         </span>
       </div>
       <div className='flex shrink-0 justify-end gap-4 sm:ml-auto sm:items-center'>
-        <LocalizedLink href={`${COMPANIES_ROUTE}/${company.id}`}>
+        <Link href={`${COMPANIES_ROUTE}/${company.id}`}>
           <Button
             rounded
             variant='outlined'
@@ -68,9 +68,9 @@ export const ChangeCompanyListItem = ({ company }: { company: ReturnCompany }) =
           >
             <i className='pi pi-eye' />
           </Button>
-        </LocalizedLink>
+        </Link>
         {company.id === currentCompany?.id ? (
-          <LocalizedLink href={HOME_ROUTE}>
+          <Link href={HOME_ROUTE}>
             <Button
               rounded
               variant='outlined'
@@ -80,9 +80,9 @@ export const ChangeCompanyListItem = ({ company }: { company: ReturnCompany }) =
             >
               <i className='pi pi-sign-out' />
             </Button>
-          </LocalizedLink>
+          </Link>
         ) : (
-          <LocalizedLink href={`${COMPANIES_ROUTE}/${company.id}`}>
+          <Link href={`${COMPANIES_ROUTE}/${company.id}`}>
             <Button
               rounded
               variant='outlined'
@@ -92,7 +92,7 @@ export const ChangeCompanyListItem = ({ company }: { company: ReturnCompany }) =
             >
               <i className='pi pi-sign-in' />
             </Button>
-          </LocalizedLink>
+          </Link>
         )}
       </div>
     </div>

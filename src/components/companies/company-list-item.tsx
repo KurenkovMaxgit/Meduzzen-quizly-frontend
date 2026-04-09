@@ -1,13 +1,13 @@
 'use client';
 
 import { mockCompany } from '@/mock/company-mock';
-import { useDictionary } from '@/providers/dictionary-provider';
+import { useMessages } from 'next-intl';
 import { Button } from '@primereact/ui/button';
-import { LocalizedLink } from '../common/localized-link';
+import { Link } from '@/i18n/routing';
 import { COMPANIES_ROUTE } from '@/utils/router-constants';
 
 export const CompanyListItem = (company: typeof mockCompany) => {
-  const dictionary = useDictionary();
+  const dictionary = useMessages();
 
   const handleSendRequest = async () => {
     //TODO: Add handling
@@ -26,7 +26,7 @@ export const CompanyListItem = (company: typeof mockCompany) => {
         </span>
       </div>
       <div className='flex items-center gap-4 sm:ml-auto'>
-        <LocalizedLink href={`${COMPANIES_ROUTE}/${company.id}`}>
+        <Link href={`${COMPANIES_ROUTE}/${company.id}`}>
           <Button
             rounded
             variant='outlined'
@@ -36,7 +36,7 @@ export const CompanyListItem = (company: typeof mockCompany) => {
           >
             <i className='pi pi-eye' />
           </Button>
-        </LocalizedLink>
+        </Link>
         <Button
           rounded
           variant='outlined'

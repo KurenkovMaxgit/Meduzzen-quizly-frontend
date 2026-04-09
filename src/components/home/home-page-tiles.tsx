@@ -1,12 +1,12 @@
 'use client';
 
 import { Button } from '@primereact/ui/button';
-import { LocalizedLink } from '../common/localized-link';
-import { useDictionary } from '@/providers/dictionary-provider';
+import { Link } from '@/i18n/routing';
+import { useMessages } from 'next-intl';
 import { COMPANIES_ROUTE } from '@/utils/router-constants';
 
 export function HomePageTiles() {
-  const dictionary = useDictionary();
+  const dictionary = useMessages();
 
   const handleCreateCompany = () => {};
 
@@ -45,12 +45,12 @@ export function HomePageTiles() {
           {dictionary.home.joinCompanyTile.description}
         </p>
         <div className='mt-auto'>
-          <LocalizedLink href={COMPANIES_ROUTE} className='block w-full'>
+          <Link href={COMPANIES_ROUTE} className='block w-full'>
             <Button variant='outlined' className='w-full py-3 font-semibold'>
               <i className='pi pi-search me-2' />
               {dictionary.home.joinCompanyTile.buttonLabel}
             </Button>
-          </LocalizedLink>
+          </Link>
         </div>
       </div>
     </div>

@@ -4,7 +4,7 @@ import { InputText } from '@primereact/ui/inputtext';
 import { Button } from '@primereact/ui/button';
 import { useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import { useCurrentLocale, useDictionary } from '@/providers/dictionary-provider';
+import { useLocale, useMessages } from 'next-intl';
 import { useAppSelector, useAppDispatch } from '@/lib/hooks';
 import { ReturnUser } from '@/types/user/return-user';
 import { logout, setCurrentUser } from '@/lib/slices/auth-slice';
@@ -20,11 +20,11 @@ import { clearAuthCookies } from '@/utils/clear-cookies';
 import { cn } from '@/utils/cn';
 
 export function ProfileForm({ userId }: { userId: string }) {
-  const dictionary = useDictionary();
+  const dictionary = useMessages();
+  const currentLocale = useLocale();
   const params = useParams();
   const router = useRouter();
   const toast = useGlobalToast();
-  const currentLocale = useCurrentLocale();
   const dispatch = useAppDispatch();
 
   const {

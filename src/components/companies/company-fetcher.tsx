@@ -5,7 +5,7 @@ import { CompanyDetailsToolbar } from '@/components/companies/company-details-to
 import { CompanyStatus, CompanyRole } from '@/utils/enums';
 import { mockUser } from '@/mock/user-mock';
 import { EditCompanyDialog } from '@/components/companies/company-edit-dialog';
-import { useDictionary } from '@/providers/dictionary-provider';
+import { useMessages } from 'next-intl';
 import { CompanyUser } from '@/entities/company-user.entity';
 import { cn } from '@/utils/cn';
 
@@ -13,7 +13,7 @@ export function CompanyFetcher({ companyId }: { companyId: string }) {
   const { data: response, isLoading } = useCompanyControllerFindOneByIdQuery({ id: companyId });
   const company = response?.data;
 
-  const dictionary = useDictionary();
+  const dictionary = useMessages();
 
   if (isLoading || !company) {
     return (

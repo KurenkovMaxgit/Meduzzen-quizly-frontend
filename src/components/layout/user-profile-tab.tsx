@@ -3,11 +3,10 @@ import { Avatar } from '@primereact/ui/avatar';
 import { Dialog } from '@primereact/ui/dialog';
 import { Menu } from '@primereact/ui/menu';
 import { Popover } from '@primereact/ui/popover';
-import { LocalizedLink } from '@/components/common/localized-link';
+import { Link, usePathname } from '@/i18n/routing';
 import { ChangeCompanyListItem } from '@/components/companies/company-change-list-item';
-import { usePathname } from 'next/navigation';
 import { useState } from 'react';
-import { useCurrentLocale, useDictionary } from '@/providers/dictionary-provider';
+import { useLocale, useMessages } from 'next-intl';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { clearActiveCompany } from '@/lib/slices/company-slice';
 import { QueryUniversalList } from '../common/list-query';
@@ -23,11 +22,11 @@ import { COMPANIES_ROUTE, HOME_ROUTE, PROFILE_ROUTE } from '@/utils/router-const
 import { useGlobalToast } from '@/providers/toast-provider';
 
 export function UserProfileTab() {
-  const dictionary = useDictionary();
+  const dictionary = useMessages();
+  const currentLocale = useLocale();
   const pathname = usePathname();
   const dispatch = useAppDispatch();
   const toast = useGlobalToast();
-  const currentLocale = useCurrentLocale();
 
   const { user: currentUser } = useAppSelector((state) => state.auth);
   const { activeCompany: currentCompany } = useAppSelector((state) => state.company);
@@ -109,7 +108,7 @@ export function UserProfileTab() {
                     {userFullName}
                   </span>
 
-                  <LocalizedLink
+                  <Link
                     href={currentCompany ? `${COMPANIES_ROUTE}/${currentCompany.id}` : '#'}
                     onClick={() => setIsPopoverOpen(false)}
                     className='hover:bg-surface-100 dark:hover:bg-surface-800 text-surface-600 dark:text-surface-300 flex w-full items-center justify-between rounded-md px-2 py-1.5 text-sm transition-colors'
@@ -122,7 +121,7 @@ export function UserProfileTab() {
                     {currentCompany && (
                       <i className='pi pi-chevron-right text-surface-400 text-[10px]' />
                     )}
-                  </LocalizedLink>
+                  </Link>
                 </div>
 
                 <Menu.Root className='w-full border-none! bg-transparent!'>
@@ -144,20 +143,20 @@ export function UserProfileTab() {
                     </Menu.Item>
 
                     <Menu.Item className='m-0! p-0!'>
-                      <LocalizedLink
+                      <Link
                         href={`${PROFILE_ROUTE}/${currentUser?.id || ''}`}
                         onClick={() => setIsPopoverOpen(false)}
                         className='text-surface-900 dark:text-surface-0 hover:bg-surface-100 dark:hover:bg-surface-800 flex w-full items-center gap-3 rounded-md px-3 py-2 transition-colors'
                       >
                         <i className='pi pi-user text-surface-500 dark:text-surface-400' />
                         {dictionary.sidebar.profileDropdown.viewProfile}
-                      </LocalizedLink>
+                      </Link>
                     </Menu.Item>
 
                     <Menu.Separator className='my-1' />
 
                     <Menu.Item className='m-0! p-0!'>
-                      <LocalizedLink href={HOME_ROUTE}>
+                      <Link href={HOME_ROUTE}>
                         <button
                           type='button'
                           className='hover:bg-surface-100 dark:hover:bg-surface-800 flex w-full items-center gap-3 rounded-md border-none bg-transparent px-3 py-2 text-left text-red-600 transition-colors outline-none dark:text-red-400'
@@ -166,7 +165,7 @@ export function UserProfileTab() {
                           <i className='pi pi-sign-out opacity-80' />
                           {dictionary.companies.actions.exitCompany}
                         </button>
-                      </LocalizedLink>
+                      </Link>
                     </Menu.Item>
 
                     <Menu.Item className='m-0! p-0!'>

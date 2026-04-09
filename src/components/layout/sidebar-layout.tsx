@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { LocalizedLink } from '../common/localized-link';
+import { Link } from '@/i18n/routing';
 import { SettingsTab } from './settings-tab';
 import { UserProfileTab } from './user-profile-tab';
 import { usePathname } from 'next/navigation';
@@ -41,9 +41,9 @@ export function SidebarLayout({
       >
         <div className='flex-1 overflow-y-auto p-4'>
           <div className='mt-2 mb-4 hidden items-center justify-between gap-4 ps-4 lg:flex'>
-            <LocalizedLink href={HOME_ROUTE}>
+            <Link href={HOME_ROUTE}>
               <div className='text-primary text-2xl font-bold'>Quizly</div>
-            </LocalizedLink>
+            </Link>
           </div>
 
           <SidebarContent />
@@ -62,9 +62,9 @@ export function SidebarLayout({
               <i className='pi pi-bars text-xl' />
             </button>
 
-            <LocalizedLink href={HOME_ROUTE} className='lg:hidden'>
+            <Link href={HOME_ROUTE} className='lg:hidden'>
               <span className='text-primary text-xl font-bold'>Quizly</span>
-            </LocalizedLink>
+            </Link>
           </div>
 
           <div className='flex items-center gap-4'>

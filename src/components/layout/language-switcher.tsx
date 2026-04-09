@@ -6,9 +6,8 @@ import Image from 'next/image';
 import { startTransition, useState } from 'react';
 import { usePopoverOpenChangeEvent } from '@primereact/types/shared/popover';
 import { Button } from '@primereact/ui/button';
-import { useCurrentLocale } from '@/providers/dictionary-provider';
-import Cookies from 'js-cookie';
-import { useRouter } from 'next/navigation';
+import { useLocale } from 'next-intl';
+import { usePathname, useRouter } from '@/i18n/routing';
 import { cn } from '@/utils/cn';
 
 const LANGUAGES = [
@@ -18,17 +17,17 @@ const LANGUAGES = [
 
 export function LanguageSwitcher() {
   const router = useRouter();
-  const currentLocale = useCurrentLocale();
+  const pathname = usePathname();
+  const currentLocale = useLocale();
   const [isPopoverOpen, setIsPopoverOpen] = useState<boolean>(false);
 
   const currentLang = LANGUAGES.find((lang) => lang.code === currentLocale) || LANGUAGES[0];
 
   const changeLanguage = (code: string) => {
-    Cookies.set('QUIZLY_LANGUAGE', code, { path: '/' });
     setIsPopoverOpen(false);
 
     startTransition(() => {
-      router.refresh();
+      router.replace(pathname, { locale: code });
     });
   };
 

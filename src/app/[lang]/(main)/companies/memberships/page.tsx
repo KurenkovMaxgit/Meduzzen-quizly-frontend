@@ -1,11 +1,11 @@
-import UniversalList from '@/components/common/list';
-import ListHeader from '@/components/common/list-header';
+import { UniversalList } from '@/components/common/list';
+import { ListHeader } from '@/components/common/list-header';
 import { mockCompanyList } from '@/mock/company-mock';
 import { CompanyMembershipListItem } from '@/components/companies/company-membership-list-item';
-import { getDictionary } from '@/utils/get-dictionary';
+import { getMessages } from 'next-intl/server';
 
-export default async function MembershipsPage({ params }: { params: Promise<{ lang: string }> }) {
-  const dictionary = await getDictionary((await params).lang);
+export default async function MembershipsPage() {
+  const dictionary = await getMessages();
 
   return (
     <div className='mx-auto max-w-5xl'>

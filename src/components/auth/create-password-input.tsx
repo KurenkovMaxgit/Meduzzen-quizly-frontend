@@ -1,5 +1,5 @@
 import { usePasswordStrength } from '@/hooks/use-password-strength';
-import { useDictionary } from '@/providers/dictionary-provider';
+import { useMessages } from 'next-intl';
 import { cn } from '@/utils/cn';
 import {
   PasswordMaskChangeEvent,
@@ -20,7 +20,7 @@ export function CreatePasswordInput({
   value: string;
   onChange: (value: string) => void;
 }) {
-  const dictionary = useDictionary();
+  const dictionary = useMessages();
 
   const [mask, setMask] = useState<boolean>(true);
   const [open, setOpen] = useState<boolean>(false);

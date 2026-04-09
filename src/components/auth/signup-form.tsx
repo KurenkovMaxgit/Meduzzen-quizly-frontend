@@ -5,11 +5,11 @@ import { FloatLabel } from '@primereact/ui/floatlabel';
 import { InputText } from '@primereact/ui/inputtext';
 import { CreatePasswordInput } from './create-password-input';
 import { Divider } from '@primereact/ui/divider';
-import { useDictionary } from '@/providers/dictionary-provider';
+import { useMessages } from 'next-intl';
 import { useSignupForm } from '@/hooks/use-signup-validation';
 
 export function SignupForm() {
-  const dictionary = useDictionary();
+  const dictionary = useMessages();
 
   const { formData, errorMessage, isLoading, updateField, handleSubmit } = useSignupForm();
 

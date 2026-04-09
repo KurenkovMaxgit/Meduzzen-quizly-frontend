@@ -1,3 +1,4 @@
+import { usePasswordStrength } from '@/hooks/use-password-strength';
 import { useDictionary } from '@/providers/dictionary-provider';
 import { cn } from '@/utils/cn';
 import {
@@ -12,24 +13,6 @@ import { ProgressBar } from '@primereact/ui/progressbar';
 import { Tag } from '@primereact/ui/tag';
 import { useState } from 'react';
 
-function getSeverity(score: number) {
-  if (score <= 20) return 'danger';
-  if (score <= 40) return 'warn';
-  if (score <= 60) return 'info';
-
-  return 'success';
-}
-
-function getLabel(score: number): string {
-  if (score === 0) return '';
-  if (score <= 20) return 'Too Weak';
-  if (score <= 40) return 'Weak';
-  if (score <= 60) return 'Fair';
-  if (score <= 80) return 'Strong';
-
-  return 'Very Strong';
-}
-
 export function CreatePasswordInput({
   value,
   onChange,
@@ -42,48 +25,7 @@ export function CreatePasswordInput({
   const [mask, setMask] = useState<boolean>(true);
   const [open, setOpen] = useState<boolean>(false);
 
-  const rules = [
-    {
-      id: 'length',
-      label: `${dictionary.auth.signUp.passwordStrength.length}`,
-      test: (v: string) => v.length >= 12,
-      weight: 20,
-    },
-    {
-      id: 'uppercase',
-      label: `${dictionary.auth.signUp.passwordStrength.uppercase}`,
-      test: (v: string) => /[A-Z]/.test(v),
-      weight: 20,
-    },
-    {
-      id: 'lowercase',
-      label: `${dictionary.auth.signUp.passwordStrength.lowercase}`,
-      test: (v: string) => /[a-z]/.test(v),
-      weight: 20,
-    },
-    {
-      id: 'number',
-      label: `${dictionary.auth.signUp.passwordStrength.number}`,
-      test: (v: string) => /[0-9]/.test(v),
-      weight: 20,
-    },
-    {
-      id: 'special',
-      label: `${dictionary.auth.signUp.passwordStrength.special}`,
-      test: (v: string) => /[^a-zA-Z0-9]/.test(v),
-      weight: 20,
-    },
-  ];
-
-  const score = getScore(value);
-  const severity = getSeverity(score);
-  const label = getLabel(score);
-
-  function getScore(value: string) {
-    if (!value) return 0;
-
-    return rules.reduce((acc, rule) => acc + (rule.test(value) ? rule.weight : 0), 0);
-  }
+  const { rules, score, strengthProps, strengthLabel } = usePasswordStrength(value, dictionary);
 
   return (
     <Popover.Root open={open}>
@@ -126,7 +68,7 @@ export function CreatePasswordInput({
                     {dictionary.auth.signUp.passwordStrength.title}
                   </span>
                 </div>
-                {label && <Tag severity={severity}>{label}</Tag>}
+                {strengthLabel && <Tag severity={strengthProps.severity}>{strengthLabel}</Tag>}
               </div>
 
               <ProgressBar.Root value={score}>

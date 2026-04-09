@@ -5,5 +5,5 @@ export type CreateUser = {
 
   email: string;
 
-  password?: string;
+  password: string;
 };

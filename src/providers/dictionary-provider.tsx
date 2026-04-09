@@ -1,14 +1,7 @@
 'use client';
 
+import { DictionaryContextType, Dictionary } from '@/types/common/dictionary';
 import { createContext, useContext } from 'react';
-import { getDictionary } from '@/utils/get-dictionary';
-
-type Dictionary = Awaited<ReturnType<typeof getDictionary>>;
-
-type DictionaryContextType = {
-  dictionary: Dictionary;
-  locale: string;
-};
 
 const DictionaryContext = createContext<DictionaryContextType | null>(null);
 

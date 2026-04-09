@@ -6,10 +6,8 @@ export const metadata: Metadata = { title: 'Quizly' };
 
 export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <>
-      <StoreInitializer>
-        <SidebarLayout>{children}</SidebarLayout>
-      </StoreInitializer>
-    </>
+    <StoreInitializer>
+      <SidebarLayout>{children}</SidebarLayout>
+    </StoreInitializer>
   );
 }

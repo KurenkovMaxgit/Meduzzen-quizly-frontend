@@ -119,7 +119,7 @@ export default function CreatePasswordInput({ value, onChange }: CreatePasswordI
             <div className='flex flex-col gap-3'>
               <div className='flex items-center justify-between'>
                 <div className='flex items-center gap-2'>
-                  <i className='pi pi-shield text-surface-500' style={{ fontSize: '1.25rem' }} />
+                  <i className='pi pi-shield text-surface-500 text-xl' />
                   <span className='text-surface-900 dark:text-surface-0 text-sm font-semibold'>
                     {dictionary.auth.signUp.passwordStrength.title}
                   </span>

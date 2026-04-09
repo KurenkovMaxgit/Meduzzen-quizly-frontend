@@ -39,18 +39,25 @@
         "uppercase": "Contains uppercase letters",
         "lowercase": "Contains lowercase letters",
         "number": "Contains numbers",
-        "special": "Contains special characters (!@#$...)"
+        "special": "Contains special characters (!@#$...)",
+        "tag": {
+          "tooWeak": "Too weak",
+          "weak": "Weak",
+          "fair": "Fair",
+          "strong": "Strong",
+          "veryStrong": "Very Strong"
+        }
       },
       "confirmPassword": "Confirm Password",
       "signUpButton": "Sign Up",
       "alreadyHaveAccount": "Already have an account?",
       "validationErrors": {
-        "firstName": "First name must be between 1 and 250 characters.",
-        "lastName": "Last name must be between 1 and 250 characters.",
-        "email": "Please enter a valid email address.",
-        "password": "Password must be between 8 and 255 characters.",
-        "confirmPassword": "Passwords do not match.",
-        "accountAlreadyExists": "An account with this email already exists."
+        "firstName": "First name must be between 1 and 250 characters",
+        "lastName": "Last name must be between 1 and 250 characters",
+        "email": "Please enter a valid email address",
+        "password": "Password must be between 8 and 255 characters",
+        "confirmPassword": "Passwords do not match",
+        "accountAlreadyExists": "An account with this email already exists"
       }
     },
     "signIn": {

@@ -2,19 +2,14 @@
 
 import { useMessages } from 'next-intl';
 import { ReturnCompany } from '@/types/company/return-company';
-import { useAppDispatch, useAppSelector } from '@/lib/hooks';
+import { useAppSelector } from '@/lib/hooks';
 import { Button } from '@primereact/ui/button';
 import { Link } from '@/i18n/routing';
-import { useGlobalToast } from '@/providers/toast-provider';
-import Cookies from 'js-cookie';
-import { ACTIVE_COMPANY_ID_KEY } from '@/utils/cookie-constants';
 import { COMPANIES_ROUTE, HOME_ROUTE } from '@/utils/router-constants';
 import { useCompanySession } from '@/hooks/use-company-session';
 
 export const ChangeCompanyListItem = ({ company }: { company: ReturnCompany }) => {
   const dictionary = useMessages();
-  const dispatch = useAppDispatch();
-  const toast = useGlobalToast();
 
   const { activeCompany: currentCompany } = useAppSelector((state) => state.company);
 

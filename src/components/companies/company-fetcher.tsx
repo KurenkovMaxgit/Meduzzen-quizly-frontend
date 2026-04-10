@@ -3,18 +3,17 @@
 import { useCompanyControllerFindOneByIdQuery } from '@/lib/quizly-api';
 import { CompanyDetailsToolbar } from '@/components/companies/company-details-toolbar';
 import { CompanyStatus, CompanyRole } from '@/utils/enums';
-import { EditCompanyDialog } from '@/components/companies/company-edit-dialog-content';
 import { useMessages } from 'next-intl';
 import { CompanyUser } from '@/entities/company-user.entity';
 import { useAppSelector } from '@/lib/hooks';
 import { useEffect, useState } from 'react';
 import { Skeleton } from '@primereact/ui/skeleton';
 import { Button } from '@primereact/ui/button';
-import { useRouter } from 'next/navigation';
 import { Dialog } from '@primereact/ui/dialog';
 import { DialogContentInstance } from '@primereact/types/shared/dialog';
 import EditCompanyDialogContent from '@/components/companies/company-edit-dialog-content';
 import { cn } from '@/utils/cn';
+import { useRouter } from '@/i18n/routing';
 
 export function CompanyFetcher({ companyId }: { companyId: string }) {
   const dictionary = useMessages();
@@ -133,7 +132,10 @@ export function CompanyFetcher({ companyId }: { companyId: string }) {
                     company.status === CompanyStatus.VISIBLE ? 'pi-check-circle' : 'pi-eye-slash',
                   )}
                 />
-                {company.status}
+                {company.status === CompanyStatus.VISIBLE
+                  ? dictionary.companies.details.statusVisible
+                  : company.status === CompanyStatus.HIDDEN &&
+                    dictionary.companies.details.statusHidden}
               </div>
             </div>
 

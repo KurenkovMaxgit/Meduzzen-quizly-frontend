@@ -1,10 +1,9 @@
 'use client';
 
 import { useState } from 'react';
-import { Link } from '@/i18n/routing';
+import { Link, usePathname } from '@/i18n/routing';
 import { SettingsTab } from './settings-tab';
 import { UserProfileTab } from './user-profile-tab';
-import { usePathname } from 'next/navigation';
 import { SidebarContent } from './sidebar-content';
 import { cn } from '@/utils/cn';
 import { HOME_ROUTE } from '@/utils/router-constants';

@@ -4,12 +4,11 @@ import { Button } from '@primereact/ui/button';
 import { UniversalList } from '../common/list';
 import { CompanyMemberListItem } from './company-members-list-item';
 import { CompanyRole } from '@/utils/enums';
-import { useMessages } from 'next-intl';
+import { useLocale, useMessages } from 'next-intl';
 import { ReturnCompany } from '@/types/company/return-company';
-import { cn } from '@/utils/cn';
+import { Link, useRouter } from '@/i18n/routing';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { useCompanySession } from '@/hooks/use-company-session';
-import LocalizedLink from '../common/localized-link';
 import { ConfirmPopup } from '@primereact/ui/confirmpopup';
 import {
   useCompanyControllerDeleteOneByIdMutation,
@@ -17,12 +16,11 @@ import {
 } from '@/lib/quizly-api';
 import { ApiResponse } from '@/interfaces/common/api-response-interface';
 import { clearActiveCompany } from '@/lib/slices/company-slice';
-import { useRouter } from 'next/navigation';
 import { useGlobalToast } from '@/providers/toast-provider';
 
 export function CompanyDetailsToolbar({ company }: { company: ReturnCompany }) {
   const dictionary = useMessages();
-  const currentLocale = useCurrentLocale();
+  const currentLocale = useLocale();
   const router = useRouter();
   const toast = useGlobalToast();
 
@@ -54,6 +52,7 @@ export function CompanyDetailsToolbar({ company }: { company: ReturnCompany }) {
       }
     } catch (error) {
       console.error('Failed to update company:', error);
+      toast.showToast('error', dictionary.toast.company.delete.error);
     }
   };
 
@@ -74,15 +73,7 @@ export function CompanyDetailsToolbar({ company }: { company: ReturnCompany }) {
   };
 
   return (
-    <div
-      className={cn(
-        currentCompany.members.find((member) => member.user.id === mockUser.id)?.role ===
-          CompanyRole.OWNER
-          ? 'grid-cols-1 sm:grid-cols-2 xl:grid-cols-4'
-          : 'grid-cols-1 sm:grid-cols-2 xl:grid-cols-3',
-        'grid gap-2',
-      )}
-    >
+    <div className='grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4'>
       <UniversalList
         items={company.members!}
         itemTemplate={CompanyMemberListItem}
@@ -116,7 +107,7 @@ export function CompanyDetailsToolbar({ company }: { company: ReturnCompany }) {
       {/* PLACEHOLDER */}
 
       {company.id === currentCompany?.id ? (
-        <LocalizedLink href={'/'} className='block w-full'>
+        <Link href={'/'} className='block w-full'>
           <Button
             severity='danger'
             variant='outlined'
@@ -126,7 +117,7 @@ export function CompanyDetailsToolbar({ company }: { company: ReturnCompany }) {
             <i className='pi pi-sign-out' />
             {dictionary.companies.actions.exitCompany}
           </Button>
-        </LocalizedLink>
+        </Link>
       ) : (
         <Button severity='success' variant='outlined' onClick={() => enterCompany(company)}>
           <i className='pi pi-sign-in' />

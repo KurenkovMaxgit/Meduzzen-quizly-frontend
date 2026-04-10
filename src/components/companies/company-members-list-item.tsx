@@ -1,6 +1,6 @@
 'use client';
 
-import { currentCompany, mockCompanyUser } from '@/mock/company-mock';
+import { currentCompany } from '@/mock/company-mock';
 import { CompanyRole } from '@/utils/enums';
 import { Button } from '@primereact/ui/button';
 import { Tag } from '@primereact/ui/tag';

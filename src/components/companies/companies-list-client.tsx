@@ -2,18 +2,18 @@
 
 import { CompanyListItem } from '@/components/companies/company-list-item';
 import { useCompanyControllerFindAllQuery } from '@/lib/quizly-api';
-import QueryUniversalList from '@/components/common/list-query';
+import { QueryUniversalList } from '@/components/common/list-query';
 import { ReturnCompany } from '@/types/company/return-company';
 import { CompanyStatus } from '@/utils/enums';
-import ListHeader from '../common/list-header';
-import { useDictionary } from '@/providers/dictionary-provider';
+import { ListHeader } from '../common/list-header';
 import { useState } from 'react';
 import { useDebounce } from '@/hooks/use-debounce';
 import { Dialog } from '@primereact/ui/dialog';
 import CreateCompanyDialogContent from './company-create-dialog-content';
+import { useMessages } from 'next-intl';
 
-export default function CompaniesListClient() {
-  const dictionary = useDictionary();
+export function CompaniesListClient() {
+  const dictionary = useMessages();
 
   const [searchValue, setSearchValue] = useState('');
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);

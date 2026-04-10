@@ -46,46 +46,6 @@ export function UniversalList<T>({
       : items;
 
   const renderContent = () => {
-    if (isLoading) {
-      const skeletonRows = Array.from({ length: 5 });
-
-      return (
-        <div className={`space-y-4 ${className}`}>
-          {skeletonRows.map((_, index) => (
-            <div
-              key={index}
-              className='bg-surface-0 dark:border-surface-700 dark:bg-surface-900 border-surface-200 flex items-center gap-4 rounded-xl border p-4 shadow-sm'
-            >
-              <div className='flex flex-1 flex-col gap-2'>
-                <Skeleton width='30%' height='1.2rem' />
-                <Skeleton width='70%' height='0.8rem' />
-              </div>
-              <Skeleton width='5rem' height='2rem' className='shrink-0' />
-            </div>
-          ))}
-        </div>
-      );
-    }
-
-    if (items.length === 0) {
-      return (
-        <div className='text-surface-500 dark:text-surface-400 border-surface-200 dark:border-surface-700 bg-surface-0 dark:bg-surface-900 rounded-xl border p-8 text-center'>
-          <div className='text-secondary mt-4 flex items-center justify-center gap-3 text-xl font-bold italic'>
-            <span>{emptyMessage}</span>
-            <div className='relative h-24 w-24 shrink-0'>
-              <Image
-                src='/sad-chepushila.png'
-                alt='Sad chepushila'
-                fill
-                sizes='128px'
-                className='object-contain'
-              />
-            </div>
-          </div>
-        </div>
-      );
-    }
-
     return (
       <div className={className}>
         {children}

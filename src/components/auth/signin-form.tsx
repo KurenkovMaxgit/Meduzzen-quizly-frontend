@@ -9,7 +9,7 @@ import { Button } from '@primereact/ui/button';
 import { Divider } from '@primereact/ui/divider';
 import { FloatLabel } from '@primereact/ui/floatlabel';
 import { InputText } from '@primereact/ui/inputtext';
-import { useRouter } from 'next/navigation';
+import { useRouter } from '@/i18n/routing';
 import { useState } from 'react';
 
 export function SignInForm() {

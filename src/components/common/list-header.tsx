@@ -17,8 +17,6 @@ export function ListHeader({
 }: ListHeaderProps) {
   const dictionary = useMessages();
 
-  const [searchValue, setSearchValue] = React.useState<string>('');
-
   return (
     <div className='mb-6 flex flex-col gap-4 sm:gap-6'>
       <div className='flex items-center justify-between gap-4'>
@@ -53,13 +51,6 @@ export function ListHeader({
             ) : null}
           </IconField.Root>
         </div>
-      )}
-
-      {buttonLabel && onButtonClick && (
-        <Button raised onClick={onButtonClick} className='shrink-0'>
-          <i className='pi pi-plus sm:mr-2' />
-          <h3 className='hidden sm:block'>{buttonLabel}</h3>
-        </Button>
       )}
     </div>
   );

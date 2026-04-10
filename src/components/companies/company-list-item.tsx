@@ -1,6 +1,5 @@
 'use client';
 
-import { mockCompany } from '@/mock/company-mock';
 import { useMessages } from 'next-intl';
 import { Button } from '@primereact/ui/button';
 import { Link } from '@/i18n/routing';

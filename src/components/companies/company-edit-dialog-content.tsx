@@ -2,7 +2,6 @@
 
 import { useAppDispatch } from '@/lib/hooks';
 import { quizlyApi, useCompanyControllerUpdateOneByIdMutation } from '@/lib/quizly-api';
-import { useDictionary } from '@/providers/dictionary-provider';
 import { useGlobalToast } from '@/providers/toast-provider';
 import { ReturnCompany } from '@/types/company/return-company';
 import { CompanyStatus } from '@/utils/enums';
@@ -12,7 +11,9 @@ import { InputText } from '@primereact/ui/inputtext';
 import { Label } from '@primereact/ui/label';
 import { Select } from '@primereact/ui/select';
 import { Textarea } from '@primereact/ui/textarea';
+import { useMessages } from 'next-intl';
 import React, { useState } from 'react';
+import { CreateCompany } from '@/types/company/create-company';
 
 export default function EditCompanyDialogContent({
   company,
@@ -21,28 +22,38 @@ export default function EditCompanyDialogContent({
   company: ReturnCompany;
   closeDialog: () => void;
 }) {
-  const dictionary = useDictionary();
+  const dictionary = useMessages();
   const toast = useGlobalToast();
+  const dispatch = useAppDispatch();
 
   const [updateCompany, { isLoading: isUpdating }] = useCompanyControllerUpdateOneByIdMutation();
 
-  const [name, setName] = useState(company.name || '');
-  const [description, setDescription] = useState(company.description || '');
-  const [companyStatus, setCompanyStatus] = useState<CompanyStatus>(
-    company.status || CompanyStatus.VISIBLE,
-  );
+  const [formData, setFormData] = useState<CreateCompany>({
+    name: company.name || '',
+    description: company.description || '',
+    status: company.status || CompanyStatus.VISIBLE,
+  });
 
-  const dispatch = useAppDispatch();
+  const updateField = (field: keyof typeof formData, value: string | CompanyStatus) => {
+    setFormData((prev) => ({ ...prev, [field]: value }));
+  };
 
-  const handleUpdate = async () => {
-    if (!name.trim()) return;
+  const hasChanges =
+    formData.name !== (company.name || '') ||
+    formData.description !== (company.description || '') ||
+    formData.status !== (company.status || CompanyStatus.VISIBLE);
+
+  const handleSubmit = async (e: React.SyntheticEvent) => {
+    e.preventDefault();
+
+    if (!formData.name.trim()) return;
 
     try {
       const updatedCompany = await updateCompany({
         id: company.id,
-        name: name.trim(),
-        description: description.trim(),
-        status: companyStatus,
+        name: formData.name.trim(),
+        description: formData.description.trim(),
+        status: formData.status,
       }).unwrap();
 
       dispatch(
@@ -58,24 +69,36 @@ export default function EditCompanyDialogContent({
       );
 
       toast.showToast('success', dictionary.toast.company.update.success);
-
       closeDialog();
     } catch (error) {
       console.error('Failed to update company:', error);
+      toast.showToast('error', dictionary.toast.company.update.error);
     }
   };
 
+  const statusOptions = [
+    {
+      label: dictionary.companies.details.statusVisible,
+      value: CompanyStatus.VISIBLE,
+    },
+    {
+      label: dictionary.companies.details.statusHidden,
+      value: CompanyStatus.HIDDEN,
+    },
+  ];
+
   return (
-    <div className='mt-2 flex flex-col gap-6'>
+    <form onSubmit={handleSubmit} className='mt-2 flex flex-col gap-6'>
       <div className='flex flex-col gap-1'>
         <Label htmlFor='name' className='text-sm'>
           {dictionary.companies.editDialog.name}
         </Label>
         <InputText
           id='name'
-          value={name}
-          onInput={(e: React.ChangeEvent<HTMLInputElement>) => setName(e.currentTarget.value)}
+          value={formData.name}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => updateField('name', e.target.value)}
           className='w-full'
+          autoFocus
         />
       </div>
 
@@ -85,23 +108,23 @@ export default function EditCompanyDialogContent({
         </Label>
         <Textarea
           id='description'
-          value={description}
-          onInput={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
-            setDescription(e.currentTarget.value)
+          value={formData.description}
+          onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
+            updateField('description', e.target.value)
           }
           rows={4}
           className='w-full resize-none'
         />
       </div>
+
       <div className='flex flex-col gap-1'>
         <Label htmlFor='company_status'>{dictionary.companies.editDialog.visibility}</Label>
         <Select.Root
-          value={companyStatus}
-          onValueChange={(e: SelectValueChangeEvent) => setCompanyStatus(e.value as CompanyStatus)}
-          options={[
-            { label: 'Visible to everyone', value: CompanyStatus.VISIBLE },
-            { label: 'Hidden from public', value: CompanyStatus.HIDDEN },
-          ]}
+          value={formData.status}
+          onValueChange={(e: SelectValueChangeEvent) =>
+            updateField('status', e.value as CompanyStatus)
+          }
+          options={statusOptions}
           optionLabel='label'
           optionValue='value'
           className='w-full'
@@ -112,7 +135,6 @@ export default function EditCompanyDialogContent({
               <i className='pi pi-chevron-down text-surface-500' />
             </Select.Icon>
           </Select.Trigger>
-
           <Select.Portal>
             <Select.Positioner style={{ zIndex: 3000 }}>
               <Select.Panel>
@@ -126,14 +148,20 @@ export default function EditCompanyDialogContent({
       </div>
 
       <div className='mt-2 flex shrink-0 justify-end gap-2'>
-        <Button severity='contrast' variant='outlined' onClick={closeDialog} disabled={isUpdating}>
+        <Button
+          type='button'
+          severity='contrast'
+          variant='outlined'
+          onClick={closeDialog}
+          disabled={isUpdating}
+        >
           {dictionary.common.cancel}
         </Button>
-        <Button onClick={handleUpdate} disabled={isUpdating || !name.trim()}>
+        <Button type='submit' disabled={isUpdating || !formData.name.trim() || !hasChanges}>
           {dictionary.common.save}
           {isUpdating && <i className='pi pi-spin pi-spinner ml-2' />}
         </Button>
       </div>
-    </div>
+    </form>
   );
 }

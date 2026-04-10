@@ -19,24 +19,30 @@
       "enter": { "success": { "summary": "Success!", "detail": "You successfully entered" } },
       "exit": { "success": { "summary": "Info", "detail": "Company exited" } },
       "create": {
-        "success": { "summary": "Success!", "detail": "Company created successfully" }
+        "success": { "summary": "Success!", "detail": "Company created successfully" },
+        "error": { "summary": "Error!", "detail": "Error creating company" }
       },
       "update": {
-        "success": { "summary": "Success!", "detail": "Company updated successfully" }
+        "success": { "summary": "Success!", "detail": "Company updated successfully" },
+        "error": { "summary": "Error!", "detail": "Error updating company" }
       },
       "membershipUpdate": {
-        "success": { "summary": "Success!", "detail": "Membership updated successfully" }
+        "success": { "summary": "Success!", "detail": "Membership updated successfully" },
+        "error": { "summary": "Error!", "detail": "Error updating membership" }
       },
       "delete": {
-        "success": { "summary": "Success!", "detail": "Company deleted successfully" }
+        "success": { "summary": "Success!", "detail": "Company deleted successfully" },
+        "error": { "summary": "Error!", "detail": "Error deleting company" }
       },
       "leave": {
-        "success": { "summary": "Success!", "detail": "Company left successfully" }
+        "success": { "summary": "Success!", "detail": "Company left successfully" },
+        "error": { "summary": "Error!", "detail": "Error leaving company" }
       }
     },
     "profile": {
       "update": {
-        "success": { "summary": "Success!", "detail": "Profile updated successfully" }
+        "success": { "summary": "Success!", "detail": "Profile updated successfully" },
+        "error": { "summary": "Error!", "detail": "Error updating profile" }
       }
     }
   },
@@ -155,7 +161,9 @@
         "title": "Quizzes List"
       },
       "about": "About the Company",
-      "id": "Company ID"
+      "id": "Company ID",
+      "statusVisible": "Visible",
+      "statusHidden": "Hidden"
     },
     "editDialog": {
       "title": "Edit Company",

@@ -29,24 +29,30 @@
         "success": { "summary": "Інфо", "detail": "Ви успішно вийшли з компанії" }
       },
       "create": {
-        "success": { "summary": "Успіх!", "detail": "Компанію успішно створено" }
+        "success": { "summary": "Успіх!", "detail": "Компанію успішно створено" },
+        "error": { "summary": "Помилка!", "detail": "Помилка створення компанії" }
       },
       "update": {
-        "success": { "summary": "Успіх!", "detail": "Компанію успішно оновлено" }
+        "success": { "summary": "Успіх!", "detail": "Компанію успішно оновлено" },
+        "error": { "summary": "Помилка!", "detail": "Помилка оновлення компанії" }
       },
       "delete": {
-        "success": { "summary": "Успіх!", "detail": "Компанію успішно видалено" }
+        "success": { "summary": "Успіх!", "detail": "Компанію успішно видалено" },
+        "error": { "summary": "Помилка!", "detail": "Помилка видалення компанії" }
       },
       "membershipUpdate": {
-        "success": { "summary": "Успіх!", "detail": "Членство успішно оновлено" }
+        "success": { "summary": "Успіх!", "detail": "Членство успішно оновлено" },
+        "error": { "summary": "Помилка!", "detail": "Помилка оновлення членства" }
       },
       "leave": {
-        "success": { "summary": "Успіх!", "detail": "Компанію успішно покинуто" }
+        "success": { "summary": "Успіх!", "detail": "Компанію успішно покинуто" },
+        "error": { "summary": "Помилка!", "detail": "Помилка покидання компанії" }
       }
     },
     "profile": {
       "update": {
-        "success": { "summary": "Успіх!", "detail": "Профіль успішно оновлено" }
+        "success": { "summary": "Успіх!", "detail": "Профіль успішно оновлено" },
+        "error": { "summary": "Помилка!", "detail": "Помилка оновлення профілю" }
       }
     }
   },
@@ -165,7 +171,9 @@
         "title": "Список квізів"
       },
       "about": "Про компанію",
-      "id": "ID компанії"
+      "id": "ID компанії",
+      "statusVisible": "Видима усім",
+      "statusHidden": "Прихована"
     },
     "editDialog": {
       "title": "Редагувати",

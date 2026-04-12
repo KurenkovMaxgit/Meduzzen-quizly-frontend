@@ -16,6 +16,7 @@ import { Select } from '@primereact/ui/select';
 import { Textarea } from '@primereact/ui/textarea';
 import { useRouter } from '@/i18n/routing';
 import React, { useState } from 'react';
+import { validateCompany } from '@/utils/company-form-validation-rules';
 
 export default function CreateCompanyDialogContent({ closeDialog }: { closeDialog: () => void }) {
   const dictionary = useMessages();
@@ -25,6 +26,7 @@ export default function CreateCompanyDialogContent({ closeDialog }: { closeDialo
 
   const [createCompany, { isLoading: isCreating }] = useCompanyControllerCreateMutation();
 
+  const [errorMessage, setErrorMessage] = useState<string>('');
   const [formData, setFormData] = useState({
     name: '',
     description: '',
@@ -37,6 +39,14 @@ export default function CreateCompanyDialogContent({ closeDialog }: { closeDialo
 
   const handleSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault();
+
+    const validationErrors = validateCompany(formData, dictionary);
+
+    if (validationErrors.length > 0) {
+      setErrorMessage(validationErrors.join(', '));
+
+      return;
+    }
 
     if (!formData.name.trim()) return;
 
@@ -68,6 +78,12 @@ export default function CreateCompanyDialogContent({ closeDialog }: { closeDialo
 
   return (
     <form onSubmit={handleSubmit} className='mt-2 flex flex-col gap-6'>
+      {errorMessage && (
+        <div className='rounded-md bg-red-50 p-3 text-center text-sm font-medium text-red-600 dark:bg-red-900/20 dark:text-red-400'>
+          {errorMessage}
+        </div>
+      )}
+
       <div className='flex flex-col gap-1'>
         <Label htmlFor='name' className='text-sm'>
           {dictionary.companies.editDialog.name}

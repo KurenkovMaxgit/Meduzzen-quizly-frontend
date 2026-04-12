@@ -3,7 +3,6 @@
 import { useTheme } from 'next-themes';
 import { Button } from '@primereact/ui/button';
 import { useState, useEffect } from 'react';
-import { cn } from '@/utils/cn';
 
 export function ThemeSwitcher() {
   const { setTheme, resolvedTheme } = useTheme();
@@ -23,19 +22,19 @@ export function ThemeSwitcher() {
     );
   }
 
-  const isDark = resolvedTheme === 'dark';
-
   return (
     <Button
       type='button'
       variant='outlined'
       severity='contrast'
       rounded
-      onClick={() => setTheme(isDark ? 'light' : 'dark')}
+      onClick={() => setTheme(resolvedTheme === 'dark' ? 'light' : 'dark')}
       className='h-10 w-10 p-0'
       aria-label='Toggle Theme'
     >
-      <i className={cn(isDark ? 'pi pi-sun' : 'pi pi-moon')} />
+      <i className='pi pi-moon absolute scale-100 opacity-100 transition-all dark:scale-0 dark:opacity-0' />
+
+      <i className='pi pi-sun absolute scale-0 opacity-0 transition-all dark:scale-100 dark:opacity-100' />
     </Button>
   );
 }

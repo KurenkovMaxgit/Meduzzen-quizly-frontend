@@ -2,48 +2,18 @@
 
 import { useMessages } from 'next-intl';
 import { ReturnCompany } from '@/types/company/return-company';
-import { useAppDispatch, useAppSelector } from '@/lib/hooks';
-import { clearActiveCompany, setActiveCompany } from '@/lib/slices/company-slice';
+import { useAppSelector } from '@/lib/hooks';
 import { Button } from '@primereact/ui/button';
 import { Link } from '@/i18n/routing';
-import { useGlobalToast } from '@/providers/toast-provider';
-import Cookies from 'js-cookie';
-import { ACTIVE_COMPANY_ID_KEY } from '@/utils/cookie-constants';
 import { COMPANIES_ROUTE, HOME_ROUTE } from '@/utils/router-constants';
+import { useCompanySession } from '@/hooks/use-company-session';
 
 export const ChangeCompanyListItem = ({ company }: { company: ReturnCompany }) => {
   const dictionary = useMessages();
-  const dispatch = useAppDispatch();
-  const toast = useGlobalToast();
 
-  const { user: currentUser } = useAppSelector((state) => state.auth);
   const { activeCompany: currentCompany } = useAppSelector((state) => state.company);
 
-  const enterCompany = async () => {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { members, ...companyWithoutMembers } = company;
-    dispatch(
-      setActiveCompany({
-        company: companyWithoutMembers,
-        role: company.members.find((member) => member.user.id === currentUser?.id)!.role,
-      }),
-    );
-
-    Cookies.set(ACTIVE_COMPANY_ID_KEY, company.id, { expires: 7 });
-
-    toast.showToast('success', {
-      summary: dictionary.toast.company.enter.success.summary,
-      detail: `${dictionary.toast.company.enter.success.detail} ${company.name}`,
-    });
-  };
-
-  const exitCompany = () => {
-    dispatch(clearActiveCompany());
-
-    Cookies.remove(ACTIVE_COMPANY_ID_KEY);
-
-    toast.showToast('info', dictionary.toast.company.exit.success);
-  };
+  const { enterCompany, exitCompany } = useCompanySession();
 
   return (
     <div className='bg-surface-0 dark:bg-surface-900 border-surface-200 dark:border-surface-700 mb-4 flex w-full flex-col justify-between gap-4 rounded-xl border p-4 shadow-sm sm:flex-row sm:items-center'>
@@ -87,7 +57,7 @@ export const ChangeCompanyListItem = ({ company }: { company: ReturnCompany }) =
               rounded
               variant='outlined'
               severity='success'
-              onClick={() => enterCompany()}
+              onClick={() => enterCompany(company)}
               title={dictionary.companies.actions.enterCompany}
             >
               <i className='pi pi-sign-in' />

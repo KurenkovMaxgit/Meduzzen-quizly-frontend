@@ -3,37 +3,113 @@
 import { useCompanyControllerFindOneByIdQuery } from '@/lib/quizly-api';
 import { CompanyDetailsToolbar } from '@/components/companies/company-details-toolbar';
 import { CompanyStatus, CompanyRole } from '@/utils/enums';
-import { mockUser } from '@/mock/user-mock';
-import { EditCompanyDialog } from '@/components/companies/company-edit-dialog';
 import { useMessages } from 'next-intl';
 import { CompanyUser } from '@/entities/company-user.entity';
+import { useAppSelector } from '@/lib/hooks';
+import { useEffect, useState } from 'react';
+import { Skeleton } from '@primereact/ui/skeleton';
+import { Button } from '@primereact/ui/button';
+import { Dialog } from '@primereact/ui/dialog';
+import { DialogContentInstance } from '@primereact/types/shared/dialog';
+import EditCompanyDialogContent from '@/components/companies/company-edit-dialog-content';
 import { cn } from '@/utils/cn';
+import { useRouter } from '@/i18n/routing';
 
 export function CompanyFetcher({ companyId }: { companyId: string }) {
-  const { data: response, isLoading } = useCompanyControllerFindOneByIdQuery({ id: companyId });
+  const dictionary = useMessages();
+  const router = useRouter();
+
+  const [isMounted, setIsMounted] = useState(false);
+  const { user: currentUser } = useAppSelector((state) => state.auth);
+
+  const { data: response, isLoading } = useCompanyControllerFindOneByIdQuery({
+    id: companyId,
+    relations: 'members.user',
+  });
   const company = response?.data;
 
-  const dictionary = useMessages();
+  useEffect(() => {
+    const frameId = requestAnimationFrame(() => {
+      setIsMounted(true);
+    });
 
-  if (isLoading || !company) {
+    return () => cancelAnimationFrame(frameId);
+  }, []);
+
+  if (!isMounted || isLoading || !company) {
     return (
-      <div className='bg-surface-200 dark:bg-surface-700 h-64 w-full animate-pulse rounded-2xl'></div>
+      <div className='flex w-full flex-col gap-6'>
+        <div className='flex min-h-10 items-center justify-between'>
+          <Button
+            icon='pi pi-arrow-left'
+            severity='secondary'
+            variant='text'
+            onClick={() => router.back()}
+          >
+            <i className='pi pi-arrow-left' />
+            {dictionary.common.back}
+          </Button>
+        </div>
+        <Skeleton
+          width='100%'
+          height='16rem'
+          borderRadius='16px'
+          className='bg-surface-200 dark:bg-surface-700'
+        />
+      </div>
     );
   }
 
   const hasEditPermission = company.members?.some(
     (user: CompanyUser) =>
-      (user.user.id === mockUser.id && user.role === CompanyRole.OWNER) ||
+      (user.user.id === currentUser?.id && user.role === CompanyRole.OWNER) ||
       user.role === CompanyRole.ADMIN,
   );
 
   return (
-    <>
-      {hasEditPermission && (
-        <div className='mb-4 flex items-center justify-end'>
-          <EditCompanyDialog company={company} />
-        </div>
-      )}
+    <div className='flex w-full flex-col gap-6'>
+      <div className='flex min-h-10 items-center justify-between'>
+        <Button
+          icon='pi pi-arrow-left'
+          severity='secondary'
+          variant='text'
+          onClick={() => router.back()}
+        >
+          <i className='pi pi-arrow-left' />
+          {dictionary.common.back}
+        </Button>
+
+        {hasEditPermission && (
+          <Dialog.Root modal position='center' draggable={false}>
+            <Dialog.Trigger>
+              <i className='pi pi-pencil' />
+              <h3 className='hidden sm:block'>{dictionary.companies.editDialog.title}</h3>
+            </Dialog.Trigger>
+
+            <Dialog.Backdrop className='cursor-pointer' />
+
+            <Dialog.Portal className='w-[95vw] max-w-full sm:w-md'>
+              <Dialog.Header>
+                <Dialog.Title>{dictionary.companies.editDialog.title}</Dialog.Title>
+                <Dialog.HeaderActions>
+                  <Dialog.Close>
+                    <i className='pi pi-times' />
+                  </Dialog.Close>
+                </Dialog.HeaderActions>
+              </Dialog.Header>
+
+              <Dialog.Content>
+                {(instance: DialogContentInstance) => (
+                  <EditCompanyDialogContent
+                    company={company}
+                    closeDialog={instance.dialog?.close as () => void}
+                  />
+                )}
+              </Dialog.Content>
+            </Dialog.Portal>
+          </Dialog.Root>
+        )}
+      </div>
 
       <div className='bg-surface-0 dark:bg-surface-900 border-surface-200 dark:border-surface-700 flex w-full flex-col rounded-2xl border p-6 shadow-sm sm:p-8'>
         <div className='flex flex-col gap-8 md:flex-row md:items-start'>
@@ -56,7 +132,10 @@ export function CompanyFetcher({ companyId }: { companyId: string }) {
                     company.status === CompanyStatus.VISIBLE ? 'pi-check-circle' : 'pi-eye-slash',
                   )}
                 />
-                {company.status}
+                {company.status === CompanyStatus.VISIBLE
+                  ? dictionary.companies.details.statusVisible
+                  : company.status === CompanyStatus.HIDDEN &&
+                    dictionary.companies.details.statusHidden}
               </div>
             </div>
 
@@ -73,6 +152,6 @@ export function CompanyFetcher({ companyId }: { companyId: string }) {
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }

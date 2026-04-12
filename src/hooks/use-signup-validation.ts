@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
 import { useMessages } from 'next-intl';
 import { useGlobalToast } from '@/providers/toast-provider';
 import { useAppDispatch } from '@/lib/hooks';
@@ -9,6 +8,7 @@ import { HttpExceptionResponse } from '@/interfaces/common/api-exception-interfa
 import { CreateUser } from '@/types/user/create-user';
 import { validateSignup } from '@/utils/signup-form-validation-rules';
 import { HOME_ROUTE } from '@/utils/router-constants';
+import { useRouter } from '@/i18n/routing';
 
 export function useSignupForm() {
   const dictionary = useMessages();

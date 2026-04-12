@@ -1,6 +1,8 @@
 {
   "common": {
-    "searchbar": { "placeholder": "Search" },
+    "searchbar": {
+      "placeholder": "Search"
+    },
     "back": "Back",
     "edit": "Edit",
     "save": "Save",
@@ -13,14 +15,86 @@
   },
   "toast": {
     "signup": {
-      "success": { "summary": "Welcome to Quizly!", "detail": "Account created successfully!" }
+      "success": {
+        "summary": "Welcome to Quizly!",
+        "detail": "Account created successfully!"
+      }
     },
     "company": {
-      "enter": { "success": { "summary": "Success", "detail": "You successfully entered" } },
-      "exit": { "success": { "summary": "Info", "detail": "Company exited" } }
+      "enter": {
+        "success": {
+          "summary": "Success!",
+          "detail": "You successfully entered"
+        }
+      },
+      "exit": {
+        "success": {
+          "summary": "Info",
+          "detail": "Company exited"
+        }
+      },
+      "create": {
+        "success": {
+          "summary": "Success!",
+          "detail": "Company created successfully"
+        },
+        "error": {
+          "summary": "Error!",
+          "detail": "Error creating company"
+        }
+      },
+      "update": {
+        "success": {
+          "summary": "Success!",
+          "detail": "Company updated successfully"
+        },
+        "error": {
+          "summary": "Error!",
+          "detail": "Error updating company"
+        }
+      },
+      "membershipUpdate": {
+        "success": {
+          "summary": "Success!",
+          "detail": "Membership updated successfully"
+        },
+        "error": {
+          "summary": "Error!",
+          "detail": "Error updating membership"
+        }
+      },
+      "delete": {
+        "success": {
+          "summary": "Success!",
+          "detail": "Company deleted successfully"
+        },
+        "error": {
+          "summary": "Error!",
+          "detail": "Error deleting company"
+        }
+      },
+      "leave": {
+        "success": {
+          "summary": "Success!",
+          "detail": "Company left successfully"
+        },
+        "error": {
+          "summary": "Error!",
+          "detail": "Error leaving company"
+        }
+      }
     },
-    "profileUpdate": {
-      "success": { "summary": "Success", "detail": "Profile updated successfully" }
+    "profile": {
+      "update": {
+        "success": {
+          "summary": "Success!",
+          "detail": "Profile updated successfully"
+        },
+        "error": {
+          "summary": "Error!",
+          "detail": "Error updating profile"
+        }
+      }
     }
   },
   "auth": {
@@ -123,8 +197,15 @@
       "viewDetails": "View company details",
       "enterCompany": "Enter Company",
       "exitCompany": "Exit Company",
+      "leaveCompany": "Leave Company",
       "deleteCompany": "Delete Company",
+      "deleteCompanyConfirmation": "Are you sure you want to delete this company?",
+      "editCompany": "Edit Company",
       "sendRequest": "Send membership request"
+    },
+    "validationErrors": {
+      "name": "Name must be between 1 and 250 characters",
+      "description": "Description must be between 1 and 3000 characters"
     },
     "details": {
       "membersList": {
@@ -135,10 +216,18 @@
         "title": "Quizzes List"
       },
       "about": "About the Company",
-      "id": "Company ID"
+      "id": "Company ID",
+      "statusVisible": "Visible",
+      "statusHidden": "Hidden"
     },
     "editDialog": {
       "title": "Edit Company",
+      "name": "Company Name",
+      "description": "Description",
+      "visibility": "Company visibility"
+    },
+    "createDialog": {
+      "title": "Create Company",
       "name": "Company Name",
       "description": "Description",
       "visibility": "Company visibility"

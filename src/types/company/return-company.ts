@@ -10,7 +10,7 @@ export type ReturnCompany = {
 
   status: CompanyStatus;
 
-  members: CompanyUser[];
+  members?: CompanyUser[];
 
   createdAt: Date;
 

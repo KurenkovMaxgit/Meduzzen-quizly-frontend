@@ -21,21 +21,38 @@
     "company": {
       "enter": {
         "success": {
-          "summary": "Успішно",
+          "summary": "Успіх!",
           "detail": "Ви успішно увійшли в"
         }
       },
       "exit": {
-        "success": {
-          "summary": "Інфо",
-          "detail": "Ви успішно вийшли з компанії"
-        }
+        "success": { "summary": "Інфо", "detail": "Ви успішно вийшли з компанії" }
+      },
+      "create": {
+        "success": { "summary": "Успіх!", "detail": "Компанію успішно створено" },
+        "error": { "summary": "Помилка!", "detail": "Помилка створення компанії" }
+      },
+      "update": {
+        "success": { "summary": "Успіх!", "detail": "Компанію успішно оновлено" },
+        "error": { "summary": "Помилка!", "detail": "Помилка оновлення компанії" }
+      },
+      "delete": {
+        "success": { "summary": "Успіх!", "detail": "Компанію успішно видалено" },
+        "error": { "summary": "Помилка!", "detail": "Помилка видалення компанії" }
+      },
+      "membershipUpdate": {
+        "success": { "summary": "Успіх!", "detail": "Членство успішно оновлено" },
+        "error": { "summary": "Помилка!", "detail": "Помилка оновлення членства" }
+      },
+      "leave": {
+        "success": { "summary": "Успіх!", "detail": "Компанію успішно покинуто" },
+        "error": { "summary": "Помилка!", "detail": "Помилка покидання компанії" }
       }
     },
-    "profileUpdate": {
-      "success": {
-        "summary": "Успішно",
-        "detail": "Профіль успішно оновлено"
+    "profile": {
+      "update": {
+        "success": { "summary": "Успіх!", "detail": "Профіль успішно оновлено" },
+        "error": { "summary": "Помилка!", "detail": "Помилка оновлення профілю" }
       }
     }
   },
@@ -139,8 +156,15 @@
       "viewDetails": "Переглянути деталі компанії",
       "enterCompany": "Увійти в компанію",
       "exitCompany": "Вийти з компанії",
-      "deleteCompany": "Видалити компанію",
+      "leaveCompany": "Покинути компанію",
+      "deleteCompany": "Видалити",
+      "deleteCompanyConfirmation": "Ви впевнені, що хочете видалити цю компанію?",
+      "editCompany": "Редагувати компанію",
       "sendRequest": "Надіслати запит на участь"
+    },
+    "validationErrors": {
+      "name": "Назва має містити від 1 до 250 символів",
+      "description": "Опис має містити від 1 до 3000 символів"
     },
     "details": {
       "membersList": {
@@ -151,10 +175,18 @@
         "title": "Список квізів"
       },
       "about": "Про компанію",
-      "id": "ID компанії"
+      "id": "ID компанії",
+      "statusVisible": "Видима усім",
+      "statusHidden": "Прихована"
     },
     "editDialog": {
       "title": "Редагувати",
+      "name": "Назва компанії",
+      "description": "Опис",
+      "visibility": "Видимість компанії"
+    },
+    "createDialog": {
+      "title": "Створити",
       "name": "Назва компанії",
       "description": "Опис",
       "visibility": "Видимість компанії"

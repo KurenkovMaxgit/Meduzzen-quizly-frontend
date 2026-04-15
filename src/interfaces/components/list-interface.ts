@@ -1,3 +1,4 @@
+import { FindAllQuery } from '@/types/common/find-queries';
 import { GetListResponse } from '../common/api-response-interface';
 
 export interface UniversalListProps<T> {
@@ -14,12 +15,13 @@ export interface UniversalListProps<T> {
   totalRecords?: number;
   dialog?: boolean;
   dialogTitle?: string;
+  dialogTitleIcon?: string;
   dialogButtonLabel?: string;
   dialogButtonIcon?: string;
 }
 
 export interface ListHeaderProps {
-  title: string;
+  title?: string;
   buttonLabel?: string;
   onButtonClick?: () => void;
   searchbar?: boolean;
@@ -28,11 +30,15 @@ export interface ListHeaderProps {
 }
 
 export interface QueryUniversalListProps<T, Q> extends Omit<
-  UniversalListProps<T>,
+  UniversalListProps<Q>,
   'items' | 'isLoading' | 'page' | 'onPageChange' | 'totalRecords'
 > {
-  queryHook: (params: Q) => { data?: GetListResponse<T>; isLoading: boolean; isFetching: boolean };
-  queryParams?: Q;
-  dataPath?: (data?: GetListResponse<T>) => T[];
-  totalPath?: (data?: GetListResponse<T>) => number;
+  queryHook: (params: FindAllQuery<T>) => {
+    data?: GetListResponse<Q>;
+    isLoading: boolean;
+    isFetching: boolean;
+  };
+  queryParams?: FindAllQuery<T>;
+  dataPath?: (data?: GetListResponse<Q>) => Q[];
+  totalPath?: (data?: GetListResponse<Q>) => number;
 }

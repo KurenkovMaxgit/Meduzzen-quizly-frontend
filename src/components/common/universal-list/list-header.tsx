@@ -19,16 +19,18 @@ export function ListHeader({
 
   return (
     <div className='mb-6 flex flex-col gap-4 sm:gap-6'>
-      <div className='flex items-center justify-between gap-4'>
-        <h1 className='m-0 text-3xl font-bold'>{title}</h1>
+      {(title || buttonLabel) && (
+        <div className='flex items-center justify-between'>
+          {title && <h1 className='m-0 text-3xl font-bold'>{title}</h1>}
 
-        {buttonLabel && onButtonClick && (
-          <Button raised onClick={onButtonClick} className='shrink-0'>
-            <i className='pi pi-plus sm:mr-2' />
-            <span className='hidden font-bold sm:block'>{buttonLabel}</span>
-          </Button>
-        )}
-      </div>
+          {buttonLabel && onButtonClick && (
+            <Button raised onClick={onButtonClick} className='shrink-0'>
+              <i className='pi pi-plus sm:mr-2' />
+              <span className='hidden font-bold sm:block'>{buttonLabel}</span>
+            </Button>
+          )}
+        </div>
+      )}
 
       {searchbar && setSearchValue && (
         <div className='w-full'>
@@ -44,11 +46,11 @@ export function ListHeader({
               placeholder={dictionary.common.searchbar.placeholder}
               className='w-full'
             />
-            {searchValue ? (
+            {searchValue && (
               <IconField.Icon>
                 <i className='pi pi-times cursor-pointer' onClick={() => setSearchValue('')} />
               </IconField.Icon>
-            ) : null}
+            )}
           </IconField.Root>
         </div>
       )}

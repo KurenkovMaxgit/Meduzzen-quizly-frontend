@@ -4,7 +4,7 @@ import { useRef } from 'react';
 import { useAppDispatch } from '@/lib/hooks';
 import { setCurrentUser } from '@/lib/slices/auth-slice';
 import { setActiveCompany } from '@/lib/slices/company-slice';
-import { quizlyApi, setAuth0RefreshFn } from '@/lib/quizly-api';
+import { quizlyApi, setAuth0RefreshFn } from '@/lib/api-endpoints';
 import { ApiResponse } from '@/interfaces/common/api-response-interface';
 import { ReturnUser } from '@/types/user/return-user';
 import { ReturnCompany } from '@/types/company/return-company';
@@ -65,15 +65,15 @@ export function StoreInitializerClient({
     const company = companyResponse?.data;
 
     if (currentUser) {
-      dispatch(quizlyApi.util.upsertQueryData('userControllerMe', undefined, userResponse));
+      dispatch(quizlyApi.util.upsertQueryData('userMe', undefined, userResponse));
       dispatch(setCurrentUser({ user: currentUser }));
     }
 
     if (company && currentUser && activeCompanyId) {
       dispatch(
         quizlyApi.util.upsertQueryData(
-          'companyControllerFindOneById',
-          { id: activeCompanyId, relations: 'members.user' },
+          'companyFindOneById',
+          { id: activeCompanyId, relations: ['members.user'] },
           companyResponse,
         ),
       );
@@ -81,7 +81,6 @@ export function StoreInitializerClient({
       const currentMember = company.members?.find((member) => member.user?.id === currentUser.id);
 
       if (currentMember) {
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const { members, ...companyWithoutMembers } = company;
 
         dispatch(

@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { SidebarLayout } from '@/components/layout/sidebar-layout';
-import { StoreInitializer } from '@/components/common/store-initializer';
+import { StoreInitializer } from '@/components/common/store-initializer/store-initializer';
 
 export const metadata: Metadata = { title: 'Quizly' };
 

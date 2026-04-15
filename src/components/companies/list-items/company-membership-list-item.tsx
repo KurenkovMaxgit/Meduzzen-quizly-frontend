@@ -38,7 +38,7 @@ export const CompanyMembershipListItem = (company: typeof mockCompany) => {
             className='shrink-0'
             title={dictionary.companies.actions.viewDetails}
           >
-            <i className='pi pi-eye' />
+            <i className='pi pi-eye my-1' />
           </Button>
         </Link>
         {company.id === currentCompany?.id ? (
@@ -49,7 +49,7 @@ export const CompanyMembershipListItem = (company: typeof mockCompany) => {
             onClick={() => logOutOfCompany()}
             title={dictionary.companies.actions.exitCompany}
           >
-            <i className='pi pi-sign-out' />
+            <i className='pi pi-sign-out my-1' />
           </Button>
         ) : (
           <Button
@@ -59,7 +59,7 @@ export const CompanyMembershipListItem = (company: typeof mockCompany) => {
             onClick={() => logInCompany()}
             title={dictionary.companies.actions.enterCompany}
           >
-            <i className='pi pi-sign-in' />
+            <i className='pi pi-sign-in my-1' />
           </Button>
         )}
       </div>

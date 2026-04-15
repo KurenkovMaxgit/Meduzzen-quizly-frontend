@@ -7,9 +7,14 @@ import { COMPANIES_ROUTE } from '@/utils/router-constants';
 import { ReturnCompany } from '@/types/company/return-company';
 import { useAppSelector } from '@/lib/hooks';
 import { useCompanySession } from '@/hooks/use-company-session';
+import { useState } from 'react';
+import { FetchBaseQueryError } from '@reduxjs/toolkit/query';
+import { useActionRequestJoinMutation } from '@/lib/api-endpoints';
+import { useGlobalToast } from '@/providers/toast-provider';
 
 export const CompanyListItem = (company: ReturnCompany) => {
   const dictionary = useMessages();
+  const toast = useGlobalToast();
 
   const currentUser = useAppSelector((state) => state.auth.user);
   const { activeCompany: currentCompany } = useAppSelector((state) => state.company);
@@ -18,8 +23,29 @@ export const CompanyListItem = (company: ReturnCompany) => {
 
   const { enterCompany, exitCompany } = useCompanySession();
 
+  const [isRequestButtonDisabled, setRequestButtonDisabled] = useState<boolean>(false);
+
+  const [sendInvite] = useActionRequestJoinMutation();
+
   const handleSendRequest = async () => {
-    //TODO: Add handling
+    try {
+      const response = await sendInvite({
+        companyId: company.id,
+      }).unwrap();
+
+      if (response) {
+        toast.showToast('success', dictionary.toast.members.request.success);
+        setRequestButtonDisabled(true);
+      }
+    } catch (error) {
+      const errorCode = (error as FetchBaseQueryError).status;
+      if (errorCode === 400) {
+        toast.showToast('error', dictionary.toast.members.request.alreadySent);
+        setRequestButtonDisabled(true);
+      } else {
+        toast.showToast('error', dictionary.toast.members.request.error);
+      }
+    }
   };
 
   return (
@@ -34,7 +60,7 @@ export const CompanyListItem = (company: ReturnCompany) => {
           {company.description}
         </span>
       </div>
-      <div className='flex items-center gap-4 sm:ml-auto'>
+      <div className='flex shrink-0 justify-end gap-4 sm:ml-auto sm:items-center'>
         <Link href={`${COMPANIES_ROUTE}/${company.id}`}>
           <Button
             rounded
@@ -43,7 +69,7 @@ export const CompanyListItem = (company: ReturnCompany) => {
             className='shrink-0'
             title={dictionary.companies.actions.viewDetails}
           >
-            <i className='pi pi-eye' />
+            <i className='pi pi-eye my-1' />
           </Button>
         </Link>
         {isMember ? (
@@ -55,7 +81,7 @@ export const CompanyListItem = (company: ReturnCompany) => {
               onClick={() => exitCompany()}
               title={dictionary.companies.actions.exitCompany}
             >
-              <i className='pi pi-sign-out' />
+              <i className='pi pi-sign-out my-1' />
             </Button>
           ) : (
             <Link href={`${COMPANIES_ROUTE}/${company.id}`}>
@@ -66,7 +92,7 @@ export const CompanyListItem = (company: ReturnCompany) => {
                 onClick={() => enterCompany(company)}
                 title={dictionary.companies.actions.enterCompany}
               >
-                <i className='pi pi-sign-in' />
+                <i className='pi pi-sign-in my-1' />
               </Button>
             </Link>
           )
@@ -75,10 +101,15 @@ export const CompanyListItem = (company: ReturnCompany) => {
             rounded
             variant='outlined'
             severity='info'
+            disabled={isRequestButtonDisabled}
             onClick={() => handleSendRequest()}
-            title={dictionary.companies.actions.sendRequest}
+            title={dictionary.companies.actions.sendInvite}
           >
-            <i className='pi pi-envelope' />
+            {isRequestButtonDisabled ? (
+              <i className='pi pi-check my-1' />
+            ) : (
+              <i className='pi pi-envelope my-1' />
+            )}
           </Button>
         )}
       </div>

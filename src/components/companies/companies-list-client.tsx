@@ -1,39 +1,40 @@
 'use client';
 
-import { CompanyListItem } from '@/components/companies/company-list-item';
-import { useCompanyControllerFindAllQuery } from '@/lib/quizly-api';
-import { QueryUniversalList } from '@/components/common/list-query';
+import { CompanyListItem } from '@/components/companies/list-items/company-list-item';
+import { useCompanyFindAllQuery } from '@/lib/api-endpoints';
 import { ReturnCompany } from '@/types/company/return-company';
 import { CompanyStatus } from '@/utils/enums';
-import { ListHeader } from '../common/list-header';
 import { useState } from 'react';
 import { useDebounce } from '@/hooks/use-debounce';
 import { Dialog } from '@primereact/ui/dialog';
 import CreateCompanyDialogContent from './company-create-dialog-content';
 import { useMessages } from 'next-intl';
+import { FindCompany } from '@/types/company/find-company';
+import { QueryUniversalList } from '../common/universal-list/list-query';
+import { ListHeader } from '../common/universal-list/list-header';
 
 export function CompaniesListClient() {
   const dictionary = useMessages();
 
-  const [searchValue, setSearchValue] = useState('');
-  const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
+  const [searchValue, setSearchValue] = useState<string>('');
+  const [isCreateDialogOpen, setIsCreateDialogOpen] = useState<boolean>(false);
 
   const debouncedSearch = useDebounce(searchValue, 500);
 
   return (
     <>
-      <QueryUniversalList
-        queryHook={useCompanyControllerFindAllQuery}
+      <QueryUniversalList<FindCompany, ReturnCompany>
+        queryHook={useCompanyFindAllQuery}
         queryParams={{
           where: {
             status: CompanyStatus.VISIBLE,
           },
           search: debouncedSearch,
-          sort: 'ASC',
-          relations: 'members.user',
+          order: { name: 'ASC' },
+          relations: ['members.user'],
         }}
         paginator={true}
-        rows={12}
+        rows={10}
         itemTemplate={(company: ReturnCompany) => <CompanyListItem {...company} />}
         emptyMessage={dictionary.companies.emptyMessage}
       >

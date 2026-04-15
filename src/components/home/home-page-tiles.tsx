@@ -4,11 +4,10 @@ import { Button } from '@primereact/ui/button';
 import { Link } from '@/i18n/routing';
 import { useMessages } from 'next-intl';
 import { COMPANIES_ROUTE } from '@/utils/router-constants';
+import { CreateCompanyAction } from './create-company-action';
 
 export function HomePageTiles() {
   const dictionary = useMessages();
-
-  const handleCreateCompany = () => {};
 
   return (
     <div className='mx-auto flex w-full max-w-5xl flex-col gap-8 md:flex-row'>
@@ -25,10 +24,7 @@ export function HomePageTiles() {
           {dictionary.home.createCompanyTile.description}
         </p>
         <div className='mt-auto'>
-          <Button onClick={handleCreateCompany} className='w-full py-3 font-semibold'>
-            <i className='pi pi-plus me-2' />
-            {dictionary.home.createCompanyTile.buttonLabel}
-          </Button>
+          <CreateCompanyAction />
         </div>
       </div>
 

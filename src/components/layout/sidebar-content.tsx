@@ -5,7 +5,10 @@ import {
   ABOUT_ROUTE,
   COMPANIES_ROUTE,
   HOME_ROUTE,
+  MEMBERS_ROUTE,
   MEMBERSHIPS_ROUTE,
+  RECEIVED_MESSAGES_ROUTE,
+  SENT_MESSAGES_ROUTE,
 } from '@/utils/router-constants';
 import { useAppSelector } from '@/lib/hooks';
 
@@ -48,67 +51,87 @@ export function SidebarContent() {
           </Menu.Sub>
 
           {currentCompany && (
-            <Menu.Sub defaultOpen={true}>
-              <Menu.Trigger>
-                <i className='pi pi-th-large' />
-                {dictionary.sidebar.companyActionsDropdown.title}
-                <Menu.Icon />
-              </Menu.Trigger>
+            <>
+              <Menu.Sub defaultOpen={true}>
+                <Menu.Trigger>
+                  <i className='pi pi-th-large' />
+                  {dictionary.sidebar.companyActionsDropdown.title}
+                  <Menu.Icon />
+                </Menu.Trigger>
 
-              <Menu.List>
-                <Menu.Item>
-                  <Link
-                    href={`${COMPANIES_ROUTE}/${currentCompany.id}/members`}
-                    className='flex w-full items-center gap-2'
-                  >
-                    <i className='pi pi-users' />
-                    {dictionary.sidebar.companyActionsDropdown.membersList}
-                  </Link>
-                </Menu.Item>
+                <Menu.List>
+                  <Menu.Item>
+                    <Link
+                      href={`${COMPANIES_ROUTE}/${currentCompany.id}/${MEMBERS_ROUTE}`}
+                      className='flex w-full items-center gap-2'
+                    >
+                      <i className='pi pi-users' />
+                      {dictionary.sidebar.companyActionsDropdown.membersList}
+                    </Link>
+                  </Menu.Item>
 
-                <Menu.Item>
-                  <Link href={MEMBERSHIPS_ROUTE} className='flex w-full items-center gap-2'>
-                    <i className='pi pi-clipboard' />
-                    {dictionary.sidebar.companyActionsDropdown.quizzesList}
-                  </Link>
-                </Menu.Item>
-              </Menu.List>
-            </Menu.Sub>
+                  <Menu.Item>
+                    <Link href={MEMBERSHIPS_ROUTE} className='flex w-full items-center gap-2'>
+                      <i className='pi pi-clipboard' />
+                      {dictionary.sidebar.companyActionsDropdown.quizzesList}
+                    </Link>
+                  </Menu.Item>
+                </Menu.List>
+              </Menu.Sub>
+              <Menu.Sub defaultOpen={true}>
+                <Menu.Trigger>
+                  <i className='pi pi-inbox' />
+                  {dictionary.sidebar.companyInboxDropdown.title}
+                  <Menu.Icon />
+                </Menu.Trigger>
+
+                <Menu.List>
+                  <Menu.Item>
+                    <Link
+                      href={`${COMPANIES_ROUTE}/${currentCompany.id}/${SENT_MESSAGES_ROUTE}`}
+                      className='flex w-full items-center gap-2'
+                    >
+                      <i className='pi pi-send' />
+                      {dictionary.sidebar.companyInboxDropdown.sentNotifications}
+                    </Link>
+                  </Menu.Item>
+
+                  <Menu.Item>
+                    <Link
+                      href={`${COMPANIES_ROUTE}/${currentCompany.id}/${RECEIVED_MESSAGES_ROUTE}`}
+                      className='flex w-full items-center gap-2'
+                    >
+                      <i className='pi pi-download' />
+                      {dictionary.sidebar.companyInboxDropdown.receivedNotifications}
+                    </Link>
+                  </Menu.Item>
+                </Menu.List>
+              </Menu.Sub>
+            </>
           )}
 
           <Menu.Sub defaultOpen={true}>
             <Menu.Trigger>
-              <i className='pi pi-inbox' />
+              <i className='pi pi-envelope' />
               {dictionary.sidebar.inboxDropdown.title}
               <Menu.Icon />
             </Menu.Trigger>
 
             <Menu.List>
               <Menu.Item>
-                <Link href='/messages' className='flex w-full items-center gap-2'>
-                  <i className='pi pi-envelope' />
-                  {dictionary.sidebar.inboxDropdown.allNotifications}
-                </Link>
-              </Menu.Item>
-
-              <Menu.Item>
-                <Link href='/messages/sent' className='flex w-full items-center gap-2'>
+                <Link href={`${SENT_MESSAGES_ROUTE}`} className='flex w-full items-center gap-2'>
                   <i className='pi pi-send' />
                   {dictionary.sidebar.inboxDropdown.sentNotifications}
                 </Link>
               </Menu.Item>
 
               <Menu.Item>
-                <Link href='/messages/received' className='flex w-full items-center gap-2'>
+                <Link
+                  href={`${RECEIVED_MESSAGES_ROUTE}`}
+                  className='flex w-full items-center gap-2'
+                >
                   <i className='pi pi-download' />
                   {dictionary.sidebar.inboxDropdown.receivedNotifications}
-                </Link>
-              </Menu.Item>
-
-              <Menu.Item>
-                <Link href='/messages/archived' className='flex w-full items-center gap-2'>
-                  <i className='pi pi-folder' />
-                  {dictionary.sidebar.inboxDropdown.archivedNotifications}
                 </Link>
               </Menu.Item>
             </Menu.List>

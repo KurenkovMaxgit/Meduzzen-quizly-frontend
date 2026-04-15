@@ -1,6 +1,6 @@
 import { BaseEntity } from './base.entity';
 import { CompanyUser } from './company-user.entity';
-import { Action } from './action.entity';
+import { CompanyAction } from './action.entity';
 import { QuizAttempt } from './attempt.entity';
 import { UserRole } from '@/utils/enums';
 
@@ -19,9 +19,9 @@ export interface User extends BaseEntity {
 
   memberships?: CompanyUser[];
 
-  sentActions?: Action[];
+  sentActions?: CompanyAction[];
 
-  receivedActions?: Action[];
+  receivedActions?: CompanyAction[];
 
   attempts?: QuizAttempt[];
 }

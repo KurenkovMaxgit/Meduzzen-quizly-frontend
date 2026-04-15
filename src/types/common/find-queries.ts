@@ -4,10 +4,10 @@ export type FindAllQuery<T> = {
   where?: T;
   search?: string;
   order?: { [field in keyof T]?: 'ASC' | 'DESC' };
-  relations?: string;
+  relations?: string[];
 };
 
 export type FindOneQuery = {
   id: string;
-  relations?: string;
+  relations?: string[];
 };

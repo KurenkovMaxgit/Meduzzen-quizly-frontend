@@ -3,8 +3,7 @@
 import { Button } from '@primereact/ui/button';
 import { useParams } from 'next/navigation';
 import { useAppSelector } from '@/lib/hooks';
-import { ReturnUser } from '@/types/user/return-user';
-import { useUserControllerFindOneByIdQuery } from '@/lib/quizly-api';
+import { useUserFindOneByIdQuery } from '@/lib/api-endpoints';
 import { User } from '@/entities/user.entity';
 import { useRouter } from '@/i18n/routing';
 import { ProfileFormSkeletons } from './profile-form-skeletons';

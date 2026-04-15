@@ -23,8 +23,7 @@ export async function proxy(request: NextRequest) {
   try {
     const session = await auth0.getSession();
     hasAuth0Session = !!session?.user;
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  } catch (error) {}
+  } catch {}
 
   const customAccessToken = request.cookies.get(ACCESS_TOKEN_KEY)?.value;
   const customRefreshToken = request.cookies.get(REFRESH_TOKEN_KEY)?.value;

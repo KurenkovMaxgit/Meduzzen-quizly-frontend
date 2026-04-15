@@ -80,8 +80,7 @@ export default function EditCompanyDialogContent({
 
       toast.showToast('success', dictionary.toast.company.update.success);
       closeDialog();
-    } catch (error) {
-      console.error('Failed to update company:', error);
+    } catch {
       toast.showToast('error', dictionary.toast.company.update.error);
     }
   };

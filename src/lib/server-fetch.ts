@@ -20,8 +20,7 @@ export const serverFetch = async (url: string, options?: RequestInit & { timeout
       const { token } = await auth0.getAccessToken();
       auth0AccessToken = token;
     }
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  } catch (error) {}
+  } catch {}
 
   const finalAccessToken = auth0AccessToken || customAccessToken;
 

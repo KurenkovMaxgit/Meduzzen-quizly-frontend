@@ -6,8 +6,7 @@ export async function GET() {
     const { token } = await auth0.getAccessToken();
 
     return NextResponse.json({ token });
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  } catch (error) {
+  } catch {
     return NextResponse.json({ error: 'No active session' }, { status: 401 });
   }
 }

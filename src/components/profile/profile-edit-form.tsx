@@ -60,8 +60,7 @@ export function EditableProfileForm({
         dispatch(setCurrentUser({ user: result.data }));
       }
       toast.showToast('success', dictionary.toast.profile.update.success);
-    } catch (error) {
-      console.error('Failed to update profile:', error);
+    } catch {
       toast.showToast('danger', dictionary.toast.profile.update.error);
     }
   }

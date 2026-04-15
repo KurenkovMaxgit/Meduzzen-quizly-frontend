@@ -65,8 +65,7 @@ export default function CreateCompanyDialogContent({ closeDialog }: { closeDialo
 
       toast.showToast('success', dictionary.toast.company.create.success);
       closeDialog();
-    } catch (error) {
-      console.error('Failed to create company:', error);
+    } catch {
       toast.showToast('error', dictionary.toast.company.create.error);
     }
   };

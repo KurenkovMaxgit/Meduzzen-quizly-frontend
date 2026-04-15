@@ -9,24 +9,31 @@
     "delete": "Видалити",
     "createdAt": "Створено",
     "updatedAt": "Останнє оновлення",
-    "loading": "Завантаження..."
+    "loading": "Завантаження...",
+    "companyRoles": {
+      "owner": "Власник",
+      "admin": "Адміністратор",
+      "member": "Учасник"
+    },
+    "actionStatus": {
+      "pending": "Очікується",
+      "accepted": "Прийнято",
+      "declined": "Відхилено"
+    }
   },
   "toast": {
     "signup": {
-      "success": {
-        "summary": "Ласкаво просимо до Quizly!",
-        "detail": "Акаунт успішно створено!"
-      }
+      "success": { "summary": "Ласкаво просимо до Quizly!", "detail": "Акаунт успішно створено!" },
+      "error": { "summary": "Помилка!", "detail": "Помилка створення акаунту" }
     },
     "company": {
       "enter": {
-        "success": {
-          "summary": "Успіх!",
-          "detail": "Ви успішно увійшли в"
-        }
+        "success": { "summary": "Успіх!", "detail": "Ви успішно увійшли в" },
+        "error": { "summary": "Помилка!", "detail": "Помилка увійдування в компанію" }
       },
       "exit": {
-        "success": { "summary": "Інфо", "detail": "Ви успішно вийшли з компанії" }
+        "success": { "summary": "Інфо", "detail": "Ви успішно вийшли з компанії" },
+        "error": { "summary": "Помилка!", "detail": "Помилка виходу з компанії" }
       },
       "create": {
         "success": { "summary": "Успіх!", "detail": "Компанію успішно створено" },
@@ -49,10 +56,66 @@
         "error": { "summary": "Помилка!", "detail": "Помилка покидання компанії" }
       }
     },
+    "members": {
+      "kick": {
+        "success": { "summary": "Успіх!", "detail": "Користувача успішно виключено" },
+        "error": { "summary": "Помилка!", "detail": "Помилка виключення користувача" }
+      },
+      "bulkKick": {
+        "success": { "summary": "Успіх!", "detail": "Користувачі успішно виключені" },
+        "error": { "summary": "Помилка!", "detail": "Помилка виключення користувачів" }
+      },
+      "grantOwner": {
+        "success": { "summary": "Успіх!", "detail": "Роль власника успішно надано" },
+        "error": { "summary": "Помилка!", "detail": "Помилка надавання ролі власника" }
+      },
+      "changeRole": {
+        "success": { "summary": "Успіх!", "detail": "Роль успішно змінено" },
+        "error": { "summary": "Помилка!", "detail": "Помилка зміни ролі" }
+      },
+      "invite": {
+        "success": { "summary": "Успіх!", "detail": "Запрошення відправлено успішно" },
+        "alreadySent": {
+          "summary": "Помилка!",
+          "detail": "Запит вже був відправлений або користувач вже є учасником"
+        },
+        "error": { "summary": "Помилка!", "detail": "Помилка надсилання запиту" }
+      },
+      "request": {
+        "success": { "summary": "Успіх!", "detail": "Запит відправлено успішно" },
+        "alreadySent": {
+          "summary": "Помилка!",
+          "detail": "Запит вже був відправлений або користувач вже є учасником"
+        },
+        "error": { "summary": "Помилка!", "detail": "Помилка надсилання запиту" }
+      }
+    },
+    "companyActions": {
+      "manageRequest": {
+        "success": { "summary": "Успіх!", "detail": "Запит оброблено успішно" },
+        "error": { "summary": "Помилка!", "detail": "Помилка обробки запиту" }
+      },
+      "cancelRequest": {
+        "success": { "summary": "Успіх!", "detail": "Запит скасовано успішно" },
+        "error": { "summary": "Помилка!", "detail": "Помилка скасування запиту" }
+      },
+      "manageInvite": {
+        "success": { "summary": "Успіх!", "detail": "Запрошення оброблено успішно" },
+        "error": { "summary": "Помилка!", "detail": "Помилка обробки запрошення" }
+      },
+      "cancelInvite": {
+        "success": { "summary": "Успіх!", "detail": "Запрошення скасовано успішно" },
+        "error": { "summary": "Помилка!", "detail": "Помилка скасування запрошення" }
+      }
+    },
     "profile": {
       "update": {
         "success": { "summary": "Успіх!", "detail": "Профіль успішно оновлено" },
         "error": { "summary": "Помилка!", "detail": "Помилка оновлення профілю" }
+      },
+      "delete": {
+        "success": { "summary": "Успіх!", "detail": "Профіль успішно видалено" },
+        "error": { "summary": "Помилка!", "detail": "Помилка видалення профілю" }
       }
     }
   },
@@ -105,20 +168,23 @@
   "sidebar": {
     "companiesDropdown": {
       "title": "Компанії",
-      "allCompanies": "Всі компанії",
-      "myMemberships": "Мої членства"
+      "allCompanies": "Всі Компанії",
+      "myMemberships": "Мої Членства"
     },
     "companyActionsDropdown": {
-      "title": "Дії компанії",
-      "membersList": "Список учасників",
-      "quizzesList": "Список квізів"
+      "title": "Дії Компанії",
+      "membersList": "Список Учасників",
+      "quizzesList": "Список Квізів"
+    },
+    "companyInboxDropdown": {
+      "title": "Вхідні Компанії",
+      "sentNotifications": "Надіслані Запрошення",
+      "receivedNotifications": "Отримані Запити"
     },
     "inboxDropdown": {
       "title": "Вхідні",
-      "allNotifications": "Всі сповіщення",
       "sentNotifications": "Надіслані",
-      "receivedNotifications": "Отримані",
-      "archivedNotifications": "Архівовані"
+      "receivedNotifications": "Отримані"
     },
     "profileDropdown": {
       "changeCompany": "Змінити компанію",
@@ -157,9 +223,11 @@
       "enterCompany": "Увійти в компанію",
       "exitCompany": "Вийти з компанії",
       "leaveCompany": "Покинути компанію",
+      "leaveCompanyConfirmation": "Ви впевнені, що хочете покинути цю компанію?",
       "deleteCompany": "Видалити",
       "deleteCompanyConfirmation": "Ви впевнені, що хочете видалити цю компанію?",
       "editCompany": "Редагувати компанію",
+      "sendInvite": "Надіслати запит",
       "sendRequest": "Надіслати запит на участь"
     },
     "validationErrors": {
@@ -192,14 +260,68 @@
       "visibility": "Видимість компанії"
     },
     "userActions": {
-      "kick": "Виключити користувача",
+      "kick": "Виключити",
       "viewProfile": "Переглянути профіль користувача"
+    },
+    "notFound": {
+      "title": "Компанія не знайдена",
+      "description": "Компанія, яку ви шукаєте, не існує."
     }
   },
   "memberships": {
     "emptyMessage": "Членств не знайдено.",
     "listHeader": {
       "title": "Членства"
+    },
+    "membersList": {
+      "title": "Список учасників",
+      "emptyMessage": "Учасників не знайдено."
+    },
+    "usersList": {
+      "title": "Запросити учасника",
+      "emptyMessage": "Користувачів не знайдено."
+    },
+    "actions": {
+      "selected": "обрано",
+      "changeRole": "Змінити роль на",
+      "changeRoleConfirmation": "Ви впевнені, що хочете змінити роль обраних учасників?",
+      "grantOwner": "Дати роль власника",
+      "grantOwnerConfirmation": "Ви впевнені, що хочете надати роль власника цьому учаснику?",
+      "kickUsers": "Виключити користувачів",
+      "kickMemberConfirmation": "Ви впевнені, що хочете виключити цього учасника?",
+      "kickMembersConfirmation": "Ви впевнені, що хочете виключити цих учасників?"
+    }
+  },
+  "messages": {
+    "list": {
+      "sent": { "title": "Надіслані Повідомлення" },
+      "received": { "title": "Отримані Повідомлення" },
+      "emptyMessage": "Повідомлень не знайдено."
+    },
+    "actions": {
+      "accept": "Прийняти",
+      "decline": "Відхилити",
+      "cancel": "Скасувати надсилання"
+    },
+    "user": {
+      "sended": {
+        "title": "Запит на приєднання",
+        "description": "Ви наділали запит на членство в"
+      },
+      "received": {
+        "title": "Запрошення в компанію",
+        "description": "Ви були запрошені до "
+      }
+    },
+    "company": {
+      "sended": {
+        "title": "Запрошення користувача",
+        "description": "було запрошено до"
+      },
+      "received": {
+        "title": "Запит на приєднання",
+        "description": "надіслав(ла) запит на приєднання до"
+      }
     }
   },
   "profile": {
@@ -210,7 +332,7 @@
     "loadingMessage": "Завантаження деталей профілю...",
     "userNotFound": {
       "title": "Користувача не знайдено.",
-      "description": "Користувача , котрого ви шукаєте не існує."
+      "description": "Користувача, котрого ви шукаєте не існує."
     },
     "actions": {
       "deleteUserConfirmation": "Ви впевнені, що хочете видалити цей аккаунт?"

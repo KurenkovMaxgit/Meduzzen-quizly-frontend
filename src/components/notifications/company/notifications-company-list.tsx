@@ -5,11 +5,12 @@ import { QueryUniversalList } from '@/components/common/universal-list/list-quer
 import { CompanyAction } from '@/entities/action.entity';
 import { useActionGetCompanyActionsQuery } from '@/lib/api-endpoints';
 import { FindAction } from '@/types/actions/find-action.dto';
-import { ActionType } from '@/utils/enums';
+import { ActionStatus, ActionType } from '@/utils/enums';
 import { useMessages } from 'next-intl';
 import { CompanyMessagesListItem } from './notifications-company-list-item';
 import { useRouter } from '@/i18n/routing';
 import { useAppSelector } from '@/lib/hooks';
+import { useState } from 'react';
 
 export function CompanyMessagesList({
   actionType,
@@ -26,13 +27,25 @@ export function CompanyMessagesList({
     router.back();
   }
 
+  const [selectedStatus, setSelectedStatus] = useState<ActionStatus | null>(null);
+
+  const roleFilterOptions = [
+    { label: dictionary.common.actionStatus.pending, value: ActionStatus.PENDING },
+    { label: dictionary.common.actionStatus.accepted, value: ActionStatus.ACCEPTED },
+    { label: dictionary.common.actionStatus.declined, value: ActionStatus.DECLINED },
+  ];
+
   const messageAppearance = actionType === ActionType.REQUEST ? 'received' : 'sent';
 
   return (
     <QueryUniversalList<FindAction, CompanyAction>
       queryHook={useActionGetCompanyActionsQuery}
       queryParams={{
-        where: { type: actionType, company: { id: companyId } },
+        where: {
+          type: actionType,
+          company: { id: companyId },
+          status: selectedStatus ? selectedStatus : undefined,
+        },
         relations: ['company', 'subject'],
         order: { createdAt: 'DESC' },
       }}
@@ -41,7 +54,13 @@ export function CompanyMessagesList({
       itemTemplate={(action: CompanyAction) => <CompanyMessagesListItem action={{ ...action }} />}
       emptyMessage={dictionary.messages.list.emptyMessage}
     >
-      <ListHeader title={dictionary.messages.list[messageAppearance].title} />
+      <ListHeader
+        title={dictionary.messages.list[messageAppearance].title}
+        filterOptions={roleFilterOptions}
+        filterValue={selectedStatus}
+        onFilterChange={setSelectedStatus}
+        filterPlaceholder={dictionary.common.filter.byStatus}
+      />
     </QueryUniversalList>
   );
 }

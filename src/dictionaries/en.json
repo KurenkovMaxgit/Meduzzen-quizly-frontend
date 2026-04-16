@@ -3,6 +3,11 @@
     "searchbar": {
       "placeholder": "Search"
     },
+    "filter": {
+      "placeHolder": "Filter",
+      "byRole": "Filter by role",
+      "byStatus": "Filter by status"
+    },
     "back": "Back",
     "edit": "Edit",
     "save": "Save",
@@ -184,7 +189,7 @@
       "receivedNotifications": "Received Requests"
     },
     "inboxDropdown": {
-      "title": "Inbox",
+      "title": "My Inbox",
       "sentNotifications": "Sent",
       "receivedNotifications": "Received"
     },
@@ -277,7 +282,8 @@
     },
     "membersList": {
       "title": "Members List",
-      "emptyMessage": "No members found."
+      "emptyMessage": "No members found.",
+      "you": "You"
     },
     "usersList": {
       "title": "Invite member",

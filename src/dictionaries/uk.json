@@ -1,6 +1,11 @@
 {
   "common": {
     "searchbar": { "placeholder": "Пошук" },
+    "filter": {
+      "placeHolder": "Фільтр",
+      "byRole": "Фільтр за ролями",
+      "byStatus": "Фільтр за статусом"
+    },
     "back": "Назад",
     "edit": "Редагувати",
     "save": "Зберегти",
@@ -177,12 +182,12 @@
       "quizzesList": "Список Квізів"
     },
     "companyInboxDropdown": {
-      "title": "Вхідні Компанії",
+      "title": "Скринька Компанії",
       "sentNotifications": "Надіслані Запрошення",
       "receivedNotifications": "Отримані Запити"
     },
     "inboxDropdown": {
-      "title": "Вхідні",
+      "title": "Моя Скринька",
       "sentNotifications": "Надіслані",
       "receivedNotifications": "Отримані"
     },
@@ -270,12 +275,11 @@
   },
   "memberships": {
     "emptyMessage": "Членств не знайдено.",
-    "listHeader": {
-      "title": "Членства"
-    },
+    "listHeader": { "title": "Членства" },
     "membersList": {
       "title": "Список учасників",
-      "emptyMessage": "Учасників не знайдено."
+      "emptyMessage": "Учасників не знайдено.",
+      "you": "Ви"
     },
     "usersList": {
       "title": "Запросити учасника",

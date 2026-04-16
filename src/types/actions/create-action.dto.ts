@@ -1,7 +1,7 @@
 import { ActionType } from '../../utils/enums';
 
-export class CreateAction {
-  subject!: string;
+export type CreateAction = {
+  subject: string;
 
-  type!: ActionType;
-}
+  type: ActionType;
+};

@@ -2,7 +2,7 @@ import { ActionStatus, ActionType } from '@/utils/enums';
 import { FindCompany } from '../company/find-company';
 import { FindUser } from '../user/find-user';
 
-export class FindAction {
+export type FindAction = {
   id?: string;
 
   createdBy?: FindUser;
@@ -18,4 +18,4 @@ export class FindAction {
   createdAt?: Date;
 
   updatedAt?: Date;
-}
+};

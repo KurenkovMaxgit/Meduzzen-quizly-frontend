@@ -3,7 +3,7 @@ import { User } from './user.entity';
 import { Company } from './company.entity';
 import { ActionStatus, ActionType } from '@/utils/enums';
 
-export interface Action extends BaseEntity {
+export interface CompanyAction extends BaseEntity {
   createdBy?: User;
 
   subject: User;

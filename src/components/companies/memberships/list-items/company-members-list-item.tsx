@@ -1,28 +1,27 @@
 'use client';
 
-import { currentCompany } from '@/mock/company-mock';
-import { CompanyRole } from '@/utils/enums';
 import { Button } from '@primereact/ui/button';
 import { Tag } from '@primereact/ui/tag';
-import { TagProps } from '@primereact/types/shared/tag';
 import { Link } from '@/i18n/routing';
-import { mockUser } from '@/mock/user-mock';
 import { useMessages } from 'next-intl';
 import { PROFILE_ROUTE } from '@/utils/router-constants';
 import { CompanyUser } from '@/entities/company-user.entity';
+import { useAppSelector } from '@/lib/hooks';
+import { KickMemberButton } from './kick-member-button';
+import { COMPANY_ROLE_TAG_PROPS } from '@/utils/tag-props-constants';
 
-const tagProps: { [key in CompanyRole]: { props: TagProps } } = {
-  [CompanyRole.OWNER]: { props: { rounded: true } },
-  [CompanyRole.ADMIN]: { props: { severity: 'info', rounded: true } },
-  [CompanyRole.MEMBER]: { props: { severity: 'secondary', rounded: true } },
-};
-
-export const CompanyMemberListItem = (companyUser: CompanyUser) => {
+export function CompanyMemberListItem({
+  companyUser,
+  canManage: canManage,
+  companyId,
+}: {
+  companyUser: CompanyUser;
+  canManage: boolean;
+  companyId: string;
+}) {
   const dictionary = useMessages();
 
-  const handleKickUser = async () => {
-    //TODO: Add handling
-  };
+  const { user: currentUser } = useAppSelector((state) => state.auth);
 
   return (
     <div className='bg-surface-0 dark:bg-surface-900 border-surface-200 dark:border-surface-700 mb-4 flex flex-col justify-between gap-4 rounded-xl border p-4 shadow-sm sm:flex-row sm:items-center'>
@@ -31,26 +30,18 @@ export const CompanyMemberListItem = (companyUser: CompanyUser) => {
           <span className='text-surface-900 dark:text-surface-0 text-xl font-bold'>
             {companyUser.user.firstName + ' ' + companyUser.user.lastName}
           </span>
-          <Tag {...tagProps[companyUser.role].props}>{companyUser.role}</Tag>
+          <Tag {...COMPANY_ROLE_TAG_PROPS[companyUser.role].props} className='shrink-0'>
+            {dictionary.common.companyRoles[companyUser.role]}
+          </Tag>
         </div>
         <span className='text-surface-600 dark:text-surface-400 text-sm'>
           {companyUser.user.email}
         </span>
       </div>
-      <div className='flex items-center gap-4 sm:ml-auto'>
-        {mockUser.id !== companyUser.user.id &&
-          currentCompany.members.find((member) => member.user.id === mockUser.id)?.role ===
-            CompanyRole.OWNER && (
-            <Button
-              rounded
-              variant='outlined'
-              severity='danger'
-              onClick={() => handleKickUser}
-              title={dictionary.companies.userActions.kick}
-            >
-              <i className='pi pi-user-minus' />
-            </Button>
-          )}
+      <div className='flex shrink-0 justify-end gap-4 sm:ml-auto sm:items-center'>
+        {currentUser?.id !== companyUser.user.id && canManage && (
+          <KickMemberButton memberId={companyUser.id} companyId={companyId} />
+        )}
         <Link href={`${PROFILE_ROUTE}/${companyUser.user.id}`}>
           <Button
             rounded
@@ -59,10 +50,10 @@ export const CompanyMemberListItem = (companyUser: CompanyUser) => {
             className='shrink-0'
             title={dictionary.companies.userActions.viewProfile}
           >
-            <i className='pi pi-eye' />
+            <i className='pi pi-eye my-1' />
           </Button>
         </Link>
       </div>
     </div>
   );
-};
+}

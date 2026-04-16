@@ -2,7 +2,7 @@ import { useRouter } from '@/i18n/routing';
 import { Button } from '@primereact/ui/button';
 import { useMessages } from 'next-intl';
 
-export function ProfileNotFoundFallback() {
+export function UserNotFound() {
   const dictionary = useMessages();
   const router = useRouter();
 

@@ -12,6 +12,7 @@ export const ChangeCompanyListItem = ({ company }: { company: ReturnCompany }) =
   const dictionary = useMessages();
 
   const { activeCompany: currentCompany } = useAppSelector((state) => state.company);
+  const isCurrentCompany = company.id === currentCompany?.id;
 
   const { enterCompany, exitCompany } = useCompanySession();
 
@@ -36,10 +37,10 @@ export const ChangeCompanyListItem = ({ company }: { company: ReturnCompany }) =
             className='shrink-0'
             title={dictionary.companies.actions.viewDetails}
           >
-            <i className='pi pi-eye' />
+            <i className='pi pi-eye my-1' />
           </Button>
         </Link>
-        {company.id === currentCompany?.id ? (
+        {isCurrentCompany ? (
           <Link href={HOME_ROUTE}>
             <Button
               rounded
@@ -48,7 +49,7 @@ export const ChangeCompanyListItem = ({ company }: { company: ReturnCompany }) =
               onClick={() => exitCompany()}
               title={dictionary.companies.actions.exitCompany}
             >
-              <i className='pi pi-sign-out' />
+              <i className='pi pi-sign-out my-1' />
             </Button>
           </Link>
         ) : (
@@ -60,7 +61,7 @@ export const ChangeCompanyListItem = ({ company }: { company: ReturnCompany }) =
               onClick={() => enterCompany(company)}
               title={dictionary.companies.actions.enterCompany}
             >
-              <i className='pi pi-sign-in' />
+              <i className='pi pi-sign-in my-1' />
             </Button>
           </Link>
         )}

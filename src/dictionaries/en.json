@@ -3,6 +3,11 @@
     "searchbar": {
       "placeholder": "Search"
     },
+    "filter": {
+      "placeHolder": "Filter",
+      "byRole": "Filter by role",
+      "byStatus": "Filter by status"
+    },
     "back": "Back",
     "edit": "Edit",
     "save": "Save",
@@ -11,89 +16,113 @@
     "delete": "Delete",
     "createdAt": "Created",
     "updatedAt": "Last Updated",
-    "loading": "Loading..."
+    "loading": "Loading...",
+    "companyRoles": {
+      "owner": "Owner",
+      "admin": "Admin",
+      "member": "Member"
+    },
+    "actionStatus": {
+      "pending": "Pending",
+      "accepted": "Accepted",
+      "declined": "Declined"
+    }
   },
   "toast": {
     "signup": {
-      "success": {
-        "summary": "Welcome to Quizly!",
-        "detail": "Account created successfully!"
-      }
+      "success": { "summary": "Welcome to Quizly!", "detail": "Account created successfully!" },
+      "error": { "summary": "Error!", "detail": "Error creating account" }
     },
     "company": {
       "enter": {
-        "success": {
-          "summary": "Success!",
-          "detail": "You successfully entered"
-        }
+        "success": { "summary": "Success!", "detail": "You successfully entered" },
+        "error": { "summary": "Error!", "detail": "Error entering company" }
       },
       "exit": {
-        "success": {
-          "summary": "Info",
-          "detail": "Company exited"
-        }
+        "success": { "summary": "Info", "detail": "Company exited" },
+        "error": { "summary": "Error!", "detail": "Error exiting company" }
       },
       "create": {
-        "success": {
-          "summary": "Success!",
-          "detail": "Company created successfully"
-        },
-        "error": {
-          "summary": "Error!",
-          "detail": "Error creating company"
-        }
+        "success": { "summary": "Success!", "detail": "Company created successfully" },
+        "error": { "summary": "Error!", "detail": "Error creating company" }
       },
       "update": {
-        "success": {
-          "summary": "Success!",
-          "detail": "Company updated successfully"
-        },
-        "error": {
-          "summary": "Error!",
-          "detail": "Error updating company"
-        }
+        "success": { "summary": "Success!", "detail": "Company updated successfully" },
+        "error": { "summary": "Error!", "detail": "Error updating company" }
       },
       "membershipUpdate": {
-        "success": {
-          "summary": "Success!",
-          "detail": "Membership updated successfully"
-        },
-        "error": {
-          "summary": "Error!",
-          "detail": "Error updating membership"
-        }
+        "success": { "summary": "Success!", "detail": "Membership updated successfully" },
+        "error": { "summary": "Error!", "detail": "Error updating membership" }
       },
       "delete": {
-        "success": {
-          "summary": "Success!",
-          "detail": "Company deleted successfully"
-        },
-        "error": {
-          "summary": "Error!",
-          "detail": "Error deleting company"
-        }
+        "success": { "summary": "Success!", "detail": "Company deleted successfully" },
+        "error": { "summary": "Error!", "detail": "Error deleting company" }
       },
       "leave": {
-        "success": {
-          "summary": "Success!",
-          "detail": "Company left successfully"
-        },
-        "error": {
+        "success": { "summary": "Success!", "detail": "Company left successfully" },
+        "error": { "summary": "Error!", "detail": "Error leaving company" }
+      }
+    },
+    "members": {
+      "kick": {
+        "success": { "summary": "Success!", "detail": "User kicked successfully" },
+        "error": { "summary": "Error!", "detail": "Error kicking user" }
+      },
+      "bulkKick": {
+        "success": { "summary": "Success!", "detail": "Users kicked successfully" },
+        "error": { "summary": "Error!", "detail": "Error kicking users" }
+      },
+      "grantOwner": {
+        "success": { "summary": "Success!", "detail": "Owner role granted successfully" },
+        "error": { "summary": "Error!", "detail": "Error granting owner role" }
+      },
+      "changeRole": {
+        "success": { "summary": "Success!", "detail": "Role changed successfully" },
+        "error": { "summary": "Error!", "detail": "Error changing role" }
+      },
+      "invite": {
+        "success": { "summary": "Success!", "detail": "Invite sent successfully" },
+        "alreadySent": {
           "summary": "Error!",
-          "detail": "Error leaving company"
-        }
+          "detail": "Invite already sent or user is already a member"
+        },
+        "error": { "summary": "Error!", "detail": "Error sending invite" }
+      },
+      "request": {
+        "success": { "summary": "Success!", "detail": "Request sent successfully" },
+        "alreadySent": {
+          "summary": "Error!",
+          "detail": "Request already sent or user is already a member"
+        },
+        "error": { "summary": "Error!", "detail": "Error sending request" }
+      }
+    },
+    "companyActions": {
+      "manageRequest": {
+        "success": { "summary": "Success!", "detail": "Request managed successfully" },
+        "error": { "summary": "Error!", "detail": "Error managing request" }
+      },
+      "cancelRequest": {
+        "success": { "summary": "Success!", "detail": "Request canceled successfully" },
+        "error": { "summary": "Error!", "detail": "Error canceling request" }
+      },
+      "manageInvite": {
+        "success": { "summary": "Success!", "detail": "Invite managed successfully" },
+        "error": { "summary": "Error!", "detail": "Error managing invite" }
+      },
+      "cancelInvite": {
+        "success": { "summary": "Success!", "detail": "Invite canceled successfully" },
+        "error": { "summary": "Error!", "detail": "Error canceling invite" }
       }
     },
     "profile": {
       "update": {
-        "success": {
-          "summary": "Success!",
-          "detail": "Profile updated successfully"
-        },
-        "error": {
-          "summary": "Error!",
-          "detail": "Error updating profile"
-        }
+        "success": { "summary": "Success!", "detail": "Profile updated successfully" },
+        "error": { "summary": "Error!", "detail": "Error updating profile" }
+      },
+      "delete": {
+        "success": { "summary": "Success!", "detail": "Profile deleted successfully" },
+        "error": { "summary": "Error!", "detail": "Error deleting profile" }
       }
     }
   },
@@ -154,12 +183,15 @@
       "membersList": "Members List",
       "quizzesList": "Quizzes List"
     },
+    "companyInboxDropdown": {
+      "title": "Company Inbox",
+      "sentNotifications": "Sent Invites",
+      "receivedNotifications": "Received Requests"
+    },
     "inboxDropdown": {
-      "title": "Inbox",
-      "allNotifications": "All Notifications",
+      "title": "My Inbox",
       "sentNotifications": "Sent",
-      "receivedNotifications": "Received",
-      "archivedNotifications": "Archived"
+      "receivedNotifications": "Received"
     },
     "profileDropdown": {
       "changeCompany": "Change Company",
@@ -198,9 +230,11 @@
       "enterCompany": "Enter Company",
       "exitCompany": "Exit Company",
       "leaveCompany": "Leave Company",
+      "leaveCompanyConfirmation": "Are you sure you want to leave this company?",
       "deleteCompany": "Delete Company",
       "deleteCompanyConfirmation": "Are you sure you want to delete this company?",
       "editCompany": "Edit Company",
+      "sendInvite": "Send invite",
       "sendRequest": "Send membership request"
     },
     "validationErrors": {
@@ -235,12 +269,55 @@
     "userActions": {
       "kick": "Kick user",
       "viewProfile": "View user profile"
+    },
+    "notFound": {
+      "title": "Company Not Found",
+      "description": "The company you are looking for does not exist."
     }
   },
   "memberships": {
     "emptyMessage": "No memberships found.",
     "listHeader": {
       "title": "Memberships"
+    },
+    "membersList": {
+      "title": "Members List",
+      "emptyMessage": "No members found.",
+      "you": "You"
+    },
+    "usersList": {
+      "title": "Invite member",
+      "emptyMessage": "No users found."
+    },
+    "actions": {
+      "selected": "selected",
+      "changeRole": "Change role on",
+      "changeRoleConfirmation": "Are you sure you want to change these user`s role?",
+      "grantOwner": "Grant owner role",
+      "grantOwnerConfirmation": "Are you sure you want to grant this user the owner role?",
+      "kickMemberConfirmation": "Are you sure you want to kick this member?",
+      "kickUsers": "Kick Users",
+      "kickMembersConfirmation": "Are you sure you want to kick these members?"
+    }
+  },
+  "messages": {
+    "list": {
+      "sent": { "title": "Sent Messages" },
+      "received": { "title": "Received Messages" },
+      "emptyMessage": "No messages found."
+    },
+    "actions": {
+      "accept": "Accept",
+      "decline": "Decline",
+      "cancel": "Cancel sending"
+    },
+    "user": {
+      "sended": { "title": "Join request", "description": "You requested to join" },
+      "received": { "title": "Company invitation", "description": "You were invited to join" }
+    },
+    "company": {
+      "sended": { "title": "User invitation", "description": "was invited to" },
+      "received": { "title": "Membership request", "description": "requested to join" }
     }
   },
   "profile": {

@@ -4,22 +4,19 @@ import { Dialog } from '@primereact/ui/dialog';
 import { Menu } from '@primereact/ui/menu';
 import { Popover } from '@primereact/ui/popover';
 import { Link, usePathname } from '@/i18n/routing';
-import { ChangeCompanyListItem } from '@/components/companies/company-change-list-item';
+import { ChangeCompanyListItem } from '@/components/companies/list-items/company-change-list-item';
 import { useState } from 'react';
 import { useLocale, useMessages } from 'next-intl';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { clearActiveCompany } from '@/lib/slices/company-slice';
-import { QueryUniversalList } from '../common/list-query';
-import {
-  useAuthControllerLogoutMutation,
-  useCompanyControllerFindAllQuery,
-} from '@/lib/quizly-api';
+import { useAuthLogoutMutation, useCompanyFindAllQuery } from '@/lib/api-endpoints';
 import { ReturnCompany } from '@/types/company/return-company';
 import { logout } from '@/lib/slices/auth-slice';
 import Cookies from 'js-cookie';
 import { ACTIVE_COMPANY_ID_KEY } from '@/utils/cookie-constants';
 import { COMPANIES_ROUTE, HOME_ROUTE, PROFILE_ROUTE } from '@/utils/router-constants';
 import { useGlobalToast } from '@/providers/toast-provider';
+import { QueryUniversalList } from '../common/universal-list/list-query';
 
 export function UserProfileTab() {
   const dictionary = useMessages();
@@ -40,7 +37,7 @@ export function UserProfileTab() {
     setIsDialogOpen(false);
   }
 
-  const [logoutFromApi] = useAuthControllerLogoutMutation();
+  const [logoutFromApi] = useAuthLogoutMutation();
 
   const signOut = async () => {
     dispatch(logout());
@@ -217,12 +214,12 @@ export function UserProfileTab() {
                 <div className='flex max-h-[75vh] flex-col gap-4 pt-3 sm:gap-6'>
                   <div className='mx-auto w-full max-w-5xl'>
                     <QueryUniversalList
-                      queryHook={useCompanyControllerFindAllQuery}
+                      queryHook={useCompanyFindAllQuery}
                       queryParams={{
                         where: {
                           members: { user: { id: currentUser?.id } },
                         },
-                        relations: 'members.user',
+                        relations: ['members.user'],
                       }}
                       paginator={true}
                       rows={12}

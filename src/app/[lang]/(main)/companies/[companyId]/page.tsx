@@ -1,4 +1,4 @@
-import { CompanyFetcher } from '@/components/companies/company-fetcher';
+import { CompanyDetailsClient } from '@/components/companies/details/company-details';
 
 export default async function CompanyDetailsPage({
   params,
@@ -7,9 +7,5 @@ export default async function CompanyDetailsPage({
 }) {
   const resolvedParams = await params;
 
-  return (
-    <div className='mx-auto flex w-full max-w-5xl flex-col gap-6 p-4 md:p-8'>
-      <CompanyFetcher companyId={resolvedParams.companyId} />
-    </div>
-  );
+  return <CompanyDetailsClient companyId={resolvedParams.companyId} />;
 }

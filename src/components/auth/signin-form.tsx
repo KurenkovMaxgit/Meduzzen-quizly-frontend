@@ -2,7 +2,7 @@
 
 import { HttpExceptionResponse } from '@/interfaces/common/api-exception-interface';
 import { useAppDispatch } from '@/lib/hooks';
-import { useAuthControllerSigninMutation } from '@/lib/quizly-api';
+import { useAuthSigninMutation } from '@/lib/api-endpoints';
 import { setCurrentUser } from '@/lib/slices/auth-slice';
 import { useLocale, useMessages } from 'next-intl';
 import { Button } from '@primereact/ui/button';
@@ -22,7 +22,7 @@ export function SignInForm() {
 
   const router = useRouter();
   const dispatch = useAppDispatch();
-  const [signIn, { isLoading }] = useAuthControllerSigninMutation();
+  const [signIn, { isLoading }] = useAuthSigninMutation();
 
   const handleSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault();

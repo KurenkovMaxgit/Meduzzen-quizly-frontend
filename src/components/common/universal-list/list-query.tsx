@@ -10,15 +10,15 @@ export function QueryUniversalList<T, Q>({
   dataPath = (response) => response?.data?.items || [],
   totalPath = (response) => response?.data?.totalCount || 0,
   rows = 10,
+  paginator = false,
   ...props
 }: QueryUniversalListProps<T, Q>) {
   const [page, setPage] = useState<number>(1);
 
   const params = {
     ...queryParams,
-    page,
-    limit: rows,
-  } as Q;
+    ...(paginator ? { skip: page * rows - rows, take: rows } : {}),
+  };
 
   const { data, isLoading, isFetching } = queryHook(params);
 
@@ -28,6 +28,7 @@ export function QueryUniversalList<T, Q>({
   return (
     <UniversalList
       {...props}
+      paginator={paginator}
       items={items}
       isLoading={isLoading || isFetching}
       totalRecords={totalRecords}

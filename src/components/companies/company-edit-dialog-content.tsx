@@ -1,7 +1,7 @@
 'use client';
 
 import { useAppDispatch } from '@/lib/hooks';
-import { quizlyApi, useCompanyControllerUpdateOneByIdMutation } from '@/lib/quizly-api';
+import { quizlyApi, useCompanyUpdateOneByIdMutation } from '@/lib/api-endpoints';
 import { useGlobalToast } from '@/providers/toast-provider';
 import { ReturnCompany } from '@/types/company/return-company';
 import { CompanyStatus } from '@/utils/enums';
@@ -27,7 +27,7 @@ export default function EditCompanyDialogContent({
   const toast = useGlobalToast();
   const dispatch = useAppDispatch();
 
-  const [updateCompany, { isLoading: isUpdating }] = useCompanyControllerUpdateOneByIdMutation();
+  const [updateCompany, { isLoading: isUpdating }] = useCompanyUpdateOneByIdMutation();
 
   const [errorMessage, setErrorMessage] = useState<string>('');
   const [formData, setFormData] = useState<CreateCompany>({
@@ -68,8 +68,8 @@ export default function EditCompanyDialogContent({
 
       dispatch(
         quizlyApi.util.updateQueryData(
-          'companyControllerFindOneById',
-          { id: company.id, relations: 'members.user' },
+          'companyFindOneById',
+          { id: company.id, relations: ['members.user'] },
           (draft) => {
             if (draft?.data) {
               Object.assign(draft.data, updatedCompany.data || updatedCompany);
@@ -80,8 +80,7 @@ export default function EditCompanyDialogContent({
 
       toast.showToast('success', dictionary.toast.company.update.success);
       closeDialog();
-    } catch (error) {
-      console.error('Failed to update company:', error);
+    } catch {
       toast.showToast('error', dictionary.toast.company.update.error);
     }
   };

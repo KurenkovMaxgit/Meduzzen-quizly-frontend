@@ -2,7 +2,7 @@
 
 import { ApiResponse } from '@/interfaces/common/api-response-interface';
 import { useAppDispatch } from '@/lib/hooks';
-import { useCompanyControllerCreateMutation } from '@/lib/quizly-api';
+import { useCompanyCreateMutation } from '@/lib/api-endpoints';
 import { setActiveCompany } from '@/lib/slices/company-slice';
 import { useMessages } from 'next-intl';
 import { useGlobalToast } from '@/providers/toast-provider';
@@ -17,6 +17,7 @@ import { Textarea } from '@primereact/ui/textarea';
 import { useRouter } from '@/i18n/routing';
 import React, { useState } from 'react';
 import { validateCompany } from '@/utils/company-form-validation-rules';
+import { CreateCompany } from '@/types/company/create-company';
 
 export default function CreateCompanyDialogContent({ closeDialog }: { closeDialog: () => void }) {
   const dictionary = useMessages();
@@ -24,10 +25,10 @@ export default function CreateCompanyDialogContent({ closeDialog }: { closeDialo
   const toast = useGlobalToast();
   const dispatch = useAppDispatch();
 
-  const [createCompany, { isLoading: isCreating }] = useCompanyControllerCreateMutation();
+  const [createCompany, { isLoading: isCreating }] = useCompanyCreateMutation();
 
   const [errorMessage, setErrorMessage] = useState<string>('');
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<CreateCompany>({
     name: '',
     description: '',
     status: CompanyStatus.VISIBLE,
@@ -65,8 +66,7 @@ export default function CreateCompanyDialogContent({ closeDialog }: { closeDialo
 
       toast.showToast('success', dictionary.toast.company.create.success);
       closeDialog();
-    } catch (error) {
-      console.error('Failed to create company:', error);
+    } catch {
       toast.showToast('error', dictionary.toast.company.create.error);
     }
   };

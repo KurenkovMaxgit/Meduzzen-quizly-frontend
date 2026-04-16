@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useMessages } from 'next-intl';
 import { useGlobalToast } from '@/providers/toast-provider';
 import { useAppDispatch } from '@/lib/hooks';
-import { useAuthControllerSignupMutation } from '@/lib/quizly-api';
+import { useAuthSignupMutation } from '@/lib/api-endpoints';
 import { setCurrentUser } from '@/lib/slices/auth-slice';
 import { HttpExceptionResponse } from '@/interfaces/common/api-exception-interface';
 import { CreateUser } from '@/types/user/create-user';
@@ -16,7 +16,7 @@ export function useSignupForm() {
   const dispatch = useAppDispatch();
   const toast = useGlobalToast();
 
-  const [signup, { isLoading, isSuccess }] = useAuthControllerSignupMutation();
+  const [signup, { isLoading, isSuccess }] = useAuthSignupMutation();
 
   const [formData, setFormData] = useState<CreateUser & { confirmPassword: string }>({
     firstName: '',

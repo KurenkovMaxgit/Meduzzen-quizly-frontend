@@ -4,8 +4,6 @@ import { FindUser } from '../user/find-user';
 
 export type FindCompanyMembers = {
   role?: CompanyRole;
-
   user?: FindUser;
-
   company?: FindCompany;
 };

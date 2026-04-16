@@ -3,12 +3,11 @@
 import { Button } from '@primereact/ui/button';
 import { useParams } from 'next/navigation';
 import { useAppSelector } from '@/lib/hooks';
-import { ReturnUser } from '@/types/user/return-user';
-import { useUserControllerFindOneByIdQuery } from '@/lib/quizly-api';
+import { useUserFindOneByIdQuery } from '@/lib/api-endpoints';
 import { User } from '@/entities/user.entity';
 import { useRouter } from '@/i18n/routing';
 import { ProfileFormSkeletons } from './profile-form-skeletons';
-import { ProfileNotFoundFallback } from './profile-form-not-found';
+import { UserNotFound } from './profile-form-not-found';
 import { EditableProfileForm } from './profile-edit-form';
 import { useMessages } from 'next-intl';
 
@@ -22,13 +21,13 @@ export function ProfileForm({ userId }: { userId: User['id'] }) {
     isLoading: isFetching,
     isError,
     refetch,
-  } = useUserControllerFindOneByIdQuery({ id: userId });
+  } = useUserFindOneByIdQuery({ id: userId });
 
   const { user: authUser } = useAppSelector((state) => state.auth);
 
-  const user = response?.data as ReturnUser;
+  const user = response?.data;
 
-  const userIdFromRoute = params.userId as string;
+  const userIdFromRoute = params.userId;
   const isOwner = authUser?.id === userIdFromRoute;
 
   if (isFetching) {
@@ -36,7 +35,7 @@ export function ProfileForm({ userId }: { userId: User['id'] }) {
   }
 
   if (isError || !user) {
-    return <ProfileNotFoundFallback />;
+    return <UserNotFound />;
   }
 
   return (

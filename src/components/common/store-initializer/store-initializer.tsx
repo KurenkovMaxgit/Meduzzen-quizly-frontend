@@ -22,8 +22,7 @@ export async function StoreInitializer({ children }: { children: React.ReactNode
       const { token } = await auth0.getAccessToken();
       auth0Token = token;
     }
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  } catch (error) {}
+  } catch {}
 
   let isLoggedIn = !!accessToken || !!auth0Token;
   let newAccessToken: string | undefined = undefined;

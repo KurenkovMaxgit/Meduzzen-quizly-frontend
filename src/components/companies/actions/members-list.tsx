@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { Button } from '@primereact/ui/button';
-import { useCompanyFindAllMembersQuery, useUserFindAllQuery } from '@/lib/api-endpoints';
+import { useCompanyFindAllMembersQuery } from '@/lib/api-endpoints';
 import { useMessages } from 'next-intl';
 import { CompanyUser } from '@/entities/company-user.entity';
 import { QueryUniversalList } from '@/components/common/universal-list/list-query';
@@ -11,12 +11,9 @@ import { ListHeader } from '@/components/common/universal-list/list-header';
 import { useDebounce } from '@/hooks/use-debounce';
 import { BulkKickMembersButton } from './members-bulk-kick-button';
 import { BulkChangeMembersRoleButton } from './members-bulk-change-role-button';
-import { Dialog } from '@primereact/ui/dialog';
-import { ReturnUser } from '@/types/user/return-user';
 import { FindCompanyMembers } from '@/types/company/find-company-members';
-import { FindUser } from '@/types/user/find-user';
-import { UserListItem } from './users-list-item';
 import { CompanyRole } from '@/utils/enums';
+import { AddUserDialog } from './members-add-user-dialog';
 
 export function MembersList({ companyId }: { companyId: string }) {
   const dictionary = useMessages();
@@ -26,9 +23,6 @@ export function MembersList({ companyId }: { companyId: string }) {
 
   const [searchMembersValue, setMembersSearchValue] = useState<string>('');
   const debouncedMembersSearch = useDebounce(searchMembersValue, 500);
-
-  const [searchUsersValue, setUsersSearchValue] = useState<string>('');
-  const debouncedUsersSearch = useDebounce(searchUsersValue, 500);
 
   const [selectedRole, setSelectedRole] = useState<CompanyRole | null>(null);
 
@@ -115,38 +109,9 @@ export function MembersList({ companyId }: { companyId: string }) {
         )}
       </QueryUniversalList>
 
-      <Dialog.Root open={isCreateDialogOpen} position='center' modal draggable={false}>
-        <Dialog.Backdrop className='cursor-pointer' />
-        <Dialog.Portal className='w-[95vw] max-w-full transform-gpu antialiased sm:w-md'>
-          <Dialog.Header>
-            <Dialog.Title>{dictionary.memberships.usersList.title}</Dialog.Title>
-
-            <Dialog.HeaderActions>
-              <Dialog.Close onClick={() => setIsCreateDialogOpen(false)}>
-                <i className='pi pi-times' />
-              </Dialog.Close>
-            </Dialog.HeaderActions>
-          </Dialog.Header>
-
-          <Dialog.Content>
-            <QueryUniversalList<FindUser, ReturnUser>
-              queryHook={useUserFindAllQuery}
-              queryParams={{ search: debouncedUsersSearch }}
-              itemTemplate={(user: ReturnUser) => <UserListItem user={{ ...user }} />}
-              emptyMessage={dictionary.memberships.usersList.emptyMessage}
-              paginator={true}
-              rows={5}
-            >
-              <ListHeader
-                searchbar
-                searchValue={searchUsersValue}
-                setSearchValue={setUsersSearchValue}
-                onButtonClick={() => setIsCreateDialogOpen(true)}
-              />
-            </QueryUniversalList>
-          </Dialog.Content>
-        </Dialog.Portal>
-      </Dialog.Root>
+      {isCreateDialogOpen && (
+        <AddUserDialog isOpen={isCreateDialogOpen} onClose={() => setIsCreateDialogOpen(false)} />
+      )}
     </div>
   );
 }

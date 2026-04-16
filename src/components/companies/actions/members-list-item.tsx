@@ -28,13 +28,12 @@ export function MemberListItem({
   const { user: currentUser } = useAppSelector((state) => state.auth);
   const { activeRole: currentRole } = useAppSelector((state) => state.company);
 
-  if (currentUser?.id === companyUser.user.id) return null;
-
-  const canManage = currentRole === CompanyRole.OWNER;
+  const canManage = currentRole === CompanyRole.OWNER || currentRole === CompanyRole.ADMIN;
+  const isCurrentUser = currentUser?.id === companyUser.user.id;
 
   return (
     <div
-      onClick={() => canManage && onToggleSelection(companyUser.user.id)}
+      onClick={() => canManage && !isCurrentUser && onToggleSelection(companyUser.user.id)}
       className={cn(
         'bg-surface-0 dark:bg-surface-900 border-surface-200 dark:border-surface-700 mb-4 flex w-full flex-col justify-between gap-4 rounded-xl border p-4 shadow-sm transition-colors sm:flex-row sm:items-center',
         isSelected
@@ -44,7 +43,7 @@ export function MemberListItem({
       )}
     >
       <div className='flex min-w-0 items-center gap-4'>
-        {canManage && (
+        {canManage && !isCurrentUser && (
           <div onClick={(e) => e.stopPropagation()} className='flex shrink-0 items-center'>
             <Checkbox.Root
               checked={isSelected}
@@ -76,23 +75,30 @@ export function MemberListItem({
         className='flex shrink-0 justify-end gap-4 sm:ml-auto sm:items-center'
         onClick={(e: React.MouseEvent<HTMLDivElement>) => e.stopPropagation()}
       >
-        {!isSelected && (
-          <>
-            <GrantOwnerRoleButton memberId={companyUser.user.id} companyId={companyId} />
+        {!isSelected &&
+          (isCurrentUser ? (
+            <Tag {...COMPANY_ROLE_TAG_PROPS[companyUser.role].props} className='shrink-0 uppercase'>
+              {dictionary.memberships.membersList.you}
+            </Tag>
+          ) : (
+            <>
+              {canManage && (
+                <GrantOwnerRoleButton memberId={companyUser.user.id} companyId={companyId} />
+              )}
 
-            <Link href={`${PROFILE_ROUTE}/${companyUser.user.id}`}>
-              <Button
-                rounded
-                variant='outlined'
-                severity='contrast'
-                className='shrink-0'
-                title={dictionary.companies.userActions.viewProfile}
-              >
-                <i className='pi pi-eye my-1' />
-              </Button>
-            </Link>
-          </>
-        )}
+              <Link href={`${PROFILE_ROUTE}/${companyUser.user.id}`}>
+                <Button
+                  rounded
+                  variant='outlined'
+                  severity='contrast'
+                  className='shrink-0'
+                  title={dictionary.companies.userActions.viewProfile}
+                >
+                  <i className='pi pi-eye my-1' />
+                </Button>
+              </Link>
+            </>
+          ))}
       </div>
     </div>
   );

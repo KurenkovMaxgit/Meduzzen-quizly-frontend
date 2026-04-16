@@ -35,6 +35,7 @@ export function CompanyDetailsToolbar({ company }: { company: ReturnCompany }) {
 
   const isMember = !!currentUserMembership;
   const isOwner = currentUserMembership?.role === CompanyRole.OWNER;
+  const canManage = isOwner || currentUserMembership?.role === CompanyRole.ADMIN;
 
   return (
     <div
@@ -59,7 +60,7 @@ export function CompanyDetailsToolbar({ company }: { company: ReturnCompany }) {
         itemTemplate={(member: CompanyUser) => (
           <CompanyMemberListItem
             companyUser={{ ...member }}
-            isOwner={isOwner}
+            canManage={canManage}
             companyId={company.id}
           />
         )}

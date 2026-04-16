@@ -12,11 +12,11 @@ import { COMPANY_ROLE_TAG_PROPS } from '@/utils/tag-props-constants';
 
 export function CompanyMemberListItem({
   companyUser,
-  isOwner,
+  canManage: canManage,
   companyId,
 }: {
   companyUser: CompanyUser;
-  isOwner: boolean;
+  canManage: boolean;
   companyId: string;
 }) {
   const dictionary = useMessages();
@@ -38,8 +38,8 @@ export function CompanyMemberListItem({
           {companyUser.user.email}
         </span>
       </div>
-      <div className='flex items-center gap-4 sm:ml-auto'>
-        {currentUser?.id !== companyUser.user.id && isOwner && (
+      <div className='flex shrink-0 justify-end gap-4 sm:ml-auto sm:items-center'>
+        {currentUser?.id !== companyUser.user.id && canManage && (
           <KickMemberButton memberId={companyUser.id} companyId={companyId} />
         )}
         <Link href={`${PROFILE_ROUTE}/${companyUser.user.id}`}>

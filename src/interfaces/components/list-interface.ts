@@ -1,4 +1,3 @@
- 
 import { FindAllQuery } from '@/types/common/find-queries';
 import { GetListResponse } from '../common/api-response-interface';
 

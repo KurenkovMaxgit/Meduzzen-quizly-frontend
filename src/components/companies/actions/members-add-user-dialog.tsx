@@ -17,8 +17,6 @@ export function AddUserDialog({ isOpen, onClose }: { isOpen: boolean; onClose: (
   const [searchUsersValue, setUsersSearchValue] = useState<string>('');
   const debouncedUsersSearch = useDebounce(searchUsersValue, 500);
 
-  console.log(dictionary.memberships.usersList.emptyMessage);
-
   return (
     <Dialog.Root open={isOpen} position='center' modal draggable={false}>
       <Dialog.Backdrop className='cursor-pointer' onClick={onClose} />

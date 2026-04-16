@@ -13,7 +13,7 @@ import { FindCompany } from '@/types/company/find-company';
 import { QueryUniversalList } from '../common/universal-list/list-query';
 import { ListHeader } from '../common/universal-list/list-header';
 
-export function CompaniesListClient() {
+export function CompaniesList() {
   const dictionary = useMessages();
 
   const [searchValue, setSearchValue] = useState<string>('');

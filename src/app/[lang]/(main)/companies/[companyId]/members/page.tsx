@@ -1,9 +1,9 @@
-import { MembersListClient } from '@/components/companies/actions/members-list-client';
+import { MembersList } from '@/components/companies/actions/members-list';
 
 export default async function CompanyMembersPage({
   params,
 }: {
   params: Promise<{ companyId: string }>;
 }) {
-  return <MembersListClient companyId={(await params).companyId} />;
+  return <MembersList companyId={(await params).companyId} />;
 }

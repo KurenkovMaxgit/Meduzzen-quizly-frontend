@@ -11,7 +11,7 @@ import { useAppSelector } from '@/lib/hooks';
 import { ListHeader } from '@/components/common/universal-list/list-header';
 import { QueryUniversalList } from '@/components/common/universal-list/list-query';
 
-export function MembershipsListClient() {
+export function MembershipsList() {
   const dictionary = useMessages();
 
   const { user: currentUser } = useAppSelector((state) => state.auth);

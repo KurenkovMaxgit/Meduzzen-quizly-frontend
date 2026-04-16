@@ -18,7 +18,7 @@ import { FindUser } from '@/types/user/find-user';
 import { UserListItem } from './users-list-item';
 import { CompanyRole } from '@/utils/enums';
 
-export function MembersListClient({ companyId }: { companyId: string }) {
+export function MembersList({ companyId }: { companyId: string }) {
   const dictionary = useMessages();
 
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState<boolean>(false);

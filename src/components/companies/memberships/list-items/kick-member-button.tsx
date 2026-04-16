@@ -22,12 +22,7 @@ export function KickMemberButton({ memberId, companyId }: { memberId: string; co
 
   return (
     <ConfirmPopup.Root>
-      <ConfirmPopup.Trigger
-        severity='danger'
-        variant='outlined'
-        rounded
-        className='w-full justify-center'
-      >
+      <ConfirmPopup.Trigger severity='danger' variant='outlined' rounded>
         <i className='pi pi-user-minus my-1' />
       </ConfirmPopup.Trigger>
 

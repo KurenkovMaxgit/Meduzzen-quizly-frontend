@@ -1,3 +1,4 @@
+ 
 import { FindAllQuery } from '@/types/common/find-queries';
 import { GetListResponse } from '../common/api-response-interface';
 
@@ -20,13 +21,22 @@ export interface UniversalListProps<T> {
   dialogButtonIcon?: string;
 }
 
-export interface ListHeaderProps {
+export interface FilterOption<T = string> {
+  label: string;
+  value: T;
+}
+
+export interface ListHeaderProps<T = string> {
   title?: string;
   buttonLabel?: string;
   onButtonClick?: () => void;
   searchbar?: boolean;
   searchValue?: string;
   setSearchValue?: (value: string) => void;
+  filterOptions?: FilterOption<T>[];
+  filterValue?: T | null;
+  onFilterChange?: (value: T | null) => void;
+  filterPlaceholder?: string;
 }
 
 export interface QueryUniversalListProps<T, Q> extends Omit<

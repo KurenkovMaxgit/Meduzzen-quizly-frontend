@@ -24,6 +24,10 @@ import { ActionDecision, CompanyRole } from '@/utils/enums';
 import { FindUser } from '@/types/user/find-user';
 import { CompanyAction } from '@/entities/action.entity';
 import { FindAction } from '@/types/actions/find-action.dto';
+import { PrivateReturnQuiz, PublicReturnQuiz } from '@/types/quiz/return-quiz';
+import { CreateQuiz } from '@/types/quiz/create-quiz';
+import { FindQuiz } from '@/types/quiz/find-quiz';
+import { UpdateQuiz } from '@/types/quiz/update-quiz';
 
 export let auth0RefreshTokenFn: (() => Promise<string>) | null = null;
 
@@ -349,6 +353,67 @@ export const quizlyApi = createApi({
       }),
       providesTags: ['CompanyActions'],
     }),
+    quizCreate: build.mutation<ApiResponse<PrivateReturnQuiz>, { companyId: string } & CreateQuiz>({
+      query: (queryArg) => ({
+        url: `/api/quiz/company/${queryArg.companyId}`,
+        method: 'POST',
+        body: queryArg,
+      }),
+    }),
+    quizFindAll: build.query<
+      GetListResponse<PublicReturnQuiz>,
+      { companyId: string } & FindAllQuery<FindQuiz>
+    >({
+      query: (queryArg) => ({
+        url: `/api/quiz/company/${queryArg.companyId}/list`,
+        params: {
+          skip: queryArg.skip,
+          take: queryArg.take,
+          where: queryArg.where,
+          search: queryArg.search,
+          order: queryArg.order,
+          relations: queryArg.relations,
+        },
+      }),
+    }),
+    quizFindOnePrivateById: build.query<
+      ApiResponse<PrivateReturnQuiz>,
+      { companyId: string } & FindOneQuery
+    >({
+      query: (queryArg) => ({
+        url: `/api/quiz/${queryArg.id}/company/${queryArg.companyId}/private`,
+        params: {
+          relations: queryArg.relations,
+        },
+      }),
+    }),
+    quizFindOnePublicById: build.query<
+      ApiResponse<PublicReturnQuiz>,
+      { companyId: string } & FindOneQuery
+    >({
+      query: (queryArg) => ({
+        url: `/api/quiz/${queryArg.id}/company/${queryArg.companyId}/public`,
+        params: {
+          relations: queryArg.relations,
+        },
+      }),
+    }),
+    quizUpdateOneById: build.mutation<
+      ApiResponse<PrivateReturnQuiz>,
+      { companyId: string } & UpdateQuiz
+    >({
+      query: (queryArg) => ({
+        url: `/api/quiz/${queryArg.id}/company/${queryArg.companyId}`,
+        method: 'PUT',
+        body: queryArg,
+      }),
+    }),
+    quizDeleteOneById: build.mutation<ApiResponse<unknown>, { id: string; companyId: string }>({
+      query: (queryArg) => ({
+        url: `/api/quiz/${queryArg.id}/company/${queryArg.companyId}`,
+        method: 'DELETE',
+      }),
+    }),
   }),
   refetchOnReconnect: true,
 });
@@ -381,12 +446,12 @@ export const {
   useActionManageRequestMutation,
   useActionGetUserActionsQuery,
   useActionGetCompanyActionsQuery,
-  // useQuizCreateMutation,
-  // useQuizFindAllQuery,
-  // useQuizFindOnePrivateByIdQuery,
-  // useQuizFindOnePublicByIdQuery,
-  // useQuizUpdateOneByIdMutation,
-  // useQuizDeleteOneByIdMutation,
+  useQuizCreateMutation,
+  useQuizFindAllQuery,
+  useQuizFindOnePrivateByIdQuery,
+  useQuizFindOnePublicByIdQuery,
+  useQuizUpdateOneByIdMutation,
+  useQuizDeleteOneByIdMutation,
   // useQuizImportQuizzesMutation,
   // useAttemptSubmitAttemptMutation,
   // useAttemptFindAllQuery,

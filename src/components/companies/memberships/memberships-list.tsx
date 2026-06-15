@@ -21,29 +21,27 @@ export function MembershipsList() {
   const debouncedSearch = useDebounce(searchValue, 500);
 
   return (
-    <>
-      <QueryUniversalList<FindCompany, ReturnCompany>
-        queryHook={useCompanyFindAllQuery}
-        queryParams={{
-          where: {
-            members: { user: { id: currentUser?.id } },
-          },
-          search: debouncedSearch,
-          order: { name: 'ASC' },
-          relations: ['members.user'],
-        }}
-        paginator={true}
-        rows={10}
-        itemTemplate={(company: ReturnCompany) => <CompanyListItem {...company} />}
-        emptyMessage={dictionary.companies.emptyMessage}
-      >
-        <ListHeader
-          title={dictionary.companies.listHeader.title}
-          searchbar
-          searchValue={searchValue}
-          setSearchValue={setSearchValue}
-        />
-      </QueryUniversalList>
-    </>
+    <QueryUniversalList<FindCompany, ReturnCompany>
+      queryHook={useCompanyFindAllQuery}
+      queryParams={{
+        where: {
+          members: { user: { id: currentUser?.id } },
+        },
+        search: debouncedSearch,
+        order: { name: 'ASC' },
+        relations: ['members.user'],
+      }}
+      paginator={true}
+      rows={10}
+      itemTemplate={(company: ReturnCompany) => <CompanyListItem {...company} />}
+      emptyMessage={dictionary.companies.emptyMessage}
+    >
+      <ListHeader
+        title={dictionary.companies.listHeader.title}
+        searchbar
+        searchValue={searchValue}
+        setSearchValue={setSearchValue}
+      />
+    </QueryUniversalList>
   );
 }

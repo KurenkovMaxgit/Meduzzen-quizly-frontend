@@ -2,7 +2,8 @@
 
 import { useState } from 'react';
 import { UniversalList } from './list';
-import { QueryUniversalListProps } from '@/interfaces/components/list-interface';
+import { GetListResponse } from '@/interfaces/common/api-response-interface';
+import { FindAllQuery } from '@/types/common/find-queries';
 
 export function QueryUniversalList<T, Q>({
   queryHook,
@@ -12,7 +13,27 @@ export function QueryUniversalList<T, Q>({
   rows = 10,
   paginator = false,
   ...props
-}: QueryUniversalListProps<T, Q>) {
+}: {
+  children?: React.ReactNode;
+  itemTemplate: (item: Q, index: number) => React.ReactNode;
+  emptyMessage?: string;
+  className?: string;
+  paginator?: boolean;
+  rows?: number;
+  dialog?: boolean;
+  dialogTitle?: string;
+  dialogTitleIcon?: string;
+  dialogButtonLabel?: string;
+  dialogButtonIcon?: string;
+  queryHook: (params: FindAllQuery<T>) => {
+    data?: GetListResponse<Q>;
+    isLoading: boolean;
+    isFetching: boolean;
+  };
+  queryParams?: FindAllQuery<T>;
+  dataPath?: (data?: GetListResponse<Q>) => Q[];
+  totalPath?: (data?: GetListResponse<Q>) => number;
+}) {
   const [page, setPage] = useState<number>(1);
 
   const params = {

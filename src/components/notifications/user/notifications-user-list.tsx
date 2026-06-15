@@ -8,26 +8,46 @@ import { FindAction } from '@/types/actions/find-action.dto';
 import { ActionStatus, ActionType } from '@/utils/enums';
 import { useMessages } from 'next-intl';
 import { UserMessagesListItem } from './notifications-user-list-item';
-import { useRouter } from '@/i18n/routing';
+import { usePathname, useRouter } from '@/i18n/routing';
 import { useAppSelector } from '@/lib/hooks';
-import { useState } from 'react';
+import { useMemo } from 'react';
+import { useSearchParams } from 'next/navigation';
+import { NOTIFICATION_STATUS_FILTER_OPTIONS } from '@/utils/filter-options';
 
 export function UserMessagesList({ actionType }: { actionType: ActionType }) {
   const dictionary = useMessages();
   const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
   const { activeCompany: currentCompany } = useAppSelector((state) => state.company);
 
   if (!currentCompany) {
     router.back();
   }
 
-  const [selectedStatus, setSelectedStatus] = useState<ActionStatus | null>(null);
+  const roleFilterOptions = useMemo(
+    () =>
+      NOTIFICATION_STATUS_FILTER_OPTIONS.map((filter) => ({
+        label: dictionary.common.actionStatus[filter.key],
+        value: filter.value,
+      })),
+    [dictionary],
+  );
 
-  const roleFilterOptions = [
-    { label: dictionary.common.actionStatus.pending, value: ActionStatus.PENDING },
-    { label: dictionary.common.actionStatus.accepted, value: ActionStatus.ACCEPTED },
-    { label: dictionary.common.actionStatus.declined, value: ActionStatus.DECLINED },
-  ];
+  const selectedStatus = searchParams.get('status') as ActionStatus | null;
+
+  const handleStatusChange = (status: ActionStatus | null) => {
+    const params = new URLSearchParams(searchParams.toString());
+
+    if (status) {
+      params.set('status', status);
+    } else {
+      params.delete('status');
+    }
+
+    router.replace(`${pathname}?${params.toString()}`, { scroll: false });
+  };
 
   const messageAppearance = actionType === ActionType.INVITE ? 'received' : 'sent';
 
@@ -48,7 +68,7 @@ export function UserMessagesList({ actionType }: { actionType: ActionType }) {
         title={dictionary.messages.list[messageAppearance].title}
         filterOptions={roleFilterOptions}
         filterValue={selectedStatus}
-        onFilterChange={setSelectedStatus}
+        onFilterChange={handleStatusChange}
         filterPlaceholder={dictionary.common.filter.byStatus}
       />
     </QueryUniversalList>

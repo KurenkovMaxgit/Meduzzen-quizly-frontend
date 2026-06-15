@@ -1,6 +1,5 @@
 'use client';
 
-import { ListHeaderProps } from '@/interfaces/components/list-interface';
 import { Button } from '@primereact/ui/button';
 import { useMessages } from 'next-intl';
 import { Select } from '@primereact/ui/select';
@@ -19,7 +18,21 @@ export function ListHeader<T>({
   filterValue,
   onFilterChange,
   filterPlaceholder,
-}: ListHeaderProps<T>) {
+}: {
+  title?: string;
+  buttonLabel?: string;
+  onButtonClick?: () => void;
+  searchbar?: boolean;
+  searchValue?: string;
+  setSearchValue?: (value: string) => void;
+  filterOptions?: {
+    label: string;
+    value: T;
+  }[];
+  filterValue?: T | null;
+  onFilterChange?: (value: T | null) => void;
+  filterPlaceholder?: string;
+}) {
   const dictionary = useMessages();
 
   return (

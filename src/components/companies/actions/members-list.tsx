@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Button } from '@primereact/ui/button';
 import { useCompanyFindAllMembersQuery } from '@/lib/api-endpoints';
 import { useMessages } from 'next-intl';
@@ -14,9 +14,15 @@ import { BulkChangeMembersRoleButton } from './members-bulk-change-role-button';
 import { FindCompanyMembers } from '@/types/company/find-company-members';
 import { CompanyRole } from '@/utils/enums';
 import { AddUserDialog } from './members-add-user-dialog';
+import { usePathname, useRouter } from '@/i18n/routing';
+import { useSearchParams } from 'next/navigation';
+import { ROLE_FILTER_OPTIONS } from '@/utils/filter-options';
 
 export function MembersList({ companyId }: { companyId: string }) {
   const dictionary = useMessages();
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
 
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState<boolean>(false);
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
@@ -24,18 +30,41 @@ export function MembersList({ companyId }: { companyId: string }) {
   const [searchMembersValue, setMembersSearchValue] = useState<string>('');
   const debouncedMembersSearch = useDebounce(searchMembersValue, 500);
 
-  const [selectedRole, setSelectedRole] = useState<CompanyRole | null>(null);
+  const roleFilterOptions = useMemo(
+    () =>
+      ROLE_FILTER_OPTIONS.map((filter) => ({
+        label: dictionary.common.companyRoles[filter.key],
+        value: filter.value,
+      })),
+    [dictionary],
+  );
 
-  const roleFilterOptions = [
-    { label: dictionary.common.companyRoles.owner, value: CompanyRole.OWNER },
-    { label: dictionary.common.companyRoles.admin, value: CompanyRole.ADMIN },
-    { label: dictionary.common.companyRoles.member, value: CompanyRole.MEMBER },
-  ];
+  const selectedRole = searchParams.get('role') as CompanyRole | null;
+
+  const handleRoleChange = (status: CompanyRole | null) => {
+    const params = new URLSearchParams(searchParams.toString());
+
+    if (status) {
+      params.set('role', status);
+    } else {
+      params.delete('role');
+    }
+
+    router.replace(`${pathname}?${params.toString()}`, { scroll: false });
+  };
 
   const handleToggle = (id: string) => {
-    setSelectedIds((prev) =>
-      prev.includes(id) ? prev.filter((selectedId) => selectedId !== id) : [...prev, id],
-    );
+    setSelectedIds((prev) => {
+      const newSelection = new Set(prev);
+
+      if (newSelection.has(id)) {
+        newSelection.delete(id);
+      } else {
+        newSelection.add(id);
+      }
+
+      return Array.from(newSelection);
+    });
   };
 
   return (
@@ -68,7 +97,7 @@ export function MembersList({ companyId }: { companyId: string }) {
           onButtonClick={() => setIsCreateDialogOpen(true)}
           filterOptions={roleFilterOptions}
           filterValue={selectedRole}
-          onFilterChange={setSelectedRole}
+          onFilterChange={handleRoleChange}
           filterPlaceholder={dictionary.common.filter.byRole}
         />
         {selectedIds.length > 0 && (

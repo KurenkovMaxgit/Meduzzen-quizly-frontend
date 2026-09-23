@@ -88,17 +88,16 @@ export function CompanyDetailsToolbar({ company }: { company: ReturnCompany }) {
           </Button>
           {/* PLACEHOLDER */}
           {company.id === currentCompany?.id ? (
-            <Link href={'/'} className='block w-full'>
-              <Button
-                severity='danger'
-                variant='outlined'
-                className='w-full justify-center'
-                onClick={() => exitCompany()}
-              >
-                <i className='pi pi-sign-out' />
-                {dictionary.companies.actions.exitCompany}
-              </Button>
-            </Link>
+            <Button
+              as={Link}
+              href={'/'}
+              severity='danger'
+              variant='outlined'
+              onClick={() => exitCompany()}
+            >
+              <i className='pi pi-sign-out' />
+              {dictionary.companies.actions.exitCompany}
+            </Button>
           ) : (
             <Button severity='success' variant='outlined' onClick={() => enterCompany(company)}>
               <i className='pi pi-sign-in' />

@@ -210,7 +210,7 @@
     "description": "Let`s get your workspace set up so you can start collaborating.",
     "createCompanyTile": {
       "title": "Create a Company",
-      "description": "Start a brand new workspace from scratch. You ill become the admin and can invite your team members immediately.",
+      "description": "Start a brand new workspace from scratch. You will become the admin and can invite your team members immediately.",
       "buttonLabel": "Create New Company"
     },
     "joinCompanyTile": {
@@ -353,34 +353,34 @@
       }
     },
     "techStack": {
-      "title": "Under the Hood",
+      "title": "Under the Hood ",
       "frontend": {
-        "title": "Frontend Engine",
+        "title": "Frontend Engine ",
         "framework": {
-          "title": "Framework:",
+          "title": "Framework: ",
           "description": "Next.js (App Router) for hybrid static/server rendering."
         },
         "styling": {
-          "title": "Styling:",
+          "title": "Styling: ",
           "description": "Tailwind CSS combined with PrimeReact headless components."
         },
         "layout": {
-          "title": "State & Layout:",
+          "title": "State & Layout: ",
           "description": "Advanced Next.js Route Groups."
         }
       },
       "backend": {
         "title": "Backend & Infrastructure",
         "architecture": {
-          "title": "Architecture:",
+          "title": "Architecture: ",
           "description": "Nest.js running a robust API layer."
         },
         "database": {
-          "title": "Database:",
+          "title": "Database: ",
           "description": "PostgreSQL handling relational data storage securely."
         },
         "deployment": {
-          "title": "Deployment:",
+          "title": "Deployment: ",
           "description": "Fully containerized standalone builds via Docker, provisioned on AWS infrastructure."
         }
       }

@@ -48,22 +48,26 @@ export function CompaniesList() {
         />
       </QueryUniversalList>
 
-      <Dialog.Root open={isCreateDialogOpen} position='center' modal draggable={false}>
-        <Dialog.Backdrop className='cursor-pointer' />
-        <Dialog.Portal className='w-[95vw] max-w-full transform-gpu antialiased sm:w-md'>
-          <Dialog.Header>
-            <Dialog.Title>{dictionary.companies.createDialog.title}</Dialog.Title>
+      <Dialog.Root open={isCreateDialogOpen} position='center' draggable={false}>
+        <Dialog.Portal>
+          <Dialog.Backdrop />
+          <Dialog.Positioner onClick={() => setIsCreateDialogOpen(false)}>
+            <Dialog.Popup className='w-[95vw] max-w-full transform-gpu antialiased sm:w-md'>
+              <Dialog.Header>
+                <Dialog.Title>{dictionary.companies.createDialog.title}</Dialog.Title>
 
-            <Dialog.HeaderActions>
-              <Dialog.Close onClick={() => setIsCreateDialogOpen(false)}>
-                <i className='pi pi-times' />
-              </Dialog.Close>
-            </Dialog.HeaderActions>
-          </Dialog.Header>
+                <Dialog.HeaderActions>
+                  <Dialog.Close onClick={() => setIsCreateDialogOpen(false)}>
+                    <i className='pi pi-times' />
+                  </Dialog.Close>
+                </Dialog.HeaderActions>
+              </Dialog.Header>
 
-          <Dialog.Content>
-            <CreateCompanyDialogContent closeDialog={() => setIsCreateDialogOpen(false)} />
-          </Dialog.Content>
+              <Dialog.Content>
+                <CreateCompanyDialogContent closeDialog={() => setIsCreateDialogOpen(false)} />
+              </Dialog.Content>
+            </Dialog.Popup>
+          </Dialog.Positioner>
         </Dialog.Portal>
       </Dialog.Root>
     </>

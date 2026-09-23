@@ -42,17 +42,17 @@ export function CompanyMemberListItem({
         {currentUser?.id !== companyUser.user.id && canManage && (
           <KickMemberButton memberId={companyUser.id} companyId={companyId} />
         )}
-        <Link href={`${PROFILE_ROUTE}/${companyUser.user.id}`}>
-          <Button
-            rounded
-            variant='outlined'
-            severity='contrast'
-            className='shrink-0'
-            title={dictionary.companies.userActions.viewProfile}
-          >
-            <i className='pi pi-eye my-1' />
-          </Button>
-        </Link>
+        <Button
+          as={Link}
+          href={`${PROFILE_ROUTE}/${companyUser.user.id}`}
+          rounded
+          variant='outlined'
+          severity='contrast'
+          className='shrink-0'
+          title={dictionary.companies.userActions.viewProfile}
+        >
+          <i className='pi pi-eye my-1' />
+        </Button>
       </div>
     </div>
   );

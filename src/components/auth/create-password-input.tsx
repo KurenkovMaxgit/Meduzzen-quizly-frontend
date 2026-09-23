@@ -1,13 +1,13 @@
 import { usePasswordStrength } from '@/hooks/use-password-strength';
 import { useMessages } from 'next-intl';
 import { cn } from '@/utils/cn';
-import {
-  PasswordMaskChangeEvent,
-  PasswordValueChangeEvent,
-} from '@primereact/types/shared/password';
 import { FloatLabel } from '@primereact/ui/floatlabel';
 import { IconField } from '@primereact/ui/iconfield';
-import { Password } from '@primereact/ui/password';
+import {
+  InputPassword,
+  InputPasswordMaskChangeEvent,
+  InputPasswordValueChangeEvent,
+} from '@primereact/ui/inputpassword';
 import { Popover } from '@primereact/ui/popover';
 import { ProgressBar } from '@primereact/ui/progressbar';
 import { Tag } from '@primereact/ui/tag';
@@ -32,25 +32,25 @@ export function CreatePasswordInput({
       <Popover.Trigger as='div' className='w-full'>
         <FloatLabel>
           <IconField.Root>
-            <Password
+            <InputPassword
               id='password'
               mask={mask}
-              onMaskChange={(e: PasswordMaskChangeEvent) => setMask(e.value)}
+              onMaskChange={(e: InputPasswordMaskChangeEvent) => setMask(e.value)}
               value={value}
               fluid
-              onValueChange={(e: PasswordValueChangeEvent) => onChange(e.value)}
+              onValueChange={(e: InputPasswordValueChangeEvent) => onChange(e.value)}
               onFocus={() => setOpen(true)}
               onBlur={() => setOpen(false)}
               required
               className='w-full'
             />
-            <IconField.Icon>
+            <IconField.Inset>
               {mask ? (
                 <i className='pi pi-eye cursor-pointer' onClick={() => setMask(false)} />
               ) : (
                 <i className='pi pi-eye-slash cursor-pointer' onClick={() => setMask(true)} />
               )}
-            </IconField.Icon>
+            </IconField.Inset>
           </IconField.Root>
           <label htmlFor='password' className='text-surface-900 dark:text-surface-0 font-medium'>
             {dictionary.auth.signUp.password}

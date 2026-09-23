@@ -8,11 +8,10 @@ import { useMessages } from 'next-intl';
 import { useGlobalToast } from '@/providers/toast-provider';
 import { ReturnCompany } from '@/types/company/return-company';
 import { CompanyRole, CompanyStatus } from '@/utils/enums';
-import { SelectValueChangeEvent } from '@primereact/types/shared/select';
 import { Button } from '@primereact/ui/button';
 import { InputText } from '@primereact/ui/inputtext';
 import { Label } from '@primereact/ui/label';
-import { Select } from '@primereact/ui/select';
+import { Select, SelectValueChangeEvent } from '@primereact/ui/select';
 import { Textarea } from '@primereact/ui/textarea';
 import { useRouter } from '@/i18n/routing';
 import React, { useState } from 'react';
@@ -126,18 +125,18 @@ export default function CreateCompanyDialogContent({ closeDialog }: { closeDialo
         >
           <Select.Trigger id='company_status'>
             <Select.Value />
-            <Select.Icon>
+            <Select.Indicator>
               <i className='pi pi-chevron-down text-surface-500' />
-            </Select.Icon>
+            </Select.Indicator>
           </Select.Trigger>
 
           <Select.Portal>
             <Select.Positioner style={{ zIndex: 3000 }}>
-              <Select.Panel>
+              <Select.List>
                 <Select.List>
-                  <Select.Options />
+                  <Select.Option />
                 </Select.List>
-              </Select.Panel>
+              </Select.List>
             </Select.Positioner>
           </Select.Portal>
         </Select.Root>

@@ -1,6 +1,5 @@
-import { DialogRootChangeEvent } from '@primereact/types/shared/dialog';
 import { Avatar } from '@primereact/ui/avatar';
-import { Dialog } from '@primereact/ui/dialog';
+import { Dialog, DialogRootChangeEvent } from '@primereact/ui/dialog';
 import { Menu } from '@primereact/ui/menu';
 import { Popover } from '@primereact/ui/popover';
 import { Link, usePathname } from '@/i18n/routing';
@@ -17,6 +16,7 @@ import { ACTIVE_COMPANY_ID_KEY } from '@/utils/cookie-constants';
 import { COMPANIES_ROUTE, HOME_ROUTE, PROFILE_ROUTE } from '@/utils/router-constants';
 import { useGlobalToast } from '@/providers/toast-provider';
 import { QueryUniversalList } from '../common/universal-list/list-query';
+import { Button } from '@primereact/ui/button';
 
 export function UserProfileTab() {
   const dictionary = useMessages();
@@ -71,9 +71,8 @@ export function UserProfileTab() {
     <div className='relative flex items-center'>
       <Popover.Root
         open={isPopoverOpen}
-        onOpenChange={(e: DialogRootChangeEvent) => {
-          const event = e as DialogRootChangeEvent & { open?: boolean; value?: boolean };
-          setIsPopoverOpen(event.open ?? event.value ?? false);
+        onOpenChange={(e: DialogRootChangeEvent & { open?: boolean; value?: boolean }) => {
+          setIsPopoverOpen(e.open ?? e.value ?? false);
         }}
       >
         <Popover.Trigger className='hover:bg-surface-100 dark:hover:bg-surface-800 flex w-auto cursor-pointer items-center gap-2 rounded-lg border-none bg-transparent p-2 transition-colors outline-none sm:w-56 sm:gap-3'>
@@ -105,75 +104,74 @@ export function UserProfileTab() {
                     {userFullName}
                   </span>
 
-                  <Link
+                  <Button
+                    as={Link}
                     href={currentCompany ? `${COMPANIES_ROUTE}/${currentCompany.id}` : '#'}
+                    size='small'
+                    severity='secondary'
+                    variant='text'
                     onClick={() => setIsPopoverOpen(false)}
-                    className='hover:bg-surface-100 dark:hover:bg-surface-800 text-surface-600 dark:text-surface-300 flex w-full items-center justify-between rounded-md px-2 py-1.5 text-sm transition-colors'
                   >
                     <span className='line-clamp-2 font-medium break-all'>
                       {currentCompany
                         ? currentCompany.name
                         : `${dictionary.sidebar.profileDropdown.noCompany}`}
                     </span>
-                    {currentCompany && (
-                      <i className='pi pi-chevron-right text-surface-400 text-[10px]' />
-                    )}
-                  </Link>
+                    {currentCompany && <i className='pi pi-chevron-right text-surface-400 my-1' />}
+                  </Button>
                 </div>
 
                 <Menu.Root className='w-full border-none! bg-transparent!'>
                   <Menu.List className='p-1!'>
                     <Menu.Item className='m-0! p-0!'>
-                      <button
-                        type='button'
+                      <Button
+                        severity='contrast'
+                        variant='text'
                         onClick={() => {
                           setIsPopoverOpen(false);
                           setIsDialogOpen(true);
                         }}
-                        className='text-surface-900 dark:text-surface-0 hover:bg-surface-100 dark:hover:bg-surface-800 flex w-full cursor-pointer items-center gap-3 rounded-md border-none bg-transparent px-3 py-2 text-left font-normal transition-colors outline-none'
                       >
                         <i className='pi pi-building text-surface-500 dark:text-surface-400' />
                         {currentCompany
                           ? `${dictionary.sidebar.profileDropdown.changeCompany}`
                           : `${dictionary.companies.actions.enterCompany}`}
-                      </button>
+                      </Button>
                     </Menu.Item>
 
                     <Menu.Item className='m-0! p-0!'>
-                      <Link
+                      <Button
+                        as={Link}
                         href={`${PROFILE_ROUTE}/${currentUser?.id || ''}`}
+                        severity='contrast'
+                        variant='text'
                         onClick={() => setIsPopoverOpen(false)}
-                        className='text-surface-900 dark:text-surface-0 hover:bg-surface-100 dark:hover:bg-surface-800 flex w-full items-center gap-3 rounded-md px-3 py-2 transition-colors'
                       >
                         <i className='pi pi-user text-surface-500 dark:text-surface-400' />
                         {dictionary.sidebar.profileDropdown.viewProfile}
-                      </Link>
+                      </Button>
                     </Menu.Item>
 
                     <Menu.Separator className='my-1' />
 
                     <Menu.Item className='m-0! p-0!'>
-                      <Link href={HOME_ROUTE}>
-                        <button
-                          type='button'
-                          className='hover:bg-surface-100 dark:hover:bg-surface-800 flex w-full items-center gap-3 rounded-md border-none bg-transparent px-3 py-2 text-left text-red-600 transition-colors outline-none dark:text-red-400'
-                          onClick={() => exitCompany()}
-                        >
-                          <i className='pi pi-sign-out opacity-80' />
-                          {dictionary.companies.actions.exitCompany}
-                        </button>
-                      </Link>
+                      <Button
+                        as={Link}
+                        href={HOME_ROUTE}
+                        severity='danger'
+                        variant='text'
+                        onClick={() => exitCompany()}
+                      >
+                        <i className='pi pi-sign-out opacity-80' />
+                        {dictionary.companies.actions.exitCompany}
+                      </Button>
                     </Menu.Item>
 
                     <Menu.Item className='m-0! p-0!'>
-                      <button
-                        type='button'
-                        className='hover:bg-surface-100 dark:hover:bg-surface-800 flex w-full items-center gap-3 rounded-md border-none bg-transparent px-3 py-2 text-left text-red-600 transition-colors outline-none dark:text-red-400'
-                        onClick={() => signOut()}
-                      >
+                      <Button severity='danger' variant='text' onClick={() => signOut()}>
                         <i className='pi pi-power-off opacity-80' />
                         {dictionary.sidebar.profileDropdown.signOut}
-                      </button>
+                      </Button>
                     </Menu.Item>
                   </Menu.List>
                 </Menu.Root>
@@ -187,31 +185,31 @@ export function UserProfileTab() {
         modal
         dismissableMask
         open={isDialogOpen}
-        onOpenChange={(e: DialogRootChangeEvent) => {
-          const event = e as DialogRootChangeEvent & { open?: boolean; value?: boolean };
-          setIsDialogOpen(event.open ?? event.value ?? false);
-        }}
+        onOpenChange={(e: DialogRootChangeEvent) => setIsDialogOpen(e.value as boolean)}
         draggable={false}
+        autoZIndex={true}
       >
-        <Dialog.Backdrop className='cursor-pointer' />
+        <Dialog.Portal>
+          <Dialog.Backdrop className='cursor-pointer' />
+          <Dialog.Positioner>
+            <Dialog.Popup className='w-[95vw] max-w-full transform-gpu antialiased sm:w-3xl'>
+              <Dialog.Header className='border-surface-200 dark:border-surface-700 bg-surface-0 dark:bg-surface-900 flex items-center justify-between rounded-t-xl border-b p-4'>
+                <Dialog.Title className='m-0 flex items-center gap-3 text-xl font-semibold'>
+                  <i className='pi pi-building text-surface-500 dark:text-surface-400' />
+                  {dictionary.sidebar.changeCompanyDialog.title}
+                </Dialog.Title>
+                <Dialog.HeaderActions>
+                  <Dialog.Close
+                    onClick={() => setIsDialogOpen(false)}
+                    className='hover:bg-surface-100 dark:hover:bg-surface-800 flex h-8 w-8 items-center justify-center rounded-full transition-colors outline-none'
+                  >
+                    <i className='pi pi-times text-surface-500 hover:text-surface-900 dark:text-surface-400 dark:hover:text-surface-0' />
+                  </Dialog.Close>
+                </Dialog.HeaderActions>
+              </Dialog.Header>
 
-        <Dialog.Portal className='w-[95vw] max-w-full sm:w-3xl' style={{ zIndex: 2000 }}>
-          <Dialog.Header className='border-surface-200 dark:border-surface-700 bg-surface-0 dark:bg-surface-900 mb-1 rounded-t-xl border-b p-4'>
-            <Dialog.Title className='flex w-full items-center gap-2'>
-              <i className='pi pi-building text-surface-500 dark:text-surface-400' />
-              {dictionary.sidebar.changeCompanyDialog.title}
-            </Dialog.Title>
-            <Dialog.HeaderActions>
-              <Dialog.Close onClick={() => setIsDialogOpen(false)}>
-                <i className='pi pi-times' />
-              </Dialog.Close>
-            </Dialog.HeaderActions>
-          </Dialog.Header>
-
-          <Dialog.Content>
-            {() => {
-              return (
-                <div className='flex max-h-[75vh] flex-col gap-4 pt-3 sm:gap-6'>
+              <Dialog.Content>
+                <div className='flex max-h-[75vh] flex-col gap-4 overflow-y-auto p-1 pt-4 sm:gap-6'>
                   <div className='mx-auto w-full max-w-5xl'>
                     <QueryUniversalList
                       queryHook={useCompanyFindAllQuery}
@@ -230,9 +228,9 @@ export function UserProfileTab() {
                     />
                   </div>
                 </div>
-              );
-            }}
-          </Dialog.Content>
+              </Dialog.Content>
+            </Dialog.Popup>
+          </Dialog.Positioner>
         </Dialog.Portal>
       </Dialog.Root>
     </div>

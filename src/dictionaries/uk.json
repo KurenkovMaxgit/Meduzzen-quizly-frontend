@@ -365,30 +365,30 @@
       "frontend": {
         "title": "Фронтенд",
         "framework": {
-          "title": "Фреймворк:",
+          "title": "Фреймворк: ",
           "description": "Next.js (App Router) для гібридного статичного/серверного рендерингу."
         },
         "styling": {
-          "title": "Стилізація:",
+          "title": "Стилізація: ",
           "description": "Tailwind CSS у поєднанні з headless-компонентами PrimeReact."
         },
         "layout": {
-          "title": "Стан та макет:",
+          "title": "Стан та макет: ",
           "description": "Просунуті групи маршрутів Next.js (Route Groups)."
         }
       },
       "backend": {
         "title": "Бекенд та інфраструктура",
         "architecture": {
-          "title": "Архітектура:",
+          "title": "Архітектура: ",
           "description": "Nest.js, що забезпечує надійний шар API."
         },
         "database": {
-          "title": "База даних:",
+          "title": "База даних: ",
           "description": "PostgreSQL для безпечного зберігання реляційних даних."
         },
         "deployment": {
-          "title": "Розгортання:",
+          "title": "Розгортання: ",
           "description": "Повністю контейнеризовані автономні збірки через Docker, розгорнуті на інфраструктурі AWS."
         }
       }

@@ -56,19 +56,27 @@ export function CompanyMessagesListItem({ action }: { action: CompanyAction }) {
         </div>
 
         <span className='text-surface-600 dark:text-surface-400 sm:text-md text-sm'>
-          <Link href={`${PROFILE_ROUTE}/${action.subject!.id}`}>
-            <Button variant='text' rounded className='shrink-0'>
-              {action.subject?.firstName} {action.subject?.lastName}
-            </Button>
-          </Link>
+          <Button
+            as={Link}
+            href={`${PROFILE_ROUTE}/${action.subject!.id}`}
+            variant='text'
+            rounded
+            className='shrink-0'
+          >
+            {action.subject?.firstName} {action.subject?.lastName}
+          </Button>
           {action.type === ActionType.INVITE
             ? `${dictionary.messages.company.sended.description}`
             : `${dictionary.messages.company.received.description}`}
-          <Link href={`${COMPANIES_ROUTE}/${action.company!.id}`}>
-            <Button variant='text' rounded className='shrink-0'>
-              {action.company?.name}
-            </Button>
-          </Link>
+          <Button
+            as={Link}
+            href={`${COMPANIES_ROUTE}/${action.company!.id}`}
+            variant='text'
+            rounded
+            className='shrink-0'
+          >
+            {action.company?.name}
+          </Button>
         </span>
       </div>
       <div className='flex shrink-0 justify-end gap-4 sm:ml-auto sm:items-center'>

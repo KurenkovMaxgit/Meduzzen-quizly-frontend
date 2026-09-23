@@ -4,7 +4,7 @@ import { Button } from '@primereact/ui/button';
 import { Link } from '@/i18n/routing';
 import { useMessages } from 'next-intl';
 import { COMPANIES_ROUTE } from '@/utils/router-constants';
-import { CreateCompanyAction } from './create-company-action';
+import { CreateCompanyAction } from '../companies/actions/create-company-action';
 
 export function HomePageTiles() {
   const dictionary = useMessages();
@@ -41,12 +41,15 @@ export function HomePageTiles() {
           {dictionary.home.joinCompanyTile.description}
         </p>
         <div className='mt-auto'>
-          <Link href={COMPANIES_ROUTE} className='block w-full'>
-            <Button variant='outlined' className='w-full py-3 font-semibold'>
-              <i className='pi pi-search me-2' />
-              {dictionary.home.joinCompanyTile.buttonLabel}
-            </Button>
-          </Link>
+          <Button
+            as={Link}
+            href={COMPANIES_ROUTE}
+            variant='outlined'
+            className='w-full py-3 font-semibold'
+          >
+            <i className='pi pi-search me-2' />
+            {dictionary.home.joinCompanyTile.buttonLabel}
+          </Button>
         </div>
       </div>
     </div>

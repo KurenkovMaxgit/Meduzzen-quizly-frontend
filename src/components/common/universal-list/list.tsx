@@ -1,10 +1,6 @@
 'use client';
 
-import { Paginator } from '@primereact/ui/paginator';
-import type {
-  PaginatorPagesInstance,
-  usePaginatorChangeEvent,
-} from '@primereact/types/shared/paginator';
+import { Paginator, PaginatorPagesInstance } from '@primereact/ui/paginator';
 import { DataView } from '@primereact/ui/dataview';
 import React from 'react';
 import { ListDialogWrapper } from './list-dialog-wrapper';
@@ -88,51 +84,53 @@ function BaseListContent<T>({
     content = <ListNotFound emptyMessage={emptyMessage} />;
   } else {
     content = (
-      <DataView>
-        <div className='flex flex-col'>
-          {displayedItems.map((item, index) => (
-            <React.Fragment key={index}>{itemTemplate(item, index)}</React.Fragment>
-          ))}
-        </div>
+      <DataView.Root>
+        <DataView.Content>
+          <div className='flex flex-col'>
+            {displayedItems.map((item, index) => (
+              <React.Fragment key={index}>{itemTemplate(item, index)}</React.Fragment>
+            ))}
+          </div>
 
-        {paginator && totalItems > rows && (
-          <Paginator.Root
-            total={totalItems}
-            page={currentPage}
-            itemsPerPage={rows}
-            onPageChange={(e: usePaginatorChangeEvent) => handlePageChange(e.value)}
-            className='border-surface-200 dark:border-surface-700 mt-4 border-t pt-4'
-          >
-            <Paginator.Content>
-              <Paginator.First>
-                <i className='pi pi-angle-double-left' />
-              </Paginator.First>
-              <Paginator.Prev>
-                <i className='pi pi-angle-left' />
-              </Paginator.Prev>
-              <Paginator.Pages>
-                {({ paginator }: PaginatorPagesInstance) =>
-                  paginator?.pages.map((p, index) =>
-                    p.type === 'page' ? (
-                      <Paginator.Page key={index} value={p.value} />
-                    ) : (
-                      <Paginator.Ellipsis key={index}>
-                        <i className='pi pi-ellipsis-h' />
-                      </Paginator.Ellipsis>
-                    ),
-                  )
-                }
-              </Paginator.Pages>
-              <Paginator.Next>
-                <i className='pi pi-angle-right' />
-              </Paginator.Next>
-              <Paginator.Last>
-                <i className='pi pi-angle-double-right' />
-              </Paginator.Last>
-            </Paginator.Content>
-          </Paginator.Root>
-        )}
-      </DataView>
+          {paginator && totalItems > rows && (
+            <Paginator.Root
+              total={totalItems}
+              page={currentPage}
+              itemsPerPage={rows}
+              PaginatorRootChangeEvent={(e: number) => handlePageChange(e)}
+              className='border-surface-200 dark:border-surface-700 mt-4 border-t pt-4'
+            >
+              <Paginator.Content>
+                <Paginator.First>
+                  <i className='pi pi-angle-double-left' />
+                </Paginator.First>
+                <Paginator.Prev>
+                  <i className='pi pi-angle-left' />
+                </Paginator.Prev>
+                <Paginator.Pages>
+                  {({ paginator }: PaginatorPagesInstance) =>
+                    paginator?.pages.map((p, index) =>
+                      p.type === 'page' ? (
+                        <Paginator.Page key={index} value={p.value} />
+                      ) : (
+                        <Paginator.Ellipsis key={index}>
+                          <i className='pi pi-ellipsis-h' />
+                        </Paginator.Ellipsis>
+                      ),
+                    )
+                  }
+                </Paginator.Pages>
+                <Paginator.Next>
+                  <i className='pi pi-angle-right' />
+                </Paginator.Next>
+                <Paginator.Last>
+                  <i className='pi pi-angle-double-right' />
+                </Paginator.Last>
+              </Paginator.Content>
+            </Paginator.Root>
+          )}
+        </DataView.Content>
+      </DataView.Root>
     );
   }
 

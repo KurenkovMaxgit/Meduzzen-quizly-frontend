@@ -15,13 +15,11 @@ export function SignupForm() {
 
   return (
     <>
-      <Divider.Root align='center' type='solid' className='my-0!'>
-        <Divider.Content>
-          <span className='text-surface-600 dark:text-surface-400 mt-2 text-center text-wrap'>
-            {dictionary.auth.signUp.subTitle}
-          </span>
-        </Divider.Content>
-      </Divider.Root>
+      <Divider align='center' type='solid' className='my-0!'>
+        <span className='text-surface-600 dark:text-surface-400 mt-2 text-center text-wrap'>
+          {dictionary.auth.signUp.subTitle}
+        </span>
+      </Divider>
 
       <form onSubmit={handleSubmit} className='flex flex-col gap-8 pt-2'>
         {errorMessage && (
@@ -108,13 +106,11 @@ export function SignupForm() {
         </Button>
       </form>
 
-      <Divider.Root align='center' type='solid' className='my-0!'>
-        <Divider.Content>
-          <span className='text-surface-500 dark:text-surface-400 text-sm font-medium tracking-wider uppercase'>
-            {dictionary.auth.or}
-          </span>
-        </Divider.Content>
-      </Divider.Root>
+      <Divider align='center' type='solid' className='my-0!'>
+        <span className='text-surface-500 dark:text-surface-400 text-sm font-medium tracking-wider uppercase'>
+          {dictionary.auth.or}
+        </span>
+      </Divider>
     </>
   );
 }

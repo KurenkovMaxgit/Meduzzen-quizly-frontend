@@ -52,17 +52,17 @@ export function UserListItem({ user }: { user: ReturnUser }) {
         <span className='text-surface-600 dark:text-surface-400 text-sm'>{user.email}</span>
       </div>
       <div className='flex shrink-0 justify-end gap-4 sm:ml-auto sm:items-center'>
-        <Link href={`${PROFILE_ROUTE}/${user.id}`}>
-          <Button
-            rounded
-            variant='outlined'
-            severity='contrast'
-            className='shrink-0'
-            title={dictionary.companies.actions.viewDetails}
-          >
-            <i className='pi pi-eye my-1' />
-          </Button>
-        </Link>
+        <Button
+          as={Link}
+          href={`${PROFILE_ROUTE}/${user.id}`}
+          rounded
+          variant='outlined'
+          severity='contrast'
+          className='shrink-0'
+          title={dictionary.companies.actions.viewDetails}
+        >
+          <i className='pi pi-eye my-1' />
+        </Button>
         <Button
           rounded
           variant='outlined'

@@ -1,9 +1,10 @@
-import { ToastType } from '@primereact/types/shared/toaster';
+export type ToastSeverity = 'success' | 'info' | 'warn' | 'error' | 'secondary' | 'contrast';
+
+export type ToastContent = {
+  summary: string;
+  detail: string;
+};
 
 export type ToastContextType = {
-  showToast: (
-    variant: ToastType['variant'] | 'error',
-    content: { summary: string; detail: string },
-    duration?: number,
-  ) => void;
+  showToast: (severity: ToastSeverity, content: ToastContent, duration?: number) => void;
 };

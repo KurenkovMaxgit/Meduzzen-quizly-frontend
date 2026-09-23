@@ -37,7 +37,7 @@ export function MembershipsList() {
       emptyMessage={dictionary.companies.emptyMessage}
     >
       <ListHeader
-        title={dictionary.companies.listHeader.title}
+        title={dictionary.memberships.listHeader.title}
         searchbar
         searchValue={searchValue}
         setSearchValue={setSearchValue}

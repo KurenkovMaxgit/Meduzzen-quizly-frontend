@@ -29,6 +29,24 @@
     }
   },
   "toast": {
+    "quiz": {
+      "create": {
+        "success": { "summary": "Success!", "detail": "Quiz created successfully." },
+        "error": { "summary": "Error!", "detail": "Could not create quiz." }
+      },
+      "update": {
+        "success": { "summary": "Success!", "detail": "Quiz updated successfully." },
+        "error": { "summary": "Error!", "detail": "Could not update quiz." }
+      },
+      "delete": {
+        "success": { "summary": "Success!", "detail": "Quiz deleted successfully." },
+        "error": { "summary": "Error!", "detail": "Could not delete quiz." }
+      }
+    },
+    "attempt": {
+      "success": { "summary": "Submitted", "detail": "Your answers were graded." },
+      "error": { "summary": "Error!", "detail": "Could not submit your quiz." }
+    },
     "signup": {
       "success": { "summary": "Welcome to Quizly!", "detail": "Account created successfully!" },
       "error": { "summary": "Error!", "detail": "Error creating account" }
@@ -172,6 +190,35 @@
       "noAccount": "Don`t have an account yet?"
     }
   },
+  "notifications": {
+    "title": "Notifications",
+    "unreadBadge": "{count} unread notifications",
+    "empty": "You have no notifications.",
+    "loading": "Loading notifications...",
+    "loadError": "Could not load notifications.",
+    "filter": "Filter by status",
+    "pagination": "Notification pages",
+    "previous": "Previous",
+    "next": "Next",
+    "allStatuses": "All notifications",
+    "statuses": { "unread": "Unread", "read": "Read", "archived": "Archived" },
+    "actions": { "view": "View notification", "markRead": "Mark as read", "archive": "Archive" },
+    "company": "Company",
+    "typeLabels": {
+      "quizCreated": "New quiz",
+      "quizReminder": "Quiz reminder",
+      "companyAction": "Company update",
+      "systemAlert": "System alert",
+      "generic": "Notification"
+    },
+    "toast": {
+      "quizCreated": "New quiz",
+      "quizReminder": "Quiz reminder",
+      "companyAction": "Company update",
+      "systemAlert": "System notification",
+      "generic": "New notification"
+    }
+  },
   "sidebar": {
     "companiesDropdown": {
       "title": "Companies",
@@ -273,6 +320,63 @@
     "notFound": {
       "title": "Company Not Found",
       "description": "The company you are looking for does not exist."
+    }
+  },
+  "quizzes": {
+    "title": "Company quizzes",
+    "emptyMessage": "No quizzes found.",
+    "notFound": "Quiz not found or access is denied.",
+    "forbidden": "You do not have permission to manage quizzes.",
+    "compliance": "Member compliance",
+    "complianceDescription": "Latest completion and score for each company member and quiz.",
+    "complianceError": "Could not load company completion data.",
+    "complianceLimited": "This report lists the first 100 members and quizzes. Refine the company data to see a complete report.",
+    "complianceEmpty": "There are no company members or quizzes to report.",
+    "member": "Member",
+    "quizName": "Quiz",
+    "lastCompletion": "Last completion",
+    "complianceStatus": "Status",
+    "latestScore": "Latest score",
+    "neverCompleted": "Never",
+    "notStarted": "Not started",
+    "overdue": "Overdue",
+    "current": "Current",
+    "takeQuiz": "Take this quiz",
+    "score": "Your score",
+    "points": "Points",
+    "questionScore": "Question score",
+    "tryAgain": "Try again",
+    "submitAttempt": "Submit answers",
+    "create": "Create quiz",
+    "edit": "Edit quiz",
+    "questionsCount": "Questions",
+    "question": "Question",
+    "answer": "Answer",
+    "addQuestion": "Add question",
+    "removeQuestion": "Remove question",
+    "addAnswer": "Add answer",
+    "removeAnswer": "Remove answer",
+    "correctAnswer": "Correct answer",
+    "deleteConfirmation": "Delete this quiz? This action cannot be undone.",
+    "fields": {
+      "title": "Title",
+      "description": "Description",
+      "frequency": "Completion frequency (days)",
+      "prompt": "Question prompt",
+      "type": "Question type",
+      "correct": "Mark as correct"
+    },
+    "types": { "single": "Single choice", "multiple": "Multiple choice" },
+    "validation": {
+      "title": "Enter a title from 1 to 250 characters.",
+      "description": "Description must be at most 1000 characters.",
+      "frequency": "Frequency must be a whole number of 0 or more.",
+      "minQuestions": "Add at least two questions.",
+      "prompt": "Each question needs a prompt from 1 to 500 characters.",
+      "minAnswers": "Each question needs at least two answers.",
+      "answer": "Each answer needs text from 1 to 250 characters.",
+      "singleCorrect": "Choose exactly one correct answer for each single-choice question.",
+      "multipleCorrect": "Choose at least one correct answer for each multiple-choice question."
     }
   },
   "memberships": {

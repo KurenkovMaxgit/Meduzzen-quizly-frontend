@@ -9,7 +9,6 @@ import { ActionStatus, ActionType } from '@/utils/enums';
 import { useMessages } from 'next-intl';
 import { UserMessagesListItem } from './notifications-user-list-item';
 import { usePathname, useRouter } from '@/i18n/routing';
-import { useAppSelector } from '@/lib/hooks';
 import { useMemo } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { NOTIFICATION_STATUS_FILTER_OPTIONS } from '@/utils/filter-options';
@@ -19,12 +18,6 @@ export function UserMessagesList({ actionType }: { actionType: ActionType }) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
-
-  const { activeCompany: currentCompany } = useAppSelector((state) => state.company);
-
-  if (!currentCompany) {
-    router.back();
-  }
 
   const roleFilterOptions = useMemo(
     () =>

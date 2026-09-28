@@ -1,0 +1,240 @@
+import { Avatar } from '@primereact/ui/avatar';
+import { Dialog, DialogRootChangeEvent } from '@primereact/ui/dialog';
+import { Menu } from '@primereact/ui/menu';
+import { Popover } from '@primereact/ui/popover';
+import { Link, usePathname } from '@/i18n/routing';
+import { ChangeCompanyListItem } from '@/components/companies/list-items/company-change-list-item';
+import { useState } from 'react';
+import { useLocale, useMessages } from 'next-intl';
+import { useAppDispatch, useAppSelector } from '@/lib/hooks';
+import { clearActiveCompany } from '@/lib/slices/company-slice';
+import { useAuthLogoutMutation, useCompanyFindAllQuery } from '@/lib/api-endpoints';
+import { ReturnCompany } from '@/types/company/return-company';
+import { logout } from '@/lib/slices/auth-slice';
+import Cookies from 'js-cookie';
+import { ACTIVE_COMPANY_ID_KEY } from '@/utils/cookie-constants';
+import { COMPANIES_ROUTE, HOME_ROUTE, PROFILE_ROUTE } from '@/utils/router-constants';
+import { useGlobalToast } from '@/providers/toast-provider';
+import { QueryUniversalList } from '../common/universal-list/list-query';
+import { Button } from '@primereact/ui/button';
+
+export function UserProfileTab() {
+  const dictionary = useMessages();
+  const currentLocale = useLocale();
+  const pathname = usePathname();
+  const dispatch = useAppDispatch();
+  const toast = useGlobalToast();
+
+  const { user: currentUser } = useAppSelector((state) => state.auth);
+  const { activeCompany: currentCompany } = useAppSelector((state) => state.company);
+
+  const [isPopoverOpen, setIsPopoverOpen] = useState<boolean>(false);
+  const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
+  const [prevPathname, setPrevPathname] = useState<string>(pathname);
+
+  if (pathname !== prevPathname) {
+    setPrevPathname(pathname);
+    setIsDialogOpen(false);
+  }
+
+  const [logoutFromApi] = useAuthLogoutMutation();
+
+  const signOut = async () => {
+    dispatch(logout());
+
+    try {
+      await logoutFromApi().unwrap();
+    } catch (error) {
+      console.error('Failed to logout from server', error);
+    }
+
+    window.location.assign(`/auth/logout?returnTo=${window.location.origin}/${currentLocale}`);
+  };
+
+  const exitCompany = () => {
+    dispatch(clearActiveCompany());
+
+    Cookies.remove(ACTIVE_COMPANY_ID_KEY);
+
+    toast.showToast('info', dictionary.toast.company.exit.success);
+  };
+
+  const rawInitials = (currentUser?.firstName?.[0] || '') + (currentUser?.lastName?.[0] || '');
+  const userInitials = rawInitials ? rawInitials.toUpperCase() : 'U';
+
+  const userFullName =
+    currentUser?.firstName || currentUser?.lastName
+      ? `${currentUser.firstName || ''} ${currentUser.lastName || ''}`.trim()
+      : dictionary.common.loading;
+
+  return (
+    <div className='relative flex items-center'>
+      <Popover.Root
+        open={isPopoverOpen}
+        onOpenChange={(e: DialogRootChangeEvent & { open?: boolean; value?: boolean }) => {
+          setIsPopoverOpen(e.open ?? e.value ?? false);
+        }}
+      >
+        <Popover.Trigger className='hover:bg-surface-100 dark:hover:bg-surface-800 flex w-auto cursor-pointer items-center gap-2 rounded-lg border-none bg-transparent p-2 transition-colors outline-none sm:w-56 sm:gap-3'>
+          <Avatar.Root shape='circle' size='normal' className='shrink-0'>
+            <Avatar.Fallback>{userInitials}</Avatar.Fallback>
+          </Avatar.Root>
+
+          <div className='hidden min-w-0 flex-1 flex-col items-start text-left sm:flex'>
+            <span className='text-surface-900 dark:text-surface-0 w-full truncate text-sm font-semibold'>
+              {userFullName}
+            </span>
+
+            <p className='text-surface-300 w-full truncate text-sm'>
+              {currentCompany
+                ? currentCompany.name
+                : `${dictionary.sidebar.profileDropdown.noCompany}`}
+            </p>
+          </div>
+
+          <i className='pi pi-ellipsis-v hidden shrink-0 text-sm sm:block' />
+        </Popover.Trigger>
+
+        <Popover.Portal>
+          <Popover.Positioner sideOffset={12} side='bottom' align='end'>
+            <Popover.Popup className='border-surface-200 bg-surface-0 dark:border-surface-700 dark:bg-surface-900 w-48 overflow-hidden rounded-xl border shadow-lg'>
+              <Popover.Content className='p-0!'>
+                <div className='border-surface-200 dark:border-surface-700 mx-1 mt-3 mb-2 flex flex-col gap-1 border-b pb-2'>
+                  <span className='text-surface-900 dark:text-surface-0 text-md w-full truncate px-2 font-semibold'>
+                    {userFullName}
+                  </span>
+
+                  <Button
+                    as={Link}
+                    href={currentCompany ? `${COMPANIES_ROUTE}/${currentCompany.id}` : '#'}
+                    size='small'
+                    severity='secondary'
+                    variant='text'
+                    className='w-full justify-between! text-left'
+                    onClick={() => setIsPopoverOpen(false)}
+                  >
+                    <span className='line-clamp-2 flex-1 font-medium break-all'>
+                      {currentCompany
+                        ? currentCompany.name
+                        : `${dictionary.sidebar.profileDropdown.noCompany}`}
+                    </span>
+                    {currentCompany && <i className='pi pi-chevron-right text-surface-400 my-1' />}
+                  </Button>
+                </div>
+
+                <Menu.Root className='w-full border-none! bg-transparent!'>
+                  <Menu.List className='p-1!'>
+                    <Menu.Item
+                      as={Button}
+                      severity='contrast'
+                      variant='text'
+                      className='m-0! w-full justify-start! border-none! text-left shadow-none!'
+                      onClick={() => {
+                        setIsPopoverOpen(false);
+                        setIsDialogOpen(true);
+                      }}
+                    >
+                      <i className='pi pi-building text-surface-500 dark:text-surface-400' />
+                      {currentCompany
+                        ? `${dictionary.sidebar.profileDropdown.changeCompany}`
+                        : `${dictionary.companies.actions.enterCompany}`}
+                    </Menu.Item>
+
+                    <Menu.Item
+                      as={Link}
+                      href={`${PROFILE_ROUTE}/${currentUser?.id || ''}`}
+                      className='m-0! w-full'
+                      onClick={() => setIsPopoverOpen(false)}
+                    >
+                      <i className='pi pi-user text-surface-500 dark:text-surface-400' />
+                      {dictionary.sidebar.profileDropdown.viewProfile}
+                    </Menu.Item>
+
+                    <Menu.Separator className='my-1' />
+
+                    <Link href={HOME_ROUTE}>
+                      <Menu.Item
+                        as={Button}
+                        severity='danger'
+                        variant='text'
+                        className='m-0! w-full justify-start! border-none! text-left shadow-none!'
+                        onClick={() => exitCompany()}
+                      >
+                        <i className='pi pi-sign-out opacity-80' />
+                        {dictionary.companies.actions.exitCompany}
+                      </Menu.Item>
+                    </Link>
+
+                    <Menu.Item
+                      as={Button}
+                      severity='danger'
+                      variant='text'
+                      className='m-0! w-full justify-start! border-none! text-left shadow-none!'
+                      onClick={() => signOut()}
+                    >
+                      <i className='pi pi-power-off opacity-80' />
+                      {dictionary.sidebar.profileDropdown.signOut}
+                    </Menu.Item>
+                  </Menu.List>
+                </Menu.Root>
+              </Popover.Content>
+            </Popover.Popup>
+          </Popover.Positioner>
+        </Popover.Portal>
+      </Popover.Root>
+
+      <Dialog.Root
+        modal
+        dismissableMask
+        open={isDialogOpen}
+        onOpenChange={(e: DialogRootChangeEvent) => setIsDialogOpen(e.value as boolean)}
+        draggable={false}
+        autoZIndex={true}
+      >
+        <Dialog.Portal>
+          <Dialog.Backdrop className='cursor-pointer' />
+          <Dialog.Positioner>
+            <Dialog.Popup className='w-[95vw] max-w-full transform-gpu antialiased sm:w-3xl'>
+              <Dialog.Header className='border-surface-200 dark:border-surface-700 bg-surface-0 dark:bg-surface-900 flex items-center justify-between rounded-t-xl border-b p-4'>
+                <Dialog.Title className='m-0 flex items-center gap-3 text-xl font-semibold'>
+                  <i className='pi pi-building text-surface-500 dark:text-surface-400' />
+                  {dictionary.sidebar.changeCompanyDialog.title}
+                </Dialog.Title>
+                <Dialog.HeaderActions>
+                  <Dialog.Close
+                    onClick={() => setIsDialogOpen(false)}
+                    className='hover:bg-surface-100 dark:hover:bg-surface-800 flex h-8 w-8 items-center justify-center rounded-full transition-colors outline-none'
+                  >
+                    <i className='pi pi-times text-surface-500 hover:text-surface-900 dark:text-surface-400 dark:hover:text-surface-0' />
+                  </Dialog.Close>
+                </Dialog.HeaderActions>
+              </Dialog.Header>
+
+              <Dialog.Content>
+                <div className='flex max-h-[75vh] flex-col gap-4 overflow-y-auto p-1 pt-4 sm:gap-6'>
+                  <div className='mx-auto w-full max-w-5xl'>
+                    <QueryUniversalList
+                      queryHook={useCompanyFindAllQuery}
+                      queryParams={{
+                        where: {
+                          members: { user: { id: currentUser?.id } },
+                        },
+                        relations: ['members.user'],
+                      }}
+                      paginator={true}
+                      rows={12}
+                      itemTemplate={(company: ReturnCompany) => (
+                        <ChangeCompanyListItem company={company} />
+                      )}
+                      emptyMessage={dictionary.companies.emptyMessage}
+                    />
+                  </div>
+                </div>
+              </Dialog.Content>
+            </Dialog.Popup>
+          </Dialog.Positioner>
+        </Dialog.Portal>
+      </Dialog.Root>
+    </div>
+  );
+}

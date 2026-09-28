@@ -1,0 +1,12 @@
+services:
+  quizly-client-standalone:
+    env_file:
+      - ./.env.production.local
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: quizly-client-image
+    container_name: quizly-client-container
+    ports:
+      - '${PORT}:${PORT}'
+    restart: unless-stopped

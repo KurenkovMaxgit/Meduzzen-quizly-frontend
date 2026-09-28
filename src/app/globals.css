@@ -1,0 +1,23 @@
+@import 'tailwindcss';
+@import 'primeicons/primeicons.css';
+
+@plugin 'tailwindcss-primeui';
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  --text-color: var(--color-surface-900);
+}
+
+.dark {
+  --text-color: var(--color-surface-50);
+}
+
+html {
+  overflow-x: hidden;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+}

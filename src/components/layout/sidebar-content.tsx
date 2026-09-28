@@ -13,6 +13,7 @@ import {
   MEMBERSHIPS_ROUTE,
   RECEIVED_MESSAGES_ROUTE,
   SENT_MESSAGES_ROUTE,
+  QUIZZES_ROUTE,
 } from '@/utils/router-constants';
 import { useAppSelector } from '@/lib/hooks';
 import { ChevronDown } from '@primeicons/react';
@@ -74,6 +75,17 @@ export function SidebarContent() {
             )}
           </Menu.Submenu>
 
+          {currentCompany && (
+            <Menu.Item
+              as={Link}
+              href={`${COMPANIES_ROUTE}/${currentCompany.id}/${QUIZZES_ROUTE}`}
+              className='flex w-full items-center gap-2'
+            >
+              <i className='pi pi-clipboard' />
+              {dictionary.sidebar.companyActionsDropdown.quizzesList}
+            </Menu.Item>
+          )}
+
           {currentCompany &&
             [CompanyRole.ADMIN, CompanyRole.OWNER].includes(currentCompanyRole!) && (
               <>
@@ -109,15 +121,6 @@ export function SidebarContent() {
                       >
                         <i className='pi pi-users' />
                         {dictionary.sidebar.companyActionsDropdown.membersList}
-                      </Menu.Item>
-
-                      <Menu.Item
-                        as={Link}
-                        href={MEMBERSHIPS_ROUTE}
-                        className='flex w-full items-center gap-2'
-                      >
-                        <i className='pi pi-clipboard' />
-                        {dictionary.sidebar.companyActionsDropdown.quizzesList}
                       </Menu.Item>
                     </Menu.List>
                   )}

@@ -18,7 +18,11 @@ import React, { useState } from 'react';
 import { validateCompany } from '@/utils/company-form-validation-rules';
 import { CreateCompany } from '@/types/company/create-company';
 
-export default function CreateCompanyDialogContent({ closeDialog }: { closeDialog: () => void }) {
+export default function CreateCompanyDialogContent({
+  closeDialogAction: closeDialog,
+}: {
+  closeDialogAction: () => void;
+}) {
   const dictionary = useMessages();
   const router = useRouter();
   const toast = useGlobalToast();
@@ -123,7 +127,7 @@ export default function CreateCompanyDialogContent({ closeDialog }: { closeDialo
           optionValue='value'
           className='w-full'
         >
-          <Select.Trigger id='company_status'>
+          <Select.Trigger id='company_status' type='button'>
             <Select.Value />
             <Select.Indicator>
               <i className='pi pi-chevron-down text-surface-500' />
@@ -132,11 +136,11 @@ export default function CreateCompanyDialogContent({ closeDialog }: { closeDialo
 
           <Select.Portal>
             <Select.Positioner style={{ zIndex: 3000 }}>
-              <Select.List>
+              <Select.Popup>
                 <Select.List>
                   <Select.Option />
                 </Select.List>
-              </Select.List>
+              </Select.Popup>
             </Select.Positioner>
           </Select.Portal>
         </Select.Root>

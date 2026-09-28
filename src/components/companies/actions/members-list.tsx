@@ -81,7 +81,7 @@ export function MembersList({ companyId }: { companyId: string }) {
             companyId={companyId}
             companyUser={{ ...member }}
             isSelected={selectedIds.includes(member.user.id)}
-            onToggleSelection={handleToggle}
+            onToggleSelectionAction={handleToggle}
           />
         )}
         emptyMessage={dictionary.memberships.membersList.emptyMessage}
@@ -139,7 +139,10 @@ export function MembersList({ companyId }: { companyId: string }) {
       </QueryUniversalList>
 
       {isCreateDialogOpen && (
-        <AddUserDialog isOpen={isCreateDialogOpen} onClose={() => setIsCreateDialogOpen(false)} />
+        <AddUserDialog
+          isOpen={isCreateDialogOpen}
+          onCloseAction={() => setIsCreateDialogOpen(false)}
+        />
       )}
     </div>
   );

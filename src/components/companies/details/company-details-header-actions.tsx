@@ -1,5 +1,5 @@
 import { Button } from '@primereact/ui/button';
-import { Dialog, DialogContentInstance } from '@primereact/ui/dialog';
+import { Dialog, DialogContentInstance, DialogRootChangeEvent } from '@primereact/ui/dialog';
 import EditCompanyDialogContent from '@/components/companies/company-edit-dialog-content';
 import { useMessages } from 'next-intl';
 import { ReturnCompany } from '@/types/company/return-company';
@@ -19,20 +19,22 @@ export function CompanyHeaderActions({
   if (!hasEditPermission) return null;
 
   return (
-    <Dialog.Root open={isOpen} position='center' draggable={false}>
-      <Dialog.Trigger
-        as={Button}
-        rounded
-        className='flex py-3 font-semibold'
-        onClick={() => setIsOpen(true)}
-      >
+    <Dialog.Root
+      open={isOpen}
+      onOpenChange={(event: DialogRootChangeEvent) => {
+        setIsOpen(Boolean(event.value));
+      }}
+      position='center'
+      draggable={false}
+    >
+      <Dialog.Trigger as={Button} rounded className='flex py-3 font-semibold'>
         <i className='pi pi-pencil my-1' />
         <h3 className='m-0 hidden sm:block'>{dictionary.companies.editDialog.title}</h3>
       </Dialog.Trigger>
 
       <Dialog.Portal>
         <Dialog.Backdrop />
-        <Dialog.Positioner onClick={() => setIsOpen(false)}>
+        <Dialog.Positioner>
           <Dialog.Popup className='w-[95vw] max-w-full sm:w-md'>
             <Dialog.Header>
               <Dialog.Title>{dictionary.companies.editDialog.title}</Dialog.Title>

@@ -110,9 +110,10 @@ export function UserProfileTab() {
                     size='small'
                     severity='secondary'
                     variant='text'
+                    className='w-full justify-between! text-left'
                     onClick={() => setIsPopoverOpen(false)}
                   >
-                    <span className='line-clamp-2 font-medium break-all'>
+                    <span className='line-clamp-2 flex-1 font-medium break-all'>
                       {currentCompany
                         ? currentCompany.name
                         : `${dictionary.sidebar.profileDropdown.noCompany}`}
@@ -123,55 +124,56 @@ export function UserProfileTab() {
 
                 <Menu.Root className='w-full border-none! bg-transparent!'>
                   <Menu.List className='p-1!'>
-                    <Menu.Item className='m-0! p-0!'>
-                      <Button
-                        severity='contrast'
-                        variant='text'
-                        onClick={() => {
-                          setIsPopoverOpen(false);
-                          setIsDialogOpen(true);
-                        }}
-                      >
-                        <i className='pi pi-building text-surface-500 dark:text-surface-400' />
-                        {currentCompany
-                          ? `${dictionary.sidebar.profileDropdown.changeCompany}`
-                          : `${dictionary.companies.actions.enterCompany}`}
-                      </Button>
+                    <Menu.Item
+                      as={Button}
+                      severity='contrast'
+                      variant='text'
+                      className='m-0! w-full justify-start! border-none! text-left shadow-none!'
+                      onClick={() => {
+                        setIsPopoverOpen(false);
+                        setIsDialogOpen(true);
+                      }}
+                    >
+                      <i className='pi pi-building text-surface-500 dark:text-surface-400' />
+                      {currentCompany
+                        ? `${dictionary.sidebar.profileDropdown.changeCompany}`
+                        : `${dictionary.companies.actions.enterCompany}`}
                     </Menu.Item>
 
-                    <Menu.Item className='m-0! p-0!'>
-                      <Button
-                        as={Link}
-                        href={`${PROFILE_ROUTE}/${currentUser?.id || ''}`}
-                        severity='contrast'
-                        variant='text'
-                        onClick={() => setIsPopoverOpen(false)}
-                      >
-                        <i className='pi pi-user text-surface-500 dark:text-surface-400' />
-                        {dictionary.sidebar.profileDropdown.viewProfile}
-                      </Button>
+                    <Menu.Item
+                      as={Link}
+                      href={`${PROFILE_ROUTE}/${currentUser?.id || ''}`}
+                      className='m-0! w-full'
+                      onClick={() => setIsPopoverOpen(false)}
+                    >
+                      <i className='pi pi-user text-surface-500 dark:text-surface-400' />
+                      {dictionary.sidebar.profileDropdown.viewProfile}
                     </Menu.Item>
 
                     <Menu.Separator className='my-1' />
 
-                    <Menu.Item className='m-0! p-0!'>
-                      <Button
-                        as={Link}
-                        href={HOME_ROUTE}
+                    <Link href={HOME_ROUTE}>
+                      <Menu.Item
+                        as={Button}
                         severity='danger'
                         variant='text'
+                        className='m-0! w-full justify-start! border-none! text-left shadow-none!'
                         onClick={() => exitCompany()}
                       >
                         <i className='pi pi-sign-out opacity-80' />
                         {dictionary.companies.actions.exitCompany}
-                      </Button>
-                    </Menu.Item>
+                      </Menu.Item>
+                    </Link>
 
-                    <Menu.Item className='m-0! p-0!'>
-                      <Button severity='danger' variant='text' onClick={() => signOut()}>
-                        <i className='pi pi-power-off opacity-80' />
-                        {dictionary.sidebar.profileDropdown.signOut}
-                      </Button>
+                    <Menu.Item
+                      as={Button}
+                      severity='danger'
+                      variant='text'
+                      className='m-0! w-full justify-start! border-none! text-left shadow-none!'
+                      onClick={() => signOut()}
+                    >
+                      <i className='pi pi-power-off opacity-80' />
+                      {dictionary.sidebar.profileDropdown.signOut}
                     </Menu.Item>
                   </Menu.List>
                 </Menu.Root>

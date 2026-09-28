@@ -17,12 +17,12 @@ export function MemberListItem({
   companyId,
   companyUser,
   isSelected,
-  onToggleSelection,
+  onToggleSelectionAction: onToggleSelection,
 }: {
   companyId: string;
   companyUser: CompanyUser;
   isSelected: boolean;
-  onToggleSelection: (userId: string) => void;
+  onToggleSelectionAction: (userId: string) => void;
 }) {
   const dictionary = useMessages();
   const { user: currentUser } = useAppSelector((state) => state.auth);

@@ -6,7 +6,7 @@ import { ReturnCompany } from '@/types/company/return-company';
 import { CompanyStatus } from '@/utils/enums';
 import { useState } from 'react';
 import { useDebounce } from '@/hooks/use-debounce';
-import { Dialog } from '@primereact/ui/dialog';
+import { Dialog, type DialogRootChangeEvent } from '@primereact/ui/dialog';
 import CreateCompanyDialogContent from './company-create-dialog-content';
 import { useMessages } from 'next-intl';
 import { FindCompany } from '@/types/company/find-company';
@@ -48,23 +48,31 @@ export function CompaniesList() {
         />
       </QueryUniversalList>
 
-      <Dialog.Root open={isCreateDialogOpen} position='center' draggable={false}>
+      <Dialog.Root
+        open={isCreateDialogOpen}
+        onOpenChange={(event: DialogRootChangeEvent) => setIsCreateDialogOpen(Boolean(event.value))}
+        position='center'
+        draggable={false}
+        dismissable={false}
+      >
         <Dialog.Portal>
           <Dialog.Backdrop />
-          <Dialog.Positioner onClick={() => setIsCreateDialogOpen(false)}>
+          <Dialog.Positioner>
             <Dialog.Popup className='w-[95vw] max-w-full transform-gpu antialiased sm:w-md'>
               <Dialog.Header>
                 <Dialog.Title>{dictionary.companies.createDialog.title}</Dialog.Title>
 
                 <Dialog.HeaderActions>
-                  <Dialog.Close onClick={() => setIsCreateDialogOpen(false)}>
+                  <Dialog.Close>
                     <i className='pi pi-times' />
                   </Dialog.Close>
                 </Dialog.HeaderActions>
               </Dialog.Header>
 
               <Dialog.Content>
-                <CreateCompanyDialogContent closeDialog={() => setIsCreateDialogOpen(false)} />
+                <CreateCompanyDialogContent
+                  closeDialogAction={() => setIsCreateDialogOpen(false)}
+                />
               </Dialog.Content>
             </Dialog.Popup>
           </Dialog.Positioner>

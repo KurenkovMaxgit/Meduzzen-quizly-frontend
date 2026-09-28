@@ -18,6 +18,7 @@ import { useCompanyFindAllMembersQuery } from '@/lib/api-endpoints';
 import { ListHeader } from '@/components/common/universal-list/list-header';
 import { useDebounce } from '@/hooks/use-debounce';
 import { useState } from 'react';
+import { QUIZZES_ROUTE } from '@/utils/router-constants';
 
 export function CompanyDetailsToolbar({ company }: { company: ReturnCompany }) {
   const dictionary = useMessages();
@@ -81,12 +82,10 @@ export function CompanyDetailsToolbar({ company }: { company: ReturnCompany }) {
         </Button>
       ) : (
         <>
-          {/* PLACEHOLDER */}
-          <Button>
+          <Button as={Link} href={`/companies/${company.id}/${QUIZZES_ROUTE}`}>
             <i className='pi pi-clipboard' />
             {dictionary.companies.details.quizzesList.title}
           </Button>
-          {/* PLACEHOLDER */}
           {company.id === currentCompany?.id ? (
             <Button
               as={Link}

@@ -29,41 +29,41 @@ export const ChangeCompanyListItem = ({ company }: { company: ReturnCompany }) =
         </span>
       </div>
       <div className='flex shrink-0 justify-end gap-4 sm:ml-auto sm:items-center'>
-        <Link href={`${COMPANIES_ROUTE}/${company.id}`}>
+        <Button
+          as={Link}
+          href={`${COMPANIES_ROUTE}/${company.id}`}
+          rounded
+          variant='outlined'
+          severity='contrast'
+          className='shrink-0'
+          title={dictionary.companies.actions.viewDetails}
+        >
+          <i className='pi pi-eye my-1' />
+        </Button>
+        {isCurrentCompany ? (
           <Button
+            as={Link}
+            href={HOME_ROUTE}
             rounded
             variant='outlined'
-            severity='contrast'
-            className='shrink-0'
-            title={dictionary.companies.actions.viewDetails}
+            severity='danger'
+            onClick={() => exitCompany()}
+            title={dictionary.companies.actions.exitCompany}
           >
-            <i className='pi pi-eye my-1' />
+            <i className='pi pi-sign-out my-1' />
           </Button>
-        </Link>
-        {isCurrentCompany ? (
-          <Link href={HOME_ROUTE}>
-            <Button
-              rounded
-              variant='outlined'
-              severity='danger'
-              onClick={() => exitCompany()}
-              title={dictionary.companies.actions.exitCompany}
-            >
-              <i className='pi pi-sign-out my-1' />
-            </Button>
-          </Link>
         ) : (
-          <Link href={`${COMPANIES_ROUTE}/${company.id}`}>
-            <Button
-              rounded
-              variant='outlined'
-              severity='success'
-              onClick={() => enterCompany(company)}
-              title={dictionary.companies.actions.enterCompany}
-            >
-              <i className='pi pi-sign-in my-1' />
-            </Button>
-          </Link>
+          <Button
+            as={Link}
+            href={`${COMPANIES_ROUTE}/${company.id}`}
+            rounded
+            variant='outlined'
+            severity='success'
+            onClick={() => enterCompany(company)}
+            title={dictionary.companies.actions.enterCompany}
+          >
+            <i className='pi pi-sign-in my-1' />
+          </Button>
         )}
       </div>
     </div>

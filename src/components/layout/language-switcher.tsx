@@ -4,7 +4,7 @@ import { Popover } from '@primereact/ui/popover';
 import { Menu } from '@primereact/ui/menu';
 import Image from 'next/image';
 import { startTransition, useState } from 'react';
-import { usePopoverOpenChangeEvent } from '@primereact/types/shared/popover';
+import { UsePopoverOpenChangeEvent } from '@primereact/types/headless/popover';
 import { Button } from '@primereact/ui/button';
 import { useLocale } from 'next-intl';
 import { usePathname, useRouter } from '@/i18n/routing';
@@ -35,8 +35,8 @@ export function LanguageSwitcher() {
     <div className='relative flex items-center'>
       <Popover.Root
         open={isPopoverOpen}
-        onOpenChange={(e: usePopoverOpenChangeEvent) => {
-          const event = e as usePopoverOpenChangeEvent & { open?: boolean };
+        onOpenChange={(e: UsePopoverOpenChangeEvent) => {
+          const event = e as UsePopoverOpenChangeEvent & { open?: boolean };
           setIsPopoverOpen(event.open ?? event.value ?? false);
         }}
       >

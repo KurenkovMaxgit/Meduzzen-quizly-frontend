@@ -1,7 +1,9 @@
 import { useCompanyKickUsersMutation } from '@/lib/api-endpoints';
 import { useGlobalToast } from '@/providers/toast-provider';
-import { ConfirmPopup } from '@primereact/ui/confirmpopup';
+import { Popover, PopoverRootOpenChangeEvent } from '@primereact/ui/popover';
 import { useMessages } from 'next-intl';
+import { Button } from '@primereact/ui/button';
+import { useState } from 'react';
 
 export function BulkKickMembersButton({
   companyId,
@@ -17,6 +19,7 @@ export function BulkKickMembersButton({
   const dictionary = useMessages();
   const toast = useGlobalToast();
 
+  const [isOpen, setIsOpen] = useState<boolean>(false);
   const [kickMembers, { isLoading: isKicking }] = useCompanyKickUsersMutation();
 
   const handleKickMembers = async () => {
@@ -32,37 +35,49 @@ export function BulkKickMembersButton({
   };
 
   return (
-    <ConfirmPopup.Root>
-      <ConfirmPopup.Trigger
-        severity='danger'
-        variant='outlined'
-        rounded
-        disabled={disabled}
-        className='w-full justify-center sm:w-auto'
-      >
+    <Popover.Root
+      trapped
+      closeOnEscape
+      open={isOpen}
+      disabled={disabled}
+      onOpenChange={(e: PopoverRootOpenChangeEvent) => setIsOpen(!!e.value)}
+    >
+      <Popover.Trigger as={Button} severity='danger' rounded variant='outlined' className='p-0'>
         <i className='pi pi-user-minus my-1' />
         <span className='hidden sm:inline'>{dictionary.memberships.actions.kickUsers}</span>
-      </ConfirmPopup.Trigger>
+      </Popover.Trigger>
 
-      <ConfirmPopup.Portal>
-        <ConfirmPopup.Content>
-          <div className='border-surface-200 dark:border-surface-700 flex items-center gap-3 border-b p-2 pb-3'>
-            <i className='pi pi-exclamation-triangle mb-1' />
-            <p className='m-0'>{dictionary.memberships.actions.kickMembersConfirmation}</p>
-          </div>
-        </ConfirmPopup.Content>
+      <Popover.Portal>
+        <Popover.Positioner>
+          <Popover.Popup>
+            <Popover.Arrow />
+            <Popover.Content>
+              <div className='border-surface-200 dark:border-surface-700 flex items-center gap-3 border-b p-2 pb-3'>
+                <i className='pi pi-exclamation-triangle my-1' />
+                <p className='m-0'>{dictionary.memberships.actions.kickMembersConfirmation}</p>
+              </div>
+            </Popover.Content>
 
-        <ConfirmPopup.Footer>
-          <ConfirmPopup.Reject severity='contrast' variant='outlined'>
-            {dictionary.common.cancel}
-          </ConfirmPopup.Reject>
+            <Popover.Footer>
+              <div className='flex flex-1 items-center justify-end gap-2'>
+                <Button
+                  size='small'
+                  severity='contrast'
+                  variant='outlined'
+                  onClick={() => setIsOpen(false)}
+                >
+                  {dictionary.common.cancel}
+                </Button>
 
-          <ConfirmPopup.Accept severity='danger' onClick={() => handleKickMembers()}>
-            {dictionary.common.confirm}
-            {isKicking && <i className='pi pi-spin pi-spinner ml-2' />}
-          </ConfirmPopup.Accept>
-        </ConfirmPopup.Footer>
-      </ConfirmPopup.Portal>
-    </ConfirmPopup.Root>
+                <Button size='small' severity='danger' onClick={() => handleKickMembers()}>
+                  {dictionary.common.confirm}
+                  {isKicking && <i className='pi pi-spin pi-spinner ml-2' />}
+                </Button>
+              </div>
+            </Popover.Footer>
+          </Popover.Popup>
+        </Popover.Positioner>
+      </Popover.Portal>
+    </Popover.Root>
   );
 }

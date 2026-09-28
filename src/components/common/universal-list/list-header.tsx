@@ -1,10 +1,8 @@
 'use client';
 
-import { ListHeaderProps } from '@/interfaces/components/list-interface';
 import { Button } from '@primereact/ui/button';
 import { useMessages } from 'next-intl';
-import { Select } from '@primereact/ui/select';
-import { SelectValueChangeEvent } from '@primereact/types/shared/select';
+import { Select, SelectValueChangeEvent } from '@primereact/ui/select';
 import { IconField } from '@primereact/ui/iconfield';
 import { InputText } from '@primereact/ui/inputtext';
 
@@ -19,7 +17,21 @@ export function ListHeader<T>({
   filterValue,
   onFilterChange,
   filterPlaceholder,
-}: ListHeaderProps<T>) {
+}: {
+  title?: string;
+  buttonLabel?: string;
+  onButtonClick?: () => void;
+  searchbar?: boolean;
+  searchValue?: string;
+  setSearchValue?: (value: string) => void;
+  filterOptions?: {
+    label: string;
+    value: T;
+  }[];
+  filterValue?: T | null;
+  onFilterChange?: (value: T | null) => void;
+  filterPlaceholder?: string;
+}) {
   const dictionary = useMessages();
 
   return (
@@ -41,9 +53,9 @@ export function ListHeader<T>({
         <div className='flex flex-col gap-4 sm:flex-row sm:items-center'>
           {searchbar && setSearchValue && (
             <IconField.Root className='w-full'>
-              <IconField.Icon>
+              <IconField.Inset>
                 <i className='pi pi-search' />
-              </IconField.Icon>
+              </IconField.Inset>
               <InputText
                 value={searchValue}
                 onInput={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -53,9 +65,9 @@ export function ListHeader<T>({
                 className='w-full'
               />
               {searchValue && (
-                <IconField.Icon>
+                <IconField.Inset>
                   <i className='pi pi-times cursor-pointer' onClick={() => setSearchValue('')} />
-                </IconField.Icon>
+                </IconField.Inset>
               )}
             </IconField.Root>
           )}
@@ -84,14 +96,14 @@ export function ListHeader<T>({
                   />
                 )}
 
-                <Select.Icon>
+                <Select.Indicator>
                   <i className='pi pi-chevron-down' />
-                </Select.Icon>
+                </Select.Indicator>
               </Select.Trigger>
 
               <Select.Portal>
                 <Select.Positioner className='z-50'>
-                  <Select.Panel className='border-surface-200 bg-surface-0 dark:border-surface-700 dark:bg-surface-900 mt-1 min-w-48 overflow-hidden rounded-lg border shadow-xl'>
+                  <Select.Popup className='border-surface-200 bg-surface-0 dark:border-surface-700 dark:bg-surface-900 mt-1 min-w-48 overflow-hidden rounded-lg border shadow-xl'>
                     <Select.List className='py-1 outline-none'>
                       {filterOptions.map((option, index) => (
                         <Select.Option
@@ -110,7 +122,7 @@ export function ListHeader<T>({
                         {dictionary.common?.noData || 'No options available'}
                       </Select.Empty>
                     )}
-                  </Select.Panel>
+                  </Select.Popup>
                 </Select.Positioner>
               </Select.Portal>
             </Select.Root>

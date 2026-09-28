@@ -15,7 +15,7 @@ export const queryErrorLogger: Middleware = () => (next) => (action) => {
     const statusCode = response?.statusCode || rejectedAction.payload?.status || 'Error';
     const defaultErrorMessage = 'The server encountered an unexpected issue.';
 
-    toast.danger({
+    toast.error({
       title: `Request Failed (${statusCode})`,
       description: `Target: ${requestPath}\nMessage: ${response?.message || defaultErrorMessage}`,
       duration: 5000,

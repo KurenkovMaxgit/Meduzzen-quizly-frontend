@@ -1,19 +1,10 @@
 'use client';
 
-import { Pink } from '@/themes/pink';
+import { PRIME_CONFIG } from '@/utils/prime-config';
 import { PrimeReactProvider, PrimeReactStyleSheet } from '@primereact/core';
 import { useServerInsertedHTML } from 'next/navigation';
 
 const styledStyleSheet = new PrimeReactStyleSheet();
-
-const primereact = {
-  theme: {
-    preset: Pink,
-    options: {
-      darkModeSelector: '.dark',
-    },
-  },
-};
 
 export function PrimeProvider({
   children,
@@ -27,7 +18,7 @@ export function PrimeProvider({
   });
 
   return (
-    <PrimeReactProvider {...primereact} stylesheet={styledStyleSheet}>
+    <PrimeReactProvider {...PRIME_CONFIG} stylesheet={styledStyleSheet}>
       {children}
     </PrimeReactProvider>
   );

@@ -7,6 +7,7 @@ import { UserProfileTab } from './user-profile-tab';
 import { SidebarContent } from './sidebar-content';
 import { cn } from '@/utils/cn';
 import { HOME_ROUTE } from '@/utils/router-constants';
+import { NotificationBell } from '@/components/notifications/notification-bell';
 
 export function SidebarLayout({
   children,
@@ -67,6 +68,7 @@ export function SidebarLayout({
           </div>
 
           <div className='flex items-center gap-4'>
+            <NotificationBell />
             <SettingsTab />
 
             <UserProfileTab />

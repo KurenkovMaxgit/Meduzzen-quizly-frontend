@@ -1,5 +1,5 @@
 import { Button } from '@primereact/ui/button';
-import { ConfirmPopup } from '@primereact/ui/confirmpopup';
+import { Popover, PopoverRootOpenChangeEvent } from '@primereact/ui/popover';
 import { useMessages, useLocale } from 'next-intl';
 import { useAppDispatch } from '@/lib/hooks';
 import { logout } from '@/lib/slices/auth-slice';
@@ -9,6 +9,7 @@ import { clearAuthCookies } from '@/utils/clear-cookies';
 import { useRouter } from '@/i18n/routing';
 import { ReturnUser } from '@/types/user/return-user';
 import { UpdateUser } from '@/types/user/update-user';
+import { useState } from 'react';
 
 export function ProfileHeaderActions({
   setFormData,
@@ -25,6 +26,7 @@ export function ProfileHeaderActions({
   const toast = useGlobalToast();
   const dispatch = useAppDispatch();
 
+  const [isOpen, setIsOpen] = useState<boolean>(false);
   const [deleteUser] = useUserDeleteOneByIdMutation();
 
   async function handleDelete() {
@@ -53,36 +55,54 @@ export function ProfileHeaderActions({
         <h3 className='hidden sm:block'>{dictionary.common.edit}</h3>
       </Button>
 
-      <ConfirmPopup.Root>
-        <ConfirmPopup.Trigger
+      <Popover.Root
+        trapped
+        closeOnEscape
+        open={isOpen}
+        onOpenChange={(e: PopoverRootOpenChangeEvent) => setIsOpen(!!e.value)}
+      >
+        <Popover.Trigger
+          as={Button}
           severity='danger'
           rounded
           variant='outlined'
           className='h-10 w-10 p-0'
         >
           <i className='pi pi-trash' />
-        </ConfirmPopup.Trigger>
-        <ConfirmPopup.Portal>
-          <ConfirmPopup.Content>
-            <div className='border-surface-200 dark:border-surface-700 flex items-start gap-3 border-b p-3 pb-3'>
-              <i className='pi pi-exclamation-triangle mt-0.5 text-xl' />
-              <p className='m-0 flex-1 leading-relaxed'>
-                {dictionary.profile.actions.deleteUserConfirmation}
-              </p>
-            </div>
-          </ConfirmPopup.Content>
+        </Popover.Trigger>
+        <Popover.Portal>
+          <Popover.Positioner>
+            <Popover.Popup>
+              <Popover.Arrow />
+              <Popover.Content>
+                <div className='border-surface-200 dark:border-surface-700 flex items-start gap-3 border-b p-2 pb-3'>
+                  <i className='pi pi-exclamation-triangle my-1' />
+                  <p className='m-0 flex-1 leading-relaxed'>
+                    {dictionary.profile.actions.deleteUserConfirmation}
+                  </p>
+                </div>
+              </Popover.Content>
 
-          <ConfirmPopup.Footer>
-            <ConfirmPopup.Reject severity='contrast' variant='outlined'>
-              {dictionary.common.cancel}
-            </ConfirmPopup.Reject>
+              <Popover.Footer>
+                <div className='flex flex-1 items-center justify-end gap-2'>
+                  <Button
+                    size='small'
+                    severity='contrast'
+                    variant='outlined'
+                    onClick={() => setIsOpen(false)}
+                  >
+                    {dictionary.common.cancel}
+                  </Button>
 
-            <ConfirmPopup.Accept severity='danger' onClick={() => handleDelete()}>
-              {dictionary.common.confirm}
-            </ConfirmPopup.Accept>
-          </ConfirmPopup.Footer>
-        </ConfirmPopup.Portal>
-      </ConfirmPopup.Root>
+                  <Button size='small' severity='danger' onClick={() => handleDelete()}>
+                    {dictionary.common.confirm}
+                  </Button>
+                </div>
+              </Popover.Footer>
+            </Popover.Popup>
+          </Popover.Positioner>
+        </Popover.Portal>
+      </Popover.Root>
     </div>
   );
 }

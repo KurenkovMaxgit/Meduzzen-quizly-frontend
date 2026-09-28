@@ -15,7 +15,7 @@ import { UpdateUser } from '@/types/user/update-user';
 import { CreateUser } from '@/types/user/create-user';
 import { SigninPayload } from '@/types/auth/signin-payload';
 import Cookies from 'js-cookie';
-import { ACCESS_TOKEN_KEY } from '@/utils/cookie-constants';
+import { ACCESS_TOKEN_KEY, ACCESS_TOKEN_OPTIONS } from '@/utils/cookie-constants';
 import { UpdateCompany } from '@/types/company/update-company';
 import { CreateCompany } from '@/types/company/create-company';
 import { CompanyUser } from '@/entities/company-user.entity';
@@ -24,6 +24,17 @@ import { ActionDecision, CompanyRole } from '@/utils/enums';
 import { FindUser } from '@/types/user/find-user';
 import { CompanyAction } from '@/entities/action.entity';
 import { FindAction } from '@/types/actions/find-action.dto';
+import { PrivateReturnQuiz, PublicReturnQuiz } from '@/types/quiz/return-quiz';
+import { CreateQuiz } from '@/types/quiz/create-quiz';
+import { FindQuiz } from '@/types/quiz/find-quiz';
+import { UpdateQuiz } from '@/types/quiz/update-quiz';
+import { CreateAttempt, FindAttempt, ReturnAttempt } from '@/types/quiz/attempt';
+import {
+  Notification,
+  NotificationCount,
+  UpdateNotificationStatus,
+} from '@/types/notification/notification';
+import { NotificationStatus } from '@/utils/enums';
 
 export let auth0RefreshTokenFn: (() => Promise<string>) | null = null;
 
@@ -67,6 +78,28 @@ const baseQuery = fetchBaseQuery({
 
 let refreshPromise: Promise<boolean> | null = null;
 
+export async function refreshAccessToken(): Promise<string | null> {
+  if (auth0RefreshTokenFn) {
+    const refreshedToken = await auth0RefreshTokenFn();
+    Cookies.set(ACCESS_TOKEN_KEY, refreshedToken, {
+      expires: 1,
+      secure: true,
+      sameSite: 'strict',
+    });
+
+    return refreshedToken;
+  }
+
+  const result = await baseQuery({ url: '/api/auth/refresh', method: 'POST' }, {} as never, {});
+  if (result.error) throw new Error('Failed to refresh access token');
+  const token =
+    (result.data as { data?: { accessToken?: string }; accessToken?: string } | undefined)?.data
+      ?.accessToken ?? (result.data as { accessToken?: string } | undefined)?.accessToken;
+  if (token) Cookies.set(ACCESS_TOKEN_KEY, token, ACCESS_TOKEN_OPTIONS);
+
+  return token ?? Cookies.get(ACCESS_TOKEN_KEY) ?? null;
+}
+
 const baseQueryWithReauth: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQueryError> = async (
   args,
   api,
@@ -83,12 +116,7 @@ const baseQueryWithReauth: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQue
       refreshPromise = (async () => {
         if (auth0RefreshTokenFn) {
           try {
-            const refreshedToken = await auth0RefreshTokenFn();
-            Cookies.set(ACCESS_TOKEN_KEY, refreshedToken, {
-              expires: 1,
-              secure: true,
-              sameSite: 'strict',
-            });
+            await refreshAccessToken();
 
             return true;
           } catch {
@@ -97,9 +125,11 @@ const baseQueryWithReauth: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQue
             return false;
           }
         } else {
-          await baseQuery({ url: '/api/auth/refresh', method: 'POST' }, api, extraOptions);
-
-          return true;
+          try {
+            return Boolean(await refreshAccessToken());
+          } catch {
+            return false;
+          }
         }
       })();
 
@@ -124,7 +154,7 @@ const baseQueryWithReauth: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQue
 export const quizlyApi = createApi({
   reducerPath: 'quizlyApi',
   baseQuery: baseQueryWithReauth,
-  tagTypes: ['CompanyMembers', 'CompanyActions'],
+  tagTypes: ['CompanyMembers', 'CompanyActions', 'Quizzes', 'Notifications', 'NotificationCount'],
   endpoints: (build) => ({
     appHealthCheck: build.query<unknown, void>({
       query: () => ({ url: `/api/health` }),
@@ -349,6 +379,161 @@ export const quizlyApi = createApi({
       }),
       providesTags: ['CompanyActions'],
     }),
+    quizCreate: build.mutation<ApiResponse<PrivateReturnQuiz>, { companyId: string } & CreateQuiz>({
+      query: ({ companyId, ...body }) => ({
+        url: `/api/quiz/company/${companyId}`,
+        method: 'POST',
+        body,
+      }),
+      invalidatesTags: (_result, _error, { companyId }) => [{ type: 'Quizzes', id: companyId }],
+    }),
+    quizFindAll: build.query<GetListResponse<PublicReturnQuiz>, FindAllQuery<FindQuiz>>({
+      query: (queryArg) => ({
+        url: `/api/quiz/company/${queryArg.where!.company!.id}/list`,
+        params: {
+          skip: queryArg.skip,
+          take: queryArg.take,
+          where: queryArg.where,
+          search: queryArg.search,
+          order: queryArg.order,
+          relations: queryArg.relations,
+        },
+      }),
+      providesTags: (_result, _error, queryArg) =>
+        queryArg.where?.company?.id
+          ? [{ type: 'Quizzes', id: queryArg.where.company.id }]
+          : ['Quizzes'],
+    }),
+    quizFindOnePrivateById: build.query<
+      ApiResponse<PrivateReturnQuiz>,
+      { companyId: string } & FindOneQuery
+    >({
+      query: (queryArg) => ({
+        url: `/api/quiz/${queryArg.id}/company/${queryArg.companyId}/private`,
+        params: {
+          relations: queryArg.relations,
+        },
+      }),
+      providesTags: (_result, _error, { companyId }) => [{ type: 'Quizzes', id: companyId }],
+    }),
+    quizFindOnePublicById: build.query<
+      ApiResponse<PublicReturnQuiz>,
+      { companyId: string } & FindOneQuery
+    >({
+      query: (queryArg) => ({
+        url: `/api/quiz/${queryArg.id}/company/${queryArg.companyId}/public`,
+        params: {
+          relations: queryArg.relations,
+        },
+      }),
+      providesTags: (_result, _error, { companyId }) => [{ type: 'Quizzes', id: companyId }],
+    }),
+    quizUpdateOneById: build.mutation<
+      ApiResponse<PrivateReturnQuiz>,
+      { companyId: string } & UpdateQuiz
+    >({
+      query: ({ id, companyId, ...body }) => ({
+        url: `/api/quiz/${id}/company/${companyId}`,
+        method: 'PUT',
+        body,
+      }),
+      invalidatesTags: (_result, _error, { companyId }) => [{ type: 'Quizzes', id: companyId }],
+    }),
+    quizDeleteOneById: build.mutation<ApiResponse<unknown>, { id: string; companyId: string }>({
+      query: (queryArg) => ({
+        url: `/api/quiz/${queryArg.id}/company/${queryArg.companyId}`,
+        method: 'DELETE',
+      }),
+      invalidatesTags: (_result, _error, { companyId }) => [{ type: 'Quizzes', id: companyId }],
+    }),
+    attemptSubmit: build.mutation<
+      ReturnAttempt,
+      { companyId: string; quizId: string } & CreateAttempt
+    >({
+      query: ({ companyId, quizId, ...body }) => ({
+        url: `/api/attempt/company/${companyId}/quiz/${quizId}`,
+        method: 'POST',
+        body,
+      }),
+      transformResponse: (response: ApiResponse<ReturnAttempt> | ReturnAttempt) =>
+        'data' in response && response.data ? response.data : (response as ReturnAttempt),
+    }),
+    attemptFindAll: build.query<
+      GetListResponse<ReturnAttempt>,
+      { companyId: string } & FindAllQuery<FindAttempt>
+    >({
+      query: (queryArg) => ({
+        url: `/api/attempt/company/${queryArg.companyId}/list`,
+        params: {
+          skip: queryArg.skip,
+          take: queryArg.take,
+          where: queryArg.where,
+          search: queryArg.search,
+          order: queryArg.order,
+          relations: queryArg.relations,
+        },
+      }),
+    }),
+    attemptFindAllForCompany: build.query<GetListResponse<ReturnAttempt>, string>({
+      async queryFn(companyId, _api, _extraOptions, baseQuery) {
+        const items: ReturnAttempt[] = [];
+        let skip = 0;
+        let response: GetListResponse<ReturnAttempt> | undefined;
+        do {
+          const result = await baseQuery({
+            url: `/api/attempt/company/${companyId}/list`,
+            params: { skip, take: 100, relations: ['user', 'quiz'], order: { createdAt: 'DESC' } },
+          });
+          if (result.error) return { error: result.error };
+          response = result.data as GetListResponse<ReturnAttempt>;
+          if (!response.data) return { data: response };
+          items.push(...response.data.items);
+          skip += response.data.items.length;
+        } while (items.length < response.data!.totalCount && response.data!.items.length > 0);
+
+        return {
+          data: {
+            ...response!,
+            data: { items, totalCount: response!.data?.totalCount ?? items.length },
+          },
+        };
+      },
+    }),
+    notificationFindAll: build.query<
+      GetListResponse<Notification>,
+      FindAllQuery<Record<string, unknown>>
+    >({
+      query: (queryArg) => ({
+        url: '/api/notification/list',
+        params: {
+          skip: queryArg.skip,
+          take: queryArg.take,
+          where: queryArg.where,
+          search: queryArg.search,
+          order: queryArg.order,
+          relations: queryArg.relations,
+        },
+      }),
+      providesTags: ['Notifications'],
+    }),
+    notificationGetCount: build.query<ApiResponse<NotificationCount>, NotificationStatus | void>({
+      query: (status) => ({
+        url: '/api/notification/count',
+        params: status ? { status } : {},
+      }),
+      providesTags: ['NotificationCount'],
+    }),
+    notificationUpdateStatus: build.mutation<
+      ApiResponse<{ updatedCount: number }>,
+      UpdateNotificationStatus
+    >({
+      query: ({ status, notificationIds }) => ({
+        url: `/api/notification/status/${status}`,
+        method: 'PATCH',
+        body: { notificationIds },
+      }),
+      invalidatesTags: ['Notifications', 'NotificationCount'],
+    }),
   }),
   refetchOnReconnect: true,
 });
@@ -381,12 +566,18 @@ export const {
   useActionManageRequestMutation,
   useActionGetUserActionsQuery,
   useActionGetCompanyActionsQuery,
-  // useQuizCreateMutation,
-  // useQuizFindAllQuery,
-  // useQuizFindOnePrivateByIdQuery,
-  // useQuizFindOnePublicByIdQuery,
-  // useQuizUpdateOneByIdMutation,
-  // useQuizDeleteOneByIdMutation,
+  useQuizCreateMutation,
+  useQuizFindAllQuery,
+  useQuizFindOnePrivateByIdQuery,
+  useQuizFindOnePublicByIdQuery,
+  useQuizUpdateOneByIdMutation,
+  useQuizDeleteOneByIdMutation,
+  useAttemptSubmitMutation,
+  useAttemptFindAllQuery,
+  useAttemptFindAllForCompanyQuery,
+  useNotificationFindAllQuery,
+  useNotificationGetCountQuery,
+  useNotificationUpdateStatusMutation,
   // useQuizImportQuizzesMutation,
   // useAttemptSubmitAttemptMutation,
   // useAttemptFindAllQuery,
@@ -399,7 +590,4 @@ export const {
   // useAnalyticsGetCompanyScoresDynamicsQuery,
   // useAnalyticsGetCompanyUserScoresDynamicsQuery,
   // useAnalyticsGetCompanyUsersLastCompletionsQuery,
-  // useNotificationFindAllQuery,
-  // useNotificationGetCountQuery,
-  // useNotificationUpdateStatusMutation,
 } = quizlyApi;

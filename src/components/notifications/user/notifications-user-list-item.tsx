@@ -59,11 +59,15 @@ export function UserMessagesListItem({ action }: { action: CompanyAction }) {
           {action.type === ActionType.INVITE
             ? `${dictionary.messages.user.received.description}`
             : `${dictionary.messages.user.sended.description}`}
-          <Link href={`${COMPANIES_ROUTE}/${action.company!.id}`}>
-            <Button variant='text' rounded className='shrink-0'>
-              {action.company?.name}
-            </Button>
-          </Link>
+          <Button
+            as={Link}
+            href={`${COMPANIES_ROUTE}/${action.company!.id}`}
+            variant='text'
+            rounded
+            className='shrink-0'
+          >
+            {action.company?.name}
+          </Button>
         </span>
       </div>
       <div className='flex shrink-0 justify-end gap-4 sm:ml-auto sm:items-center'>

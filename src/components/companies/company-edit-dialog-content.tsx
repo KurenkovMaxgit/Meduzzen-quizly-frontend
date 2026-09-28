@@ -5,11 +5,10 @@ import { quizlyApi, useCompanyUpdateOneByIdMutation } from '@/lib/api-endpoints'
 import { useGlobalToast } from '@/providers/toast-provider';
 import { ReturnCompany } from '@/types/company/return-company';
 import { CompanyStatus } from '@/utils/enums';
-import { SelectValueChangeEvent } from '@primereact/types/shared/select';
 import { Button } from '@primereact/ui/button';
 import { InputText } from '@primereact/ui/inputtext';
 import { Label } from '@primereact/ui/label';
-import { Select } from '@primereact/ui/select';
+import { Select, SelectValueChangeEvent } from '@primereact/ui/select';
 import { Textarea } from '@primereact/ui/textarea';
 import { useMessages } from 'next-intl';
 import React, { useState } from 'react';
@@ -146,17 +145,17 @@ export default function EditCompanyDialogContent({
         >
           <Select.Trigger id='company_status'>
             <Select.Value />
-            <Select.Icon>
+            <Select.Indicator>
               <i className='pi pi-chevron-down text-surface-500' />
-            </Select.Icon>
+            </Select.Indicator>
           </Select.Trigger>
           <Select.Portal>
             <Select.Positioner style={{ zIndex: 3000 }}>
-              <Select.Panel>
+              <Select.Popup>
                 <Select.List>
-                  <Select.Options />
+                  <Select.Option />
                 </Select.List>
-              </Select.Panel>
+              </Select.Popup>
             </Select.Positioner>
           </Select.Portal>
         </Select.Root>

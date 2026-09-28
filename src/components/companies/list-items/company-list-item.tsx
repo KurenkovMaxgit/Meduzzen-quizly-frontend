@@ -61,17 +61,17 @@ export const CompanyListItem = (company: ReturnCompany) => {
         </span>
       </div>
       <div className='flex shrink-0 justify-end gap-4 sm:ml-auto sm:items-center'>
-        <Link href={`${COMPANIES_ROUTE}/${company.id}`}>
-          <Button
-            rounded
-            variant='outlined'
-            severity='contrast'
-            className='shrink-0'
-            title={dictionary.companies.actions.viewDetails}
-          >
-            <i className='pi pi-eye my-1' />
-          </Button>
-        </Link>
+        <Button
+          as={Link}
+          href={`${COMPANIES_ROUTE}/${company.id}`}
+          rounded
+          variant='outlined'
+          severity='contrast'
+          className='shrink-0'
+          title={dictionary.companies.actions.viewDetails}
+        >
+          <i className='pi pi-eye my-1' />
+        </Button>
         {isMember ? (
           company.id === currentCompany?.id ? (
             <Button
@@ -84,17 +84,17 @@ export const CompanyListItem = (company: ReturnCompany) => {
               <i className='pi pi-sign-out my-1' />
             </Button>
           ) : (
-            <Link href={`${COMPANIES_ROUTE}/${company.id}`}>
-              <Button
-                rounded
-                variant='outlined'
-                severity='success'
-                onClick={() => enterCompany(company)}
-                title={dictionary.companies.actions.enterCompany}
-              >
-                <i className='pi pi-sign-in my-1' />
-              </Button>
-            </Link>
+            <Button
+              as={Link}
+              href={`${COMPANIES_ROUTE}/${company.id}`}
+              rounded
+              variant='outlined'
+              severity='success'
+              onClick={() => enterCompany(company)}
+              title={dictionary.companies.actions.enterCompany}
+            >
+              <i className='pi pi-sign-in my-1' />
+            </Button>
           )
         ) : (
           <Button

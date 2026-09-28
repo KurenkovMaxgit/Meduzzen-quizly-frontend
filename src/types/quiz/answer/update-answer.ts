@@ -1,3 +1,3 @@
 import { CreateAnswer } from './create-answer';
 
-export type UpdateAnswer = Partial<CreateAnswer> & { id: string };
+export type UpdateAnswer = Partial<CreateAnswer> & { id?: string };

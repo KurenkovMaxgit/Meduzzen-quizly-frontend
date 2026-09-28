@@ -6,8 +6,8 @@ export type PublicReturnQuestion = {
   prompt: string;
   type: QuizQuestionType;
   answers: PublicReturnAnswer[];
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: string;
+  updatedAt: string;
 };
 
 export type PrivateReturnQuestion = {
@@ -15,6 +15,6 @@ export type PrivateReturnQuestion = {
   prompt: string;
   type: QuizQuestionType;
   answers: PrivateReturnAnswer[];
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: string;
+  updatedAt: string;
 };

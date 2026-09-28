@@ -4,16 +4,18 @@ export type PublicReturnQuiz = {
   id: string;
   title?: string;
   description?: string;
+  completionFrequency: number;
   questions?: PublicReturnQuestion[];
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: string;
+  updatedAt: string;
 };
 
 export type PrivateReturnQuiz = {
   id: string;
   title?: string;
   description?: string;
+  completionFrequency: number;
   questions?: PrivateReturnQuestion[];
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: string;
+  updatedAt: string;
 };
